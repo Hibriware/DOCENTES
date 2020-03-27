@@ -1,17 +1,16 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import FilledInput from '@material-ui/core/FilledInput';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Avatar from '@material-ui/core/Avatar';
 //buton
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Grid from '@material-ui/core/Grid';
-import { Paper } from '@material-ui/core';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import { dataMateria } from '../../../home'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,11 +18,28 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1),
       
     },
+
   },
-}));
+  pdfss:{
+    display: 'flex',
+    justifyContent: 'space-evenly',
+  },
+  avatar: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    '& > *': {
+      margin: theme.spacing(1),
+      
+    }},
+  }));
 
 export default function ComposedTextField() {
   const [name, setName] = React.useState('');
+ 
+   const [perfil, setPerfil] = React.useState(dataMateria);
+
+  
+
   const classes = useStyles();
 
   const handleChange = event => {
@@ -31,40 +47,44 @@ export default function ComposedTextField() {
   };
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
-   <Grid container spacing={1}>
-
-   <Grid item xs={6} sm={12}>
-   <FormControl variant="outlined" spacing={2}>
-        <InputLabel htmlFor="component-outlined">Nombre Docente</InputLabel>
-        <OutlinedInput id="component-outlined" value={name} onChange={handleChange} label="Nombre Docente" />
-      </FormControl>
-      <FormControl variant="outlined">
-        <InputLabel htmlFor="component-outlined">Clave Docente</InputLabel>
-        <OutlinedInput id="component-outlined" value={name} onChange={handleChange} label="Clave Docente" />
-      </FormControl>
-      <FormControl variant="outlined">
-        <InputLabel htmlFor="component-outlined">Division Academica</InputLabel>
-        <OutlinedInput id="component-outlined" value={name} onChange={handleChange} label="Division Academica" />
-      </FormControl>
-   </Grid>
-   
-   <Grid item xs={12} sm={12}>
-   <Button
+    <React.Fragment>
+    <CssBaseline />
+    <Container maxWidth="sm">
+    <div className={classes.avatar}>
+    <Avatar src="/broken-image.jpg" />
+    </div>
+      <Typography variant="button" display="block" gutterBottom>
+        Nombre: {dataMateria[0].nameDocente}
+      </Typography>
+      <Typography variant="button" display="block" gutterBottom>
+        Clave: {dataMateria[0].clavePersonal}
+      </Typography>
+      <Typography variant="button" display="block" gutterBottom>
+        Divicion: {dataMateria[0].nombreCorto}
+      </Typography>
+      <div className={classes.pdfss}>
+      <Button 
+      
         variant="contained"
         color="default"
         startIcon={<GetAppIcon />}
       >
         Descargar lista de asistencia
       </Button>
-       </Grid>
+      </div>
+    </Container>
+    
+  </React.Fragment>
+   
+  
+      
 
-   </Grid>
+   
       
     
       
      
       
-    </form>
+    
   );
 }

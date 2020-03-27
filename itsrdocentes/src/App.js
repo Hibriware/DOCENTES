@@ -1,14 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
-import TabsWrappedLabel from './componentes/menu_opciones'
-import './App.css';
+import {Provider} from 'react-redux';
+import store from './store';
+import Home from './home';
 
-function App() {
-  return (
-    <div>
-   <TabsWrappedLabel/>
-    </div>
+const App = () =>  (
+    <Provider store={store}>
+     
+   <Home/>
+    
+    </Provider>
+    
   );
-}
+
 
 export default App;

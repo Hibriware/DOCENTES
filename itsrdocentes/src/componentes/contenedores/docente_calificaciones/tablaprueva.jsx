@@ -24,8 +24,9 @@ import { dataMateria } from '../../../home'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
+    display:'flex',
     margin: theme.spacing(1),
-    minWidth: 260,
+    minWidth: 180,
   },
   selectEmpty: {
     marginTop: theme.spacing(-1),
@@ -48,17 +49,27 @@ const useStyles = makeStyles(theme => ({
 
 const MaterialTableDemo = ({ generalAlumnos, materiasDocentes, porcentaje, updateCalificacion }) => {
 
-  useEffect(() => {
-    // Actualiza el título del documento usando la API del navegador
-  });
-
+  
 
   const estilos = useStyles();
-  const [age, setAge] = React.useState('');
+  const [materiaID, setMateriaid] = React.useState('');//id materia para filtrar unidades
 
+ 
   const handleChange = event => {
-    setAge(event.target.value);
+    setMateriaid(Number(event.target.value) || '');
   };
+
+  const buscarTema =  materiaid => {
+
+let id =  materiaid.target.value;
+console.log(id + ' _actual id')
+  
+  
+  
+  };
+
+
+
 
   const manejador = (cc1, cc2, cc3) => {//creador de table
     console.log("imprimiendo....." + tema1X)
@@ -124,16 +135,17 @@ const MaterialTableDemo = ({ generalAlumnos, materiasDocentes, porcentaje, updat
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
             <FormControl variant="outlined" className={estilos.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">Materia</InputLabel>
+              <InputLabel id="InputLabel">Materia</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
+                labelId="demo-simple-select-outlined"
                 id="materia"
-                value={age}
-                onChange={handleChange}
+                valeu=""
+                onChange={buscarTema}
                 label="Materia"
               >
+         
                 {
-                  dataMateria.map((materias, i) => (<MenuItem key={i} value={materias.id}>{materias.nombre + materias.plan}</MenuItem>))
+                  dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria} >{materias.nombre +' ('+ materias.semestre +"/"+ materias.nomenclatura+") "+ materias.nombreCorto}</MenuItem>))
                 }
 
               </Select>
@@ -144,13 +156,11 @@ const MaterialTableDemo = ({ generalAlumnos, materiasDocentes, porcentaje, updat
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
             <FormControl variant="outlined" className={estilos.formControl}>
-              <InputLabel id="demo-simple-select-outlined-label">Materia</InputLabel>
+              <InputLabel id="demo-simple-select-outlined-labe">Unidad</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined2"
-                value={age}
-                onChange={handleChange}
-                label="Materia"
+                labelId="demo-simple-select-outlined-labe"
+                id="unidad"
+                label="Unidad"
               >
                 <MenuItem value="">
                   <em>None</em>

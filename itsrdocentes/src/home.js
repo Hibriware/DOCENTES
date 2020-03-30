@@ -23,11 +23,17 @@ const useStyles = makeStyles(theme => ({
 
 function CargadeDatos() {
   if (!cache) {
-    throw materiasD().then(task => (cache = task));
+    console.log(cache + " ..1")
+    throw materiasD().then(task => (cache = task)
+    ).catch(cache = 'error');
   }
+
+  console.log(cache + " ..2")
   return (
     <div>
-     <TabsWrappedLabel />
+     { (cache === 'error' )?<h1>API 404</h1>: (cache.sin === 'null') ? <h1>Actualmente no cuenta con materias asisgnada...</h1>:<TabsWrappedLabel />
+     //cache.nm >= 0 ? <TabsWrappedLabel />:<h1>sin conencion al api</h1>
+     }
     </div>    
   );
 }
@@ -58,6 +64,11 @@ class Home extends Component {
        
       }
       
+    async dataMateria() {
+      dataMateria = await materiasD();
+
+      console.log(dataMateria)
+  }
 
   // async componentDidMount() {
     //   await this.dataMateria()
@@ -66,12 +77,6 @@ class Home extends Component {
     //};
 
 
-
-    async dataMateria() {
-        dataMateria = await materiasD();
-
-        console.log(dataMateria)
-    }
     render() {
        
         

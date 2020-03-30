@@ -20,7 +20,7 @@ export function create(data) {
 }
  
 export function materiasD() {
-    return request('/materias','Get');
+    return request(`/materias/${251}`,'Get');
 }
 export function update(id,data) {
     return request(`/materias/${id}`,'POST',data);

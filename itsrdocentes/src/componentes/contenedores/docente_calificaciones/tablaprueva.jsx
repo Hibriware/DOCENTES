@@ -18,7 +18,8 @@ import './calificaciones.css';
 //variables
 import { tema1X, tema2X, tema3X, porcentajeActual, dataAlumnos } from './clase_principal_calificaciones';
 import { startOfYesterday } from 'date-fns';
-import { dataMateria } from '../../../home'
+import { dataMateria } from '../../../home';
+import { fecha1, fecha2, fecha3 } from '../../../home';
 
 
 
@@ -60,12 +61,17 @@ const MaterialTableDemo = ({ generalAlumnos, materiasDocentes, porcentaje, updat
   };
 
   const buscarTema =  materiaid => {
+    let idDocenteActual, idMateriaActual,periodoActual, cierreActual;  
+//obtener datos para la consulta de unidades actuales y antes delcieere actual
+idDocenteActual = dataMateria[0].id_docente;
+idMateriaActual=  materiaid.target.value;
+periodoActual = 7;
+cierreActual = fecha1;
+//fecha1.setMonth(fecha1.getMonth() - 3);
 
-let id =  materiaid.target.value;
-console.log(id + ' _actual id')
-  
-  
-  
+console.log(idMateriaActual + ' _actual id')
+console.log(fecha1 + ' _actual id')
+
   };
 
 
@@ -126,7 +132,7 @@ console.log(id + ' _actual id')
   <Paper elevation={0} className={estilos.paperperiodos}>PERIODO: {dataMateria[0].idnomenclaturaPeriodo}</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper elevation={0} className={estilos.paperperiodos}>CIERRE DE ACTA:</Paper>
+  <Paper elevation={0} className={estilos.paperperiodos}>CIERRE DE ACTA: {fecha1}</Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper >xs=12 sm=33</Paper>

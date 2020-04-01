@@ -1,6 +1,14 @@
-const urlApi = 'http://localhost:3001';
+const axios = require('axios')
+const urlApi = 'http://localhost:4000';
+
+
 
 async function request(url, metodo, data) {
+    console.log(data)
+    console.log(metodo)
+
+    console.log(url)
+
  const response = await fetch(`${urlApi}${url}`,{
         metodo,
         headers:{
@@ -15,12 +23,19 @@ async function request(url, metodo, data) {
         
 }
 
-export function create(data) {
-    return request('/insert','POST',data);
+export function treeApi(datas) {
+    console.log(datas)
+axios({
+    method:'POST',
+    url:`${urlApi}/api/personal/add`,
+    data:datas
+}).then(res =>console.log(res))
+
+   // return request('/api/personal/add','POST',data);
 }
  
 export function materiasD() {
-    return request(`/materias/${251}`,'Get');
+    return request(`/api/personal/consultar/${251}`,'Get');
 }
 export function update(id,data) {
     return request(`/materias/${id}`,'POST',data);

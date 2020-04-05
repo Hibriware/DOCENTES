@@ -149,6 +149,7 @@ export default  function CustomizedTables()  {
   
 
   const tema_1 = async (teman) => {//tema1 activar el tema o no
+    const numUnidad = 1;
     const valor_chek = teman.target.checked;
     const fechaUpdate = date_ficha1;//obtenida del estado
     setChectema1(valor_chek)
@@ -160,7 +161,7 @@ export default  function CustomizedTables()  {
     console.log(eleccion_temas)
 //----
 if(valor_chek === true){
-validar_fecha(date_ficha1,Mitema1,date_ficha1)
+validar_fecha(date_ficha1,Mitema1,date_ficha1,numUnidad)
 }else{
   console.log("eliminar del estado")
  await removerTema(Mitema1)
@@ -194,8 +195,8 @@ validar_fecha(date_ficha1,Mitema1,date_ficha1)
 
 
                                               //arru fechas
-                                              const validar_fecha =(fechaTema, temaActual, fechaLimite)=>{
-                                                var data_value = { id_Materias:resul_state[0].idMateria, periodo:resul_state[0].idnomenclaturaPeriodo, grupo_id:resul_state[0].idGrupos, tema1_nombre: temaActual,fecha_limite:fechaLimite}
+                                              const validar_fecha =(fechaTema, temaActual, fechaLimite,numUnidad)=>{
+                                                var data_value = { id_Materias:resul_state[0].idMateria, periodo:resul_state[0].idnomenclaturaPeriodo, grupo_id:resul_state[0].idGrupos, tema1_nombre: temaActual,fecha_limite:fechaLimite,numUnidad}
                                                 
                                                 console.log(' ejecuatando .. agregar data fechas= ' + fecha1 + ' y ' + fecha2 + ' y  ' + fecha3)
                                                  
@@ -248,8 +249,9 @@ validar_fecha(date_ficha1,Mitema1,date_ficha1)
                                                   await treeApi(element);
                                                   console.log(element)
                                                 }
-                                                await dataMaterias()
-
+                                                await dataMaterias()//actualizar db
+                                                setEleccion_temas({data:[]})                   //limpiar tabla
+                                                setActivo('none')
                                                 console.log(loaddig)
 
                                                 loaderStatus = false;
@@ -269,6 +271,7 @@ const Mitema2 = 'Tema 2';
   };//fin
 
   const tema_2 = async (teman2) => {//tema2
+    const numUnidad = 2;
     const valor_chek = teman2.target.checked;
     const fechaUpdate = date_ficha2;
     setChectema2(valor_chek);
@@ -276,7 +279,7 @@ const Mitema2 = 'Tema 2';
     console.log(fechaUpdate + " f_real")
 
     if(valor_chek === true){
-      validar_fecha(date_ficha1,Mitema2,date_ficha2)
+      validar_fecha(date_ficha1,Mitema2,date_ficha2,numUnidad)
       }else{
         console.log("eliminar del estado")
        await removerTema(Mitema2)
@@ -298,6 +301,7 @@ const Mitema2 = 'Tema 2';
 
 
   const tema_3  = async (teman3) => {//tema2
+    const numUnidad = 3;
     const valor_chek = teman3.target.checked;
     const fechaUpdate = date_ficha3;
     setChectema3(valor_chek);
@@ -305,7 +309,7 @@ const Mitema2 = 'Tema 2';
     console.log(fechaUpdate + " f_real")
 
     if(valor_chek === true){
-      validar_fecha(date_ficha1,Mitema3,date_ficha3)
+      validar_fecha(date_ficha1,Mitema3,date_ficha3,numUnidad)
       }else{
         console.log("eliminar del estado")
        await removerTema(Mitema3)

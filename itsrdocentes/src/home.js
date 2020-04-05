@@ -2,6 +2,8 @@ import React, { Component,Suspense  } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TabsWrappedLabel from './componentes/menu_opciones';
 import { materiasD } from './componentes/servicios/api';
+
+
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 export let dataMateria = null ;

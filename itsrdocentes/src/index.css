@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.swal-overlay {
+  
+  background-color: rgba(37, 37, 37, 0.45);
+}

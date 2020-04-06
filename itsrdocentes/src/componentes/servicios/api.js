@@ -7,6 +7,8 @@ const urlApi = 'http://localhost:4000';
 export let datalista = [];
 export let datalistaAlumnos = [];
 export let dataCriterios = [];
+export let dataStatusTemas = [];
+
 
 
 async function request(url, metodo, data) {
@@ -86,12 +88,20 @@ export async function getTemas(idDocente, idMateria, periodo, cierre) {
       //console.log(error);
       swal("Sin temas disponibles!", " o Verifique su conexion a internet!", "warning");
     })
+}
 
+export async function getStatus_temas(periodo, id_usuario, id_materia) { //PERIODO_ACTUAL, ID_USUARIO, materia 
 
+  await axios.get(`${urlApi}/api/personal/consultar/estado/temas/${periodo}/${id_materia}/${id_usuario}`)
+    .then(res => dataStatusTemas = res.data)
+    .catch(function (error) {
+      //console.log(error);
+      swal(" ", "Verifique su conexion a internet!", "warning");
+    })
 }
 
 export async function getAlumnos(idMateria, idDocente) {
-  console.log('Actualizando alumnos')
+  console.log('Actualizando alumnos--------------------------------')
   await axios.get(`${urlApi}/api/personal/consultarAlumnos/${idMateria}/${idDocente}/${ID_USUARIO}`)
     .then(res => datalistaAlumnos = res.data)
     .catch(function (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MaterialTable from 'material-table';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -8,17 +8,16 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import moment from 'moment';
 import swal from 'sweetalert';
-
-import { makeStyles } from '@material-ui/core/styles';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
-//importdos
-import { data } from './clase_principal_calificaciones';
 import './calificaciones.css';
+
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
+
 //variables
-import { tema1X, tema2X, tema3X, porcentajeActual, dataAlumnos } from './clase_principal_calificaciones';
-import { startOfYesterday } from 'date-fns';
+import { useStyles } from './dialogos_calificacion';
 import { dataMateria } from '../../../home';
 import { getTemas } from '../../servicios/api';
 import { datalista } from '../../servicios/api';
@@ -33,198 +32,153 @@ import { crearCalificacion } from '../../servicios/api';
 import { updateCalificaion } from '../../servicios/api';
 import { fecha1, fecha2, fecha3 } from '../../../home';
 import { PERIODO_ACTUAL } from '../../../App';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import moment from 'moment'
 
-export var unidad_Tema, materia_Tema;
 
+export var unidad_Tema;
 let ccx1 = 0, ccx2 = 0, ccx3 = 0, unidadCalificacion, id_criterios;
-
-const useStyles = makeStyles(theme => ({
-  formControl: {
-    display: 'flex',
-    margin: theme.spacing(1),
-    minWidth: 180,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(-1),
-  },
-  papermaterias: {
-    padding: theme.spacing(-1),
-    textAlign: 'left',
-    color: theme.palette.text.secondary,
-  },
-  paperperiodos: {
-    padding: theme.spacing(-2),
-    textAlign: 'left',
-    color: theme.palette.text.primary,
-  },
-}));
-
-
 let periodo, materia, unidad, grupo;
-export async function enviarCriteriosc1(porcentageC1, criterio1) {
+
+export async function enviarCriteriosc1(porcentageC1, criterio1) {//inicio guardar porcentaje 1 y criterio 1
   // let periodo, materia, unidad, grupo
   periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
-  console.log(periodo + ' - ' + materia + ' - ' + unidad + ' - ' + grupo + ' - ' + porcentageC1);
 
-  console.log(" datos de dialogo :" + periodo + ' - ' + materia + ' - ' + unidad + ' - ' + grupo + ' -- ' + criterio1);
   await putCriteriosc1(periodo, materia, unidad, grupo, porcentageC1, criterio1)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
-}
+}//fin
 
 
-export async function enviarCriteriosc2(porcentageC1, criterio1) {
+export async function enviarCriteriosc2(porcentageC1, criterio1) {//inicio guardar porcentaje 2 y criterio 2
   //  let periodo, materia, unidad, grupo
   periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
-  console.log(periodo + ' - ' + materia + ' - ' + unidad + ' - ' + grupo + ' - ' + porcentageC1);
 
-  console.log(" datos de dialogo :" + periodo + ' - ' + materia + ' - ' + unidad + ' - ' + grupo + ' -- ' + criterio1);
   await putCriteriosc2(periodo, materia, unidad, grupo, porcentageC1, criterio1)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
-}
+}//fin
 
 
-export async function enviarCriteriosc3(porcentageC1, criterio1) {
+export async function enviarCriteriosc3(porcentageC1, criterio1) {//inicio guardar porcentaje 3 y criterio 3
   // let periodo, materia, unidad, grupo
   periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
-  console.log(periodo + ' - ' + materia + ' - ' + unidad + ' - ' + grupo + ' - ' + porcentageC1);
 
-  console.log(" datos de dialogo :" + periodo + ' - ' + materia + ' - ' + unidad + ' - ' + grupo + ' -- ' + criterio1);
   await putCriteriosc3(periodo, materia, unidad, grupo, porcentageC1, criterio1)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
-}
+}//fin
 
-var idDocenteActual, idMateriaActual, periodoActual, cierreActual;
-export const MaterialTableDemo = () => {
+var idDocenteActual, idMateriaActual, periodoActual, cierreActual; // fun buscarTtema
+
+export const MaterialTableDemo = () => {//inicio
+
   const estilos = useStyles();
-  const [materiaID, setMateriaid] = React.useState('');//id materia para filtrar unidades
+  // const [materiaID, setMateriaid] = React.useState('');//id materia para filtrar unidades
+  const [listasTemas, setListas] = React.useState([]);
+  const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
+  //let get_materia_id;
 
-  const handleChange = event => {
-    setMateriaid(Number(event.target.value) || '');
-  };
-
-  const [listasTemas, setListas] = React.useState([])
-
-  let get_materia_id;
-  const buscarTema = async materiaid => {
-
+  const buscarTema = async materiaid => {//inicio selec materia en la vista
     //obtener datos para la consulta de unidades actuales y antes delcieere actual
     idDocenteActual = dataMateria[0].id_docente;
     idMateriaActual = materiaid.target.value;
-    materia_Tema = materiaid.target.value;
     periodoActual = 7;
-    cierreActual = fecha1;
-
+    cierreActual = fecha1; //esta variable vendra de la db el cierre de acta
     //fecha1.setMonth(fecha1.getMonth() - 3);
-    setMATERIA_ID(idMateriaActual)
-    let fecheFull = moment(fecha1).subtract(2, 'months')
-    let vc = moment(fecheFull).format("YYYY-MM-DD");
+    setMATERIA_ID(idMateriaActual);//actualizar al estado
+    let fecha_resta_acta = moment(fecha1).subtract(2, 'months');
+    let getFecha_resta = moment(fecha_resta_acta).format("YYYY-MM-DD");
 
-    let bbv = await getTemas(idDocenteActual, idMateriaActual, periodoActual, cierreActual);
-    setListas(datalista)
-    console.log(bbv)
+    await getTemas(idDocenteActual, idMateriaActual, periodoActual, cierreActual);
+    setListas(datalista)//actualiza el la lista de materias actual
 
     console.log("<<<<")
     console.log(datalista)
     console.log(idMateriaActual + ' _actual id')
-    console.log(vc + ' _actual id')
 
-  };
+  };//fin
 
-  const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos })
-  const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
 
+
+  const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
 
   const obtenerTema = async (tem) => {//inico
     let numTemas = tem.target.value;
     //buscar lista alumnos  idMateria, idDocente
-    await getAlumnos(MATERIA_ID, PERIODO_ACTUAL);//LISTA DE ALUMNOS
-    await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO
+    await getAlumnos(MATERIA_ID, PERIODO_ACTUAL);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
     await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
+    await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO
     //await setCRITERIOS(dataCriterios);
-
-    console.log(calificaciones)
-    console.log('ver tema inf.. ' + numTemas + ' materia = ' + MATERIA_ID + ' periodo ' + PERIODO_ACTUAL)
-    console.log(listasTemas)
-    console.log('VER.. ' + dataCriterios[0].porcentageC1);
 
     ccx1 = dataCriterios[0].porcentageC1;
     ccx2 = dataCriterios[0].porcentageC2;
     ccx3 = dataCriterios[0].porcentageC3;
-    unidadCalificacion = dataCriterios[0].numUnidad;
-    id_criterios = dataCriterios[0].idcat_Unidad;
+
+    unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
+    id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
 
     console.log(dataCriterios)
-    document.getElementById('porcentajeC1').value = ccx1;
+    document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
     document.getElementById('porcentajeC2').value = ccx2;
     document.getElementById('porcentajeC3').value = ccx3;
 
   }//fin
 
 
-  const guardarPromedio = async (datos) => {//inicion
+  const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
+    
     let bandera = datos.materiaDocente_id;
     let idcalificacion = datos.idcalificaciones;
-  
-    console.log('estoy guardando datos de calificacion y mas: ' + idcalificacion);
-  
+
     if (bandera) {
-      console.log("Actualizar datos del alumno....")
+      console.log("Actualizar datos del alumno....");
 
       if (datos.calR2 === null && datos.calR3 === null) {
-      console.log("inicializar en cero r2 y r3")
-
-            datos.calR2 = 0;
-            datos.calR3 = 0;
-      }else if(datos.calR3 === null){
-      console.log("inicializar en cero r3")
-
-            datos.calR3 = 0;
+          console.log("inicializar en cero r2 y r3");
+          datos.calR2 = 0;
+          datos.calR3 = 0;
+      } else if (datos.calR3 === null) {
+                   console.log("inicializar en cero r3");
+                  datos.calR3 = 0;
       }
 
       await updateCalificaion(idcalificacion, datos)
+
     } else {
-      //let idCalificacion = datos.
-      console.log("crear registro para el alumno en registro calificacion")
-      await crearCalificacion(datos, unidadCalificacion, id_criterios);
-  //actualizar data alumnos ##  materia_Tema  PERIODO_ACTUAL
-      await getAlumnos(MATERIA_ID, PERIODO_ACTUAL);//LISTA DE ALUMNOS
-      await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
+
+        console.log("crear registro para el alumno en registro calificacion")
+          await crearCalificacion(datos, unidadCalificacion, id_criterios);
+      //actualizar data alumnos ##  materia_Tema  PERIODO_ACTUAL
+          await getAlumnos(MATERIA_ID, PERIODO_ACTUAL);//LISTA DE ALUMNOS
+          await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
     }
     console.log(datos)
-  
+
   }//fin
 
 
-  const manejador = (cc1, cc2, cc3) => {//creador de table
+  /*const manejador = (cc1, cc2, cc3) => {//creador de table
     console.log("imprimiendo....." + tema1X)
     console.log("datos new....." + cc1 + cc2 + cc3)
-  };
+  };*/
 
   const [ac, setAc] = React.useState('none');//guardar porcentaje #########
 
-  const [alumnos, setAlumnos] = React.useState({
+  const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
 
     columns: [
       { title: 'Nª', field: 'id', editable: 'never' },
       { title: 'Control', field: 'control', editable: 'never' },
       { title: 'Nombre', field: 'nameAlumno', editable: 'never' },
-      {title: 'Curso', field: 'curso',editable: 'never'},
+      { title: 'Curso', field: 'curso', editable: 'never' },
       { title: 'Opcion', field: 'opcion', editable: 'never' },
       { title: 'C1', field: 'calR1', },
       { title: 'C2', field: 'calR2', },
@@ -241,6 +195,7 @@ export const MaterialTableDemo = () => {
 
   return (
     <div>
+     
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <h3 >INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS</h3>
@@ -252,7 +207,12 @@ export const MaterialTableDemo = () => {
           <Paper elevation={0} className={estilos.paperperiodos}>CIERRE DE ACTA: {fecha1}</Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper elevation={0} ><p id="most" style={{ display: ac }}>espere..<LinearProgress variant="query" /></p></Paper>
+          <Paper elevation={0} >
+            <Chip size="small" avatar={<Avatar>80</Avatar>} label="Resumen y tareas" color="secondary"/>
+            <Chip size="small" avatar={<Avatar>10</Avatar>} label="Exposicon" color="secondary"/>
+            <Chip size="small" avatar={<Avatar>10</Avatar>} label="Trabajo final" color="secondary"/>
+          
+          </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
@@ -322,12 +282,8 @@ export const MaterialTableDemo = () => {
                     new Promise(resolve => {
                       setTimeout(() => {
                         resolve();
-
                         if (oldData) {
-
                           //actualizacion del estado
-
-
                           setcalificaciones(prevState => {
                             const datalistaAlumnos = [...prevState.datalistaAlumnos];//obtenr data
                             //console.log(newData.nombre = 'sam')//estado fila modificado
@@ -335,7 +291,6 @@ export const MaterialTableDemo = () => {
                             console.log(newData.calCriterio2 = (newData.calR2 * (ccx2 / 100)))
                             console.log(newData.calCriterio3 = (newData.calR3 * (ccx3 / 100)))
                             console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3)))
-
                             console.log(newData)//estado fila modificado
                             datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
                             // manejador(newData.c1, newData.c2, newData.c3)
@@ -347,7 +302,6 @@ export const MaterialTableDemo = () => {
                     }),
                 }
               }
-
               options={{
                 headerStyle: {
                   backgroundColor: '#01579b',
@@ -355,6 +309,7 @@ export const MaterialTableDemo = () => {
                 }
               }}
             />
+
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -367,35 +322,25 @@ export const MaterialTableDemo = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={manejador}
             startIcon={<SaveIcon />}
           >
             Descargar Reporte de Calificaciones
-    </Button>
+          </Button>
 
         </Grid>
       </Grid>
-
     </div>
 
   );
-
-
-  
-
 }
 
 
-
-
-
-const guardarPorcentaje_c1 = async () => {
-  var input = document.getElementById('porcentajeC1');//inicio 1
+const guardarPorcentaje_c1 = async () => {//inicio
+  var input = document.getElementById('porcentajeC1');
   input.addEventListener('input', function () {
     if (this.value.length > 2)
       this.value = this.value.slice(0, 2);
   })
-
   if (input.value <= 100) {
     if (input.value.length === 2) {
 
@@ -404,7 +349,6 @@ const guardarPorcentaje_c1 = async () => {
         content: "input",
       })
         .then((comentario) => {
-
           if (comentario) {
             //enviar porcentage y comentario
             enviarCriteriosc1(input.value, comentario);
@@ -415,16 +359,14 @@ const guardarPorcentaje_c1 = async () => {
           }
           //swal(`You typed: ${comentario}`);
         });
-
     }
   } else {
     alert("no puede exeder de 100 %")
   }
+}//fin
 
-}
 
-
-const guardarPorcentaje_c2 = (e) => {
+const guardarPorcentaje_c2 = (e) => {//inicio
 
   var input2 = document.getElementById('porcentajeC2');//inicio 1
   input2.addEventListener('input', function () {
@@ -465,7 +407,7 @@ const guardarPorcentaje_c2 = (e) => {
 
 
 
-const guardarPorcentaje_c3 = (e) => {
+const guardarPorcentaje_c3 = (e) => {//inicio
 
   var input3 = document.getElementById('porcentajeC3');//inicio 1
   input3.addEventListener('input', function () {

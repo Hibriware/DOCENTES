@@ -113,7 +113,7 @@ export const MaterialTableDemo = () => {//inicio
   const obtenerTema = async (tem) => {//inico
     let numTemas = tem.target.value;
     //buscar lista alumnos  idMateria, idDocente
-    await getAlumnos(MATERIA_ID, PERIODO_ACTUAL);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
+    await getAlumnos(MATERIA_ID, numTemas);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
     await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
     await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO
     //await setCRITERIOS(dataCriterios);
@@ -157,7 +157,7 @@ export const MaterialTableDemo = () => {//inicio
         console.log("crear registro para el alumno en registro calificacion")
           await crearCalificacion(datos, unidadCalificacion, id_criterios);
       //actualizar data alumnos ##  materia_Tema  PERIODO_ACTUAL
-          await getAlumnos(MATERIA_ID, PERIODO_ACTUAL);//LISTA DE ALUMNOS
+          await getAlumnos(MATERIA_ID, unidadCalificacion);//LISTA DE ALUMNOS
           await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
     }
     console.log(datos)
@@ -352,7 +352,7 @@ const guardarPorcentaje_c1 = async () => {//inicio
           if (comentario) {
             //enviar porcentage y comentario
             enviarCriteriosc1(input.value, comentario);
-            getAlumnos(idMateriaActual, PERIODO_ACTUAL);//LISTA DE ALUMNOS
+            getAlumnos(idMateriaActual,unidadCalificacion);//LISTA DE ALUMNOS
             console.log(input.value)
           } else {
             console.log(input.value + "noupede estar vacio " + comentario)
@@ -386,7 +386,7 @@ const guardarPorcentaje_c2 = (e) => {//inicio
           if (comentario) {
             //enviar porcentage y comentario
             enviarCriteriosc2(input2.value, comentario)
-            getAlumnos(idMateriaActual, PERIODO_ACTUAL);//LISTA DE ALUMNOS
+            getAlumnos(idMateriaActual,unidadCalificacion);//LISTA DE ALUMNOS
 
             console.log(input2.value)
           } else {

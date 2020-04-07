@@ -1,5 +1,5 @@
 import swal from 'sweetalert';
-import { ID_USUARIO } from '../../App';
+import { ID_USUARIO , PERIODO_ACTUAL } from '../../App';
 const axios = require('axios')
 const urlApi = 'http://localhost:4000';
 
@@ -100,9 +100,9 @@ export async function getStatus_temas(periodo, id_usuario, id_materia) { //PERIO
     })
 }
 
-export async function getAlumnos(idMateria, idDocente) {
+export async function getAlumnos(idMateria, unidad) {//consultarAlumnos/:idMateria/:periodo/:idDocente/:unidad
   console.log('Actualizando alumnos--------------------------------')
-  await axios.get(`${urlApi}/api/personal/consultarAlumnos/${idMateria}/${idDocente}/${ID_USUARIO}`)
+  await axios.get(`${urlApi}/api/personal/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}`)
     .then(res => datalistaAlumnos = res.data)
     .catch(function (error) {
       //console.log(error);

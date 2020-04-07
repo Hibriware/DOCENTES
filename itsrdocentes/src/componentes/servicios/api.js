@@ -53,10 +53,14 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
     calR1: datas.calR1,
     calR2: datas.calR2,
     calR3: datas.calR3,
+    calR4: datas.calR4,
+
 
     calCriterio1: datas.calCriterio1,
     calCriterio2: datas.calCriterio2,
     calCriterio3: datas.calCriterio3,
+    calCriterio4: datas.calCriterio4,
+
 
     calificaciontotal: datas.calificaciontotal,
 
@@ -164,16 +168,33 @@ export async function putCriteriosc3(periodo, materia, unidad, grupo, porcentage
 
 }
 
+export async function putCriteriosc4(periodo, materia, unidad, grupo, porcentageC4, criterio4) {
+  await axios.put(`${urlApi}/api/personal/update/criteriosc4/${periodo}/${materia}/${unidad}/${grupo}`, {
+    criterio4: criterio4,
+    porcentageC4: porcentageC4,
+  })
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+}
+
+
 export async function updateCalificaion(idCalificacion, data) {// actalizar calificacion
   
   await axios.put(`${urlApi}/api/personal/update/calificaciones/${idCalificacion}`, {
     calCriterio1:data.calCriterio1,
     calCriterio2:data.calCriterio2,
     calCriterio3:data.calCriterio3,
+    calCriterio4:data.calCriterio4,
     calificaciontotal:data.calificaciontotal,
     calR1:data.calR1,
     calR2:data.calR2,
     calR3:data.calR3,
+    calR4:data.calR4,
   })
     .then(function (response) {
       console.log(response.data);

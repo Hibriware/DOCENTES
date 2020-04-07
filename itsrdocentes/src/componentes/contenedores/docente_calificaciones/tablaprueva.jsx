@@ -28,6 +28,8 @@ import { dataCriterios } from '../../servicios/api';
 import { putCriteriosc1 } from '../../servicios/api';
 import { putCriteriosc2 } from '../../servicios/api';
 import { putCriteriosc3 } from '../../servicios/api';
+import { putCriteriosc4 } from '../../servicios/api';
+
 import { crearCalificacion } from '../../servicios/api';
 import { updateCalificaion } from '../../servicios/api';
 import { fecha1, fecha2, fecha3 } from '../../../home';
@@ -35,7 +37,7 @@ import { PERIODO_ACTUAL } from '../../../App';
 
 
 export var unidad_Tema;
-let ccx1 = 0, ccx2 = 0, ccx3 = 0, unidadCalificacion, id_criterios;
+let ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0, unidadCalificacion, id_criterios;
 let periodo, materia, unidad, grupo;
 
 export async function enviarCriteriosc1(porcentageC1, criterio1) {//inicio guardar porcentaje 1 y criterio 1
@@ -75,6 +77,20 @@ export async function enviarCriteriosc3(porcentageC1, criterio1) {//inicio guard
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
 }//fin
+
+
+export async function enviarCriteriosc4(porcentageC4, criterio4) {//inicio guardar porcentaje 3 y criterio 3
+  // let periodo, materia, unidad, grupo
+  periodo = dataCriterios[0].periodo;
+  materia = dataCriterios[0].materias_idmaterias;
+  unidad = dataCriterios[0].numUnidad;
+  grupo = dataCriterios[0].asingnacion_grupo_id;
+
+  await putCriteriosc4(periodo, materia, unidad, grupo, porcentageC4, criterio4)
+  //data  criterio1 porcentageC1
+  //parametros update periodo, materia, unidad, grupo
+}//fin
+
 
 var idDocenteActual, idMateriaActual, periodoActual, cierreActual; // fun buscarTtema
 
@@ -116,7 +132,8 @@ export const MaterialTableDemo = () => {//inicio
   const [criterio_avatarc2, setCriterio_avatarC2] = React.useState();
   const [avatarc3, setAvatarC3] = React.useState();
   const [criterio_avatarc3, setCriterio_avatarC3] = React.useState();
-
+  const [avatarc4, setAvatarC4] = React.useState();
+  const [criterio_avatarc4, setCriterio_avatarC4] = React.useState();
 
 
 
@@ -128,12 +145,15 @@ export const MaterialTableDemo = () => {//inicio
     await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO getTem
     //await setCRITERIOS(dataCriterios);
     
-    ccx1 = dataCriterios[0].porcentageC1;
-    ccx2 = dataCriterios[0].porcentageC2;
-    ccx3 = dataCriterios[0].porcentageC3;
+     ccx1 = await dataCriterios[0].porcentageC1;
+     ccx2 = await dataCriterios[0].porcentageC2;
+    ccx3 = await dataCriterios[0].porcentageC3;
+    ccx4 = await dataCriterios[0].porcentageC4;
+
     document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
     document.getElementById('porcentajeC2').value = ccx2;
     document.getElementById('porcentajeC3').value = ccx3;
+    document.getElementById('porcentajeC4').value = ccx4;
 
     setAvatarC1(ccx1)
     setCriterio_avatarC1(dataCriterios[0].criterio1)
@@ -141,9 +161,13 @@ export const MaterialTableDemo = () => {//inicio
     setCriterio_avatarC2(dataCriterios[0].criterio2)
     setAvatarC3(ccx3)
     setCriterio_avatarC3(dataCriterios[0].criterio3)
+    setAvatarC4(ccx4)
+    setCriterio_avatarC4(dataCriterios[0].criterio4)
 
     unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
     id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
+    console.log("dataCriterios")
+
     console.log(dataCriterios)
   }//fin
 
@@ -156,13 +180,17 @@ export const MaterialTableDemo = () => {//inicio
     if (bandera) {
       console.log("Actualizar datos del alumno....");
 
-      if (datos.calR2 === null && datos.calR3 === null) {
+      if (datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
         console.log("inicializar en cero r2 y r3");
         datos.calR2 = 0;
         datos.calR3 = 0;
-      } else if (datos.calR3 === null) {
+        datos.calR4 = 0;
+      } else if (datos.calR3 === null && datos.calR4 === null) {
         console.log("inicializar en cero r3");
         datos.calR3 = 0;
+        datos.calR4 = 0;
+      }else if(datos.calR4 === null){
+        datos.calR4 = 0;
       }
 
       await updateCalificaion(idcalificacion, datos)
@@ -185,16 +213,20 @@ export const MaterialTableDemo = () => {//inicio
     ccx1 = dataCriterios[0].porcentageC1;
     ccx2 = dataCriterios[0].porcentageC2;
     ccx3 = dataCriterios[0].porcentageC3;
+    ccx4 = dataCriterios[0].porcentageC4;
     document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
     document.getElementById('porcentajeC2').value = ccx2;
     document.getElementById('porcentajeC3').value = ccx3;
+    document.getElementById('porcentajeC4').value = ccx4;
+
     setAvatarC1(ccx1)
     setCriterio_avatarC1(dataCriterios[0].criterio1)
     setAvatarC2(ccx2)
     setCriterio_avatarC2(dataCriterios[0].criterio2)
     setAvatarC3(ccx3)
     setCriterio_avatarC3(dataCriterios[0].criterio3)
-
+    setAvatarC4(ccx4)
+    setCriterio_avatarC4(dataCriterios[0].criterio4)
     return true;
   }
 
@@ -311,6 +343,41 @@ export const MaterialTableDemo = () => {//inicio
 
   }//fin
 
+  const guardarPorcentaje_c4 = (e) => {//inicio
+
+    var input4 = document.getElementById('porcentajeC4');//inicio 1
+    input4.addEventListener('input', function () {
+      if (this.value.length > 2)
+        this.value = this.value.slice(0, 2);
+    })
+
+    if (input4.value <= 100) {
+      if (input4.value.length === 2) {
+        //ejecutar metodo de guardar
+        swal("describa el nombre del creterio:", {
+          content: "input",
+        })
+          .then((comentario) => {
+
+            if (comentario) {
+              //enviar porcentage y comentario
+              enviarCriteriosc4(input4.value, comentario)
+              updates().then(up => { console.log(up) })
+              console.log(input4.value)
+            } else {
+              console.log(input4.value + "noupede estar vacio " + comentario)
+            }
+            //swal(`You typed: ${comentario}`);
+          });
+
+        console.log("ejecutar metodo de guardar 1")
+      }
+    } else {
+      alert("no puede exeder de 100 %")
+    }
+
+  }//fin
+
 
 
 
@@ -338,10 +405,12 @@ export const MaterialTableDemo = () => {//inicio
       { title: 'C1', field: 'calR1',disablePadding: true ,minWidth: 10},
       { title: 'C2', field: 'calR2',disablePadding: true ,minWidth: 10},
       { title: 'C3', field: 'calR3',disablePadding: true ,minWidth: 10},
+      { title: 'C4', field: 'calR4',disablePadding: true ,minWidth: 10},
       { title: '#', field: '#', editable: 'never' , size:'small',disablePadding: true},
       { title: <input className="inputTemas" type="number" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} onChange={guardarPorcentaje_c1} ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10,disablePadding: true },
       { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} onChange={guardarPorcentaje_c2} ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10,disablePadding: true },
       { title: <input className="inputTemas" id="porcentajeC3" placeholder="C3" style={{ width: '4ch' }} onChange={guardarPorcentaje_c3}  ></input>, field: 'calCriterio3', editable: 'never', disablePadding: true },
+      { title: <input className="inputTemas" id="porcentajeC4" placeholder="C4" style={{ width: '4ch' }} onChange={guardarPorcentaje_c4}  ></input>, field: 'calCriterio4', editable: 'never', disablePadding: true },
       { title: 'Total', field: 'calificaciontotal', editable: 'never' ,disablePadding: true},
     ]
   })
@@ -366,6 +435,8 @@ export const MaterialTableDemo = () => {//inicio
             <Chip size="small" avatar={<Avatar>{avatarc1}</Avatar>} label={criterio_avatarc1} color="secondary" />
             <Chip size="small" avatar={<Avatar>{avatarc2}</Avatar>} label={criterio_avatarc2} color="secondary" />
             <Chip size="small" avatar={<Avatar>{avatarc3}</Avatar>} label={criterio_avatarc3} color="secondary" />
+            <Chip size="small" avatar={<Avatar>{avatarc4}</Avatar>} label={criterio_avatarc4} color="secondary" />
+
 
           </Paper>
         </Grid>
@@ -445,7 +516,9 @@ export const MaterialTableDemo = () => {//inicio
                             console.log(newData.calCriterio1 = (newData.calR1 * (ccx1 / 100)))
                             console.log(newData.calCriterio2 = (newData.calR2 * (ccx2 / 100)))
                             console.log(newData.calCriterio3 = (newData.calR3 * (ccx3 / 100)))
-                            console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3)))
+                            console.log(newData.calCriterio4 = (newData.calR4 * (ccx4 / 100)))
+
+                            console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3) +parseInt(newData.calCriterio4)))
                             console.log(newData)//estado fila modificado
                             datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
                             // manejador(newData.c1, newData.c2, newData.c3)

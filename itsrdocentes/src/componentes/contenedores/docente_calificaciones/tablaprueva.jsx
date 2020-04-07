@@ -81,12 +81,16 @@ var idDocenteActual, idMateriaActual, periodoActual, cierreActual; // fun buscar
 export const MaterialTableDemo = () => {//inicio
 
   const estilos = useStyles();
+  const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
   // const [materiaID, setMateriaid] = React.useState('');//id materia para filtrar unidades
   const [listasTemas, setListas] = React.useState([]);
   const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
   //let get_materia_id;
 
+
+
   const buscarTema = async materiaid => {//inicio selec materia en la vista
+    setListas([])//actualiza el la lista de materias actual
     //obtener datos para la consulta de unidades actuales y antes delcieere actual
     idDocenteActual = dataMateria[0].id_docente;
     idMateriaActual = materiaid.target.value;
@@ -106,35 +110,46 @@ export const MaterialTableDemo = () => {//inicio
 
   };//fin
 
+  const [avatarc1, setAvatarC1] = React.useState();
+  const [criterio_avatarc1, setCriterio_avatarC1] = React.useState();
+  const [avatarc2, setAvatarC2] = React.useState();
+  const [criterio_avatarc2, setCriterio_avatarC2] = React.useState();
+  const [avatarc3, setAvatarC3] = React.useState();
+  const [criterio_avatarc3, setCriterio_avatarC3] = React.useState();
 
 
-  const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
+
 
   const obtenerTema = async (tem) => {//inico
     let numTemas = tem.target.value;
     //buscar lista alumnos  idMateria, idDocente
     await getAlumnos(MATERIA_ID, numTemas);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
     await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
-    await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO
+    await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO getTem
     //await setCRITERIOS(dataCriterios);
-
+    
     ccx1 = dataCriterios[0].porcentageC1;
     ccx2 = dataCriterios[0].porcentageC2;
     ccx3 = dataCriterios[0].porcentageC3;
-
-    unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
-    id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
-
-    console.log(dataCriterios)
     document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
     document.getElementById('porcentajeC2').value = ccx2;
     document.getElementById('porcentajeC3').value = ccx3;
 
+    setAvatarC1(ccx1)
+    setCriterio_avatarC1(dataCriterios[0].criterio1)
+    setAvatarC2(ccx2)
+    setCriterio_avatarC2(dataCriterios[0].criterio2)
+    setAvatarC3(ccx3)
+    setCriterio_avatarC3(dataCriterios[0].criterio3)
+
+    unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
+    id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
+    console.log(dataCriterios)
   }//fin
 
 
   const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
-    
+
     let bandera = datos.materiaDocente_id;
     let idcalificacion = datos.idcalificaciones;
 
@@ -142,27 +157,163 @@ export const MaterialTableDemo = () => {//inicio
       console.log("Actualizar datos del alumno....");
 
       if (datos.calR2 === null && datos.calR3 === null) {
-          console.log("inicializar en cero r2 y r3");
-          datos.calR2 = 0;
-          datos.calR3 = 0;
+        console.log("inicializar en cero r2 y r3");
+        datos.calR2 = 0;
+        datos.calR3 = 0;
       } else if (datos.calR3 === null) {
-                   console.log("inicializar en cero r3");
-                  datos.calR3 = 0;
+        console.log("inicializar en cero r3");
+        datos.calR3 = 0;
       }
 
       await updateCalificaion(idcalificacion, datos)
 
     } else {
 
-        console.log("crear registro para el alumno en registro calificacion")
-          await crearCalificacion(datos, unidadCalificacion, id_criterios);
+      console.log("crear registro para el alumno en registro calificacion")
+      await crearCalificacion(datos, unidadCalificacion, id_criterios);
       //actualizar data alumnos ##  materia_Tema  PERIODO_ACTUAL
-          await getAlumnos(MATERIA_ID, unidadCalificacion);//LISTA DE ALUMNOS
-          await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
+      await getAlumnos(MATERIA_ID, unidadCalificacion);//LISTA DE ALUMNOS
+      await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
     }
     console.log(datos)
 
   }//fin
+
+
+  const updates = async () => {
+    await getCriterios(PERIODO_ACTUAL, idMateriaActual, unidadCalificacion);// LISTA DE CRITERIO getTem
+    ccx1 = dataCriterios[0].porcentageC1;
+    ccx2 = dataCriterios[0].porcentageC2;
+    ccx3 = dataCriterios[0].porcentageC3;
+    document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
+    document.getElementById('porcentajeC2').value = ccx2;
+    document.getElementById('porcentajeC3').value = ccx3;
+    setAvatarC1(ccx1)
+    setCriterio_avatarC1(dataCriterios[0].criterio1)
+    setAvatarC2(ccx2)
+    setCriterio_avatarC2(dataCriterios[0].criterio2)
+    setAvatarC3(ccx3)
+    setCriterio_avatarC3(dataCriterios[0].criterio3)
+
+    return true;
+  }
+
+
+
+  const guardarPorcentaje_c1 = async () => {//inicio
+    var input = document.getElementById('porcentajeC1');
+    input.addEventListener('input', function () {
+      if (this.value.length > 2)
+        this.value = this.value.slice(0, 2);
+    })
+    if (input.value <= 100) {
+      if (input.value.length === 2) {
+
+        //ejecutar metodo de guardar
+        swal("describa el nombre del creterio:", {
+          content: "input",
+        })
+          .then((comentario) => {
+            if (comentario) {
+
+              //enviar porcentage y comentario
+              enviarCriteriosc1(input.value, comentario);
+
+              console.log(input.value)
+              updates().then(up => { console.log(up) })
+            } else {
+              console.log(input.value + "no pupede estar vacio " + comentario)
+            }
+
+
+            //swal(`You typed: ${comentario}`);
+          });
+      }
+    } else {
+      alert("no puede exeder de 100 %")
+    }
+  }//fin
+
+
+  const guardarPorcentaje_c2 = (e) => {//inicio
+
+    var input2 = document.getElementById('porcentajeC2');//inicio 1
+    input2.addEventListener('input', function () {
+      if (this.value.length > 2)
+        this.value = this.value.slice(0, 2);
+    })
+
+    if (input2.value <= 100) {
+      if (input2.value.length === 2) {
+
+        //ejecutar metodo de guardar
+        swal("describa el nombre del creterio:", {
+          content: "input",
+        })
+          .then((comentario) => {
+
+            if (comentario) {
+              //enviar porcentage y comentario
+              console.log("estos es :" + unidadCalificacion + "  y " + idMateriaActual)
+              enviarCriteriosc2(input2.value, comentario)
+              updates().then(up => { console.log(up) })
+              console.log(input2.value)
+            } else {
+              console.log(input2.value + "noupede estar vacio " + comentario)
+            }
+            //swal(`You typed: ${comentario}`);
+          });
+
+        console.log("ejecutar metodo de guardar 1")
+
+      }
+
+    } else {
+      alert("no puede exeder de 100 %")
+    }
+
+  }//fin
+
+
+
+  const guardarPorcentaje_c3 = (e) => {//inicio
+
+    var input3 = document.getElementById('porcentajeC3');//inicio 1
+    input3.addEventListener('input', function () {
+      if (this.value.length > 2)
+        this.value = this.value.slice(0, 2);
+    })
+
+    if (input3.value <= 100) {
+      if (input3.value.length === 2) {
+        //ejecutar metodo de guardar
+        swal("describa el nombre del creterio:", {
+          content: "input",
+        })
+          .then((comentario) => {
+
+            if (comentario) {
+              //enviar porcentage y comentario
+              enviarCriteriosc3(input3.value, comentario)
+              updates().then(up => { console.log(up) })
+              console.log(input3.value)
+            } else {
+              console.log(input3.value + "noupede estar vacio " + comentario)
+            }
+            //swal(`You typed: ${comentario}`);
+          });
+
+        console.log("ejecutar metodo de guardar 1")
+      }
+    } else {
+      alert("no puede exeder de 100 %")
+    }
+
+  }//fin
+
+
+
+
 
 
   /*const manejador = (cc1, cc2, cc3) => {//creador de table
@@ -170,24 +321,28 @@ export const MaterialTableDemo = () => {//inicio
     console.log("datos new....." + cc1 + cc2 + cc3)
   };*/
 
-  const [ac, setAc] = React.useState('none');//guardar porcentaje #########
+  //const [ac, setAc] = React.useState('none');//guardar porcentaje #########
 
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
 
     columns: [
-      { title: 'Nª', field: 'id', editable: 'never' },
-      { title: 'Control', field: 'control', editable: 'never' },
-      { title: 'Nombre', field: 'nameAlumno', editable: 'never' },
-      { title: 'Curso', field: 'curso', editable: 'never' },
-      { title: 'Opcion', field: 'opcion', editable: 'never' },
-      { title: 'C1', field: 'calR1', },
-      { title: 'C2', field: 'calR2', },
-      { title: 'C3', field: 'calR3', },
-      { title: '#', field: '#', minWidth: 5, editable: 'never' },
-      { title: <input className="inputTemas" type="number" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} onChange={guardarPorcentaje_c1} ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10 },
-      { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} onChange={guardarPorcentaje_c2} ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10 },
-      { title: <input className="inputTemas" id="porcentajeC3" placeholder="C3" style={{ width: '4ch' }} onChange={guardarPorcentaje_c3}  ></input>, field: 'calCriterio3', editable: 'never' },
-      { title: 'Total', field: 'calificaciontotal', editable: 'never' },
+      { title: 'Nª', field: 'id', editable: 'never' , 
+    
+
+
+      },
+      { title: 'Control', field: 'control', editable: 'never',disablePadding: true ,minWidth: 10},
+      { title: 'Nombre', field: 'nameAlumno', editable: 'never',disablePadding: true },
+      { title: 'Curso', field: 'curso', editable: 'never',disablePadding: true ,minWidth: 10},
+      { title: 'Opcion', field: 'opcion', editable: 'never',disablePadding: true ,minWidth: 10},
+      { title: 'C1', field: 'calR1',disablePadding: true ,minWidth: 10},
+      { title: 'C2', field: 'calR2',disablePadding: true ,minWidth: 10},
+      { title: 'C3', field: 'calR3',disablePadding: true ,minWidth: 10},
+      { title: '#', field: '#', editable: 'never' , size:'small',disablePadding: true},
+      { title: <input className="inputTemas" type="number" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} onChange={guardarPorcentaje_c1} ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10,disablePadding: true },
+      { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} onChange={guardarPorcentaje_c2} ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10,disablePadding: true },
+      { title: <input className="inputTemas" id="porcentajeC3" placeholder="C3" style={{ width: '4ch' }} onChange={guardarPorcentaje_c3}  ></input>, field: 'calCriterio3', editable: 'never', disablePadding: true },
+      { title: 'Total', field: 'calificaciontotal', editable: 'never' ,disablePadding: true},
     ]
   })
 
@@ -195,7 +350,7 @@ export const MaterialTableDemo = () => {//inicio
 
   return (
     <div>
-     
+
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <h3 >INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS</h3>
@@ -208,10 +363,10 @@ export const MaterialTableDemo = () => {//inicio
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper elevation={0} >
-            <Chip size="small" avatar={<Avatar>80</Avatar>} label="Resumen y tareas" color="secondary"/>
-            <Chip size="small" avatar={<Avatar>10</Avatar>} label="Exposicon" color="secondary"/>
-            <Chip size="small" avatar={<Avatar>10</Avatar>} label="Trabajo final" color="secondary"/>
-          
+            <Chip size="small" avatar={<Avatar>{avatarc1}</Avatar>} label={criterio_avatarc1} color="secondary" />
+            <Chip size="small" avatar={<Avatar>{avatarc2}</Avatar>} label={criterio_avatarc2} color="secondary" />
+            <Chip size="small" avatar={<Avatar>{avatarc3}</Avatar>} label={criterio_avatarc3} color="secondary" />
+
           </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
@@ -305,7 +460,8 @@ export const MaterialTableDemo = () => {//inicio
               options={{
                 headerStyle: {
                   backgroundColor: '#01579b',
-                  color: '#FFF'
+                  color: '#FFF',
+                  size:'small'
                 }
               }}
             />
@@ -333,114 +489,6 @@ export const MaterialTableDemo = () => {//inicio
 
   );
 }
-
-
-const guardarPorcentaje_c1 = async () => {//inicio
-  var input = document.getElementById('porcentajeC1');
-  input.addEventListener('input', function () {
-    if (this.value.length > 2)
-      this.value = this.value.slice(0, 2);
-  })
-  if (input.value <= 100) {
-    if (input.value.length === 2) {
-
-      //ejecutar metodo de guardar
-      swal("describa el nombre del creterio:", {
-        content: "input",
-      })
-        .then((comentario) => {
-          if (comentario) {
-            //enviar porcentage y comentario
-            enviarCriteriosc1(input.value, comentario);
-            getAlumnos(idMateriaActual,unidadCalificacion);//LISTA DE ALUMNOS
-            console.log(input.value)
-          } else {
-            console.log(input.value + "noupede estar vacio " + comentario)
-          }
-          //swal(`You typed: ${comentario}`);
-        });
-    }
-  } else {
-    alert("no puede exeder de 100 %")
-  }
-}//fin
-
-
-const guardarPorcentaje_c2 = (e) => {//inicio
-
-  var input2 = document.getElementById('porcentajeC2');//inicio 1
-  input2.addEventListener('input', function () {
-    if (this.value.length > 2)
-      this.value = this.value.slice(0, 2);
-  })
-
-  if (input2.value <= 100) {
-    if (input2.value.length === 2) {
-
-      //ejecutar metodo de guardar
-      swal("describa el nombre del creterio:", {
-        content: "input",
-      })
-        .then((comentario) => {
-
-          if (comentario) {
-            //enviar porcentage y comentario
-            enviarCriteriosc2(input2.value, comentario)
-            getAlumnos(idMateriaActual,unidadCalificacion);//LISTA DE ALUMNOS
-
-            console.log(input2.value)
-          } else {
-            console.log(input2.value + "noupede estar vacio " + comentario)
-          }
-          //swal(`You typed: ${comentario}`);
-        });
-
-      console.log("ejecutar metodo de guardar 1")
-
-    }
-
-  } else {
-    alert("no puede exeder de 100 %")
-  }
-
-}//fin
-
-
-
-const guardarPorcentaje_c3 = (e) => {//inicio
-
-  var input3 = document.getElementById('porcentajeC3');//inicio 1
-  input3.addEventListener('input', function () {
-    if (this.value.length > 2)
-      this.value = this.value.slice(0, 2);
-  })
-
-  if (input3.value <= 100) {
-    if (input3.value.length === 2) {
-      //ejecutar metodo de guardar
-      swal("describa el nombre del creterio:", {
-        content: "input",
-      })
-        .then((comentario) => {
-
-          if (comentario) {
-            //enviar porcentage y comentario
-            enviarCriteriosc3(input3.value, comentario)
-            console.log(input3.value)
-          } else {
-            console.log(input3.value + "noupede estar vacio " + comentario)
-          }
-          //swal(`You typed: ${comentario}`);
-        });
-
-      console.log("ejecutar metodo de guardar 1")
-    }
-  } else {
-    alert("no puede exeder de 100 %")
-  }
-
-}//fin
-
 
 
 

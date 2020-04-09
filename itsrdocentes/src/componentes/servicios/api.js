@@ -4,10 +4,14 @@ const axios = require('axios')
 const urlApi = 'http://localhost:4000';
 
 
-export let datalista = [];
-export let datalistaAlumnos = [];
-export let dataCriterios = [];
-export let dataStatusTemas = [];
+export var datalista = [];
+export var datalistaAlumnos = [];
+export var dataCriterios = [];
+export var dataStatusTemas = [];
+export var dataReportHorario = [];
+export var dataReportLista = [];
+
+
 
 
 
@@ -46,24 +50,16 @@ export function treeApi(datas) {
 
 
 export async function crearCalificacion(datas, unidad, id_criterios) {//crear calificacion alumno
-  console.log(datas.nameAlumno)
-
   await axios.post(`${urlApi}/api/personal/add/calificacion`, {
-
     calR1: datas.calR1,
     calR2: datas.calR2,
     calR3: datas.calR3,
     calR4: datas.calR4,
-
-
     calCriterio1: datas.calCriterio1,
     calCriterio2: datas.calCriterio2,
     calCriterio3: datas.calCriterio3,
     calCriterio4: datas.calCriterio4,
-
-
     calificaciontotal: datas.calificaciontotal,
-
     unidad: unidad,
     idGrupoAsign: datas.asignacionGrupo_idgrupo,
     materias_idmaterias: datas.idMateria,
@@ -71,11 +67,10 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
     criterios_idcat_Unidad: id_criterios,
     aspirante_Folio: datas.folioAspirante,
     periodo: datas.idnomenclaturaPeriodo
-
   }).then(res => console.log(res))
     .catch(function (error) {
       console.log(error)
-      //swal("error!", "Verifique su conexion a internet!", "warning");
+      swal("error!", "Verifique su conexion a internet!", "warning");
     })
   // return request('/api/personal/add','POST',data);
 }
@@ -85,12 +80,12 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
 
 
 export async function getTemas(idDocente, idMateria, periodo, cierre) {
-
   await axios.get(`${urlApi}/api/personal/consultarTema/${idDocente}/${idMateria}/${periodo}/${cierre}`)
     .then(res => datalista = res.data)
     .catch(function (error) {
       //console.log(error);
-      swal("Sin temas disponibles!", " o Verifique su conexion a internet!", "warning");
+      swal(" Actualmente no cuenta con temas disponibles!", " o Verifique su conexión a internet", "warning");
+
     })
 }
 
@@ -110,7 +105,8 @@ export async function getAlumnos(idMateria, unidad) {//consultarAlumnos/:idMater
     .then(res => datalistaAlumnos = res.data)
     .catch(function (error) {
       //console.log(error);
-      swal("Sin temas disponibles!", " o Verifique su conexion a internet!", "warning");
+      swal("Error", "Verifique su conexion a internet!", "warning");
+
     })
 }
 
@@ -121,6 +117,8 @@ export async function getCriterios(periodo, idMateria, unidad) {
     .catch(function (error) {
       //console.log(error);
       swal("Sin temas disponibles!", " o Verifique su conexion a internet!", "warning");
+
+
     })
 }
 
@@ -212,14 +210,39 @@ export async function updateCalificaion(idCalificacion, data) {// actalizar cali
 
 
 
-
-
-
-
-
-export function materiasD() {
-  return request(`/api/personal/consultar/${ID_USUARIO}`, 'Get');
+export async function materiasD() {
+ const resul = await axios.get(`${urlApi}/api/personal/consultar/${ID_USUARIO}`)
+    .then(res => res.data)
+    .catch(function (res) {
+      res = 'error'
+      return res;
+    })
+    return resul;
 }
+
+//reportes http://localhost:4000/api/personal/consultar/reporte/lista/7/403/251/11
+export async function getReporteHorarios(periodo, idMateria,grupo) {
+  await axios.get(`${urlApi}/api/personal/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
+    .then(res => dataReportHorario = res.data)
+    .catch(function (error) {
+      //console.log(error);
+      swal("error al buscar los horarios!", "Verifique su conexión a internet", "warning");
+    })
+}
+
+export async function getReporteLista(periodo, idMateria,grupo) {
+  await axios.get(`${urlApi}/api/personal/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
+    .then(res => dataReportLista = res.data)
+    .catch(function (error) {
+      //console.log(error);
+      swal("error al buscar lista!", "Verifique su conexión a internet", "warning");
+    })
+}
+
+
+/*export function materiasD() {
+  return request(`/api/personal/consultar/${ID_USUARIO}`, 'Get');
+}*/
 export function update(id, data) {
   return request(`/materias/${id}`, 'POST', data);
 }

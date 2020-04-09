@@ -8,7 +8,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import swal from 'sweetalert';
 import './calificaciones.css';
@@ -37,8 +38,10 @@ import { PERIODO_ACTUAL } from '../../../App';
 
 
 export var unidad_Tema;
-let ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0, unidadCalificacion, id_criterios;
-let periodo, materia, unidad, grupo;
+var ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0, unidadCalificacion, id_criterios;
+var crt1 = 'criterio_1', crt2 = 'criterio_2', crt3 = 'criterio_3', crt4 = 'criterio_4', unidadCalificacion, id_criterios;
+
+var periodo, materia, unidad, grupo;
 
 export async function enviarCriteriosc1(porcentageC1, criterio1) {//inicio guardar porcentaje 1 y criterio 1
   // let periodo, materia, unidad, grupo
@@ -97,21 +100,27 @@ var idDocenteActual, idMateriaActual, periodoActual, cierreActual; // fun buscar
 export const MaterialTableDemo = () => {//inicio
 
   const estilos = useStyles();
+  const [open, setOpen] = React.useState(false);
   const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
   // const [materiaID, setMateriaid] = React.useState('');//id materia para filtrar unidades
   const [listasTemas, setListas] = React.useState([]);
   const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
+  const [materia, setMateria] = React.useState('');
+  const [unidad, setUnidad] = React.useState('');
+
   //let get_materia_id;
 
 
 
   const buscarTema = async materiaid => {//inicio selec materia en la vista
     setListas([])//actualiza el la lista de materias actual
+    await setcalificaciones({ datalistaAlumnos:[] });
     //obtener datos para la consulta de unidades actuales y antes delcieere actual
     idDocenteActual = dataMateria[0].id_docente;
     idMateriaActual = materiaid.target.value;
     periodoActual = 7;
     cierreActual = fecha1; //esta variable vendra de la db el cierre de acta
+    setMateria(idMateriaActual)
     //fecha1.setMonth(fecha1.getMonth() - 3);
     setMATERIA_ID(idMateriaActual);//actualizar al estado
     let fecha_resta_acta = moment(fecha1).subtract(2, 'months');
@@ -126,46 +135,54 @@ export const MaterialTableDemo = () => {//inicio
 
   };//fin
 
-  const [avatarc1, setAvatarC1] = React.useState();
-  const [criterio_avatarc1, setCriterio_avatarC1] = React.useState();
-  const [avatarc2, setAvatarC2] = React.useState();
-  const [criterio_avatarc2, setCriterio_avatarC2] = React.useState();
-  const [avatarc3, setAvatarC3] = React.useState();
-  const [criterio_avatarc3, setCriterio_avatarC3] = React.useState();
-  const [avatarc4, setAvatarC4] = React.useState();
-  const [criterio_avatarc4, setCriterio_avatarC4] = React.useState();
 
 
 
   const obtenerTema = async (tem) => {//inico
+    setOpen(true)
     let numTemas = tem.target.value;
+    setUnidad(numTemas);
     //buscar lista alumnos  idMateria, idDocente
+    console.time('get')
     await getAlumnos(MATERIA_ID, numTemas);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
     await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
     await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO getTem
+
     //await setCRITERIOS(dataCriterios);
-    
-     ccx1 = await dataCriterios[0].porcentageC1;
-     ccx2 = await dataCriterios[0].porcentageC2;
-    ccx3 = await dataCriterios[0].porcentageC3;
-    ccx4 = await dataCriterios[0].porcentageC4;
+    console.timeEnd('get')
+    console.time('doc')
+    await Promise.all([
+      ccx1 = dataCriterios[0].porcentageC1,
+      ccx2 = dataCriterios[0].porcentageC2,
+      ccx3 = dataCriterios[0].porcentageC3,
+      ccx4 = dataCriterios[0].porcentageC4,
+      crt1 = dataCriterios[0].criterio1,
+      crt2 = dataCriterios[0].criterio2,
+      crt3 = dataCriterios[0].criterio3,
+      crt4 = dataCriterios[0].criterio4]);
+
 
     document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
     document.getElementById('porcentajeC2').value = ccx2;
     document.getElementById('porcentajeC3').value = ccx3;
     document.getElementById('porcentajeC4').value = ccx4;
+    console.timeEnd('doc')
+    setOpen(false)
 
-    setAvatarC1(ccx1)
-    setCriterio_avatarC1(dataCriterios[0].criterio1)
-    setAvatarC2(ccx2)
-    setCriterio_avatarC2(dataCriterios[0].criterio2)
-    setAvatarC3(ccx3)
-    setCriterio_avatarC3(dataCriterios[0].criterio3)
-    setAvatarC4(ccx4)
-    setCriterio_avatarC4(dataCriterios[0].criterio4)
+    /*console.time('avatar')
+    await Promise.all ([
+    setCriterio_avatarC1(dataCriterios[0].criterio1),
+  
+    setCriterio_avatarC2(dataCriterios[0].criterio2),
+    
+    setCriterio_avatarC3(dataCriterios[0].criterio3),
+    
+    setCriterio_avatarC4(dataCriterios[0].criterio4)])
+    console.timeEnd('avatar')*/
 
     unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
     id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
+
     console.log("dataCriterios")
 
     console.log(dataCriterios)
@@ -189,7 +206,7 @@ export const MaterialTableDemo = () => {//inicio
         console.log("inicializar en cero r3");
         datos.calR3 = 0;
         datos.calR4 = 0;
-      }else if(datos.calR4 === null){
+      } else if (datos.calR4 === null) {
         datos.calR4 = 0;
       }
 
@@ -210,23 +227,19 @@ export const MaterialTableDemo = () => {//inicio
 
   const updates = async () => {
     await getCriterios(PERIODO_ACTUAL, idMateriaActual, unidadCalificacion);// LISTA DE CRITERIO getTem
-    ccx1 = dataCriterios[0].porcentageC1;
-    ccx2 = dataCriterios[0].porcentageC2;
-    ccx3 = dataCriterios[0].porcentageC3;
-    ccx4 = dataCriterios[0].porcentageC4;
+    await Promise.all([
+      ccx1 = dataCriterios[0].porcentageC1,
+      ccx2 = dataCriterios[0].porcentageC2,
+      ccx3 = dataCriterios[0].porcentageC3,
+      ccx4 = dataCriterios[0].porcentageC4,
+      crt1 = dataCriterios[0].criterio1,
+      crt2 = dataCriterios[0].criterio2,
+      crt3 = dataCriterios[0].criterio3,
+      crt4 = dataCriterios[0].criterio4]);
     document.getElementById('porcentajeC1').value = ccx1; //actualizar los campos c1, c2, c3
     document.getElementById('porcentajeC2').value = ccx2;
     document.getElementById('porcentajeC3').value = ccx3;
     document.getElementById('porcentajeC4').value = ccx4;
-
-    setAvatarC1(ccx1)
-    setCriterio_avatarC1(dataCriterios[0].criterio1)
-    setAvatarC2(ccx2)
-    setCriterio_avatarC2(dataCriterios[0].criterio2)
-    setAvatarC3(ccx3)
-    setCriterio_avatarC3(dataCriterios[0].criterio3)
-    setAvatarC4(ccx4)
-    setCriterio_avatarC4(dataCriterios[0].criterio4)
     return true;
   }
 
@@ -393,25 +406,26 @@ export const MaterialTableDemo = () => {//inicio
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
 
     columns: [
-      { title: 'Nª', field: 'id', editable: 'never' , 
-    
+      {
+        title: 'Nª', field: 'id', editable: 'never',
+
 
 
       },
-      { title: 'Control', field: 'control', editable: 'never',disablePadding: true ,minWidth: 10},
-      { title: 'Nombre', field: 'nameAlumno', editable: 'never',disablePadding: true },
-      { title: 'Curso', field: 'curso', editable: 'never',disablePadding: true ,minWidth: 10},
-      { title: 'Opcion', field: 'opcion', editable: 'never',disablePadding: true ,minWidth: 10},
-      { title: 'C1', field: 'calR1',disablePadding: true ,minWidth: 10},
-      { title: 'C2', field: 'calR2',disablePadding: true ,minWidth: 10},
-      { title: 'C3', field: 'calR3',disablePadding: true ,minWidth: 10},
-      { title: 'C4', field: 'calR4',disablePadding: true ,minWidth: 10},
-      { title: '#', field: '#', editable: 'never' , size:'small',disablePadding: true},
-      { title: <input className="inputTemas" type="number" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} onChange={guardarPorcentaje_c1} ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10,disablePadding: true },
-      { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} onChange={guardarPorcentaje_c2} ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10,disablePadding: true },
+      { title: 'Control', field: 'control', editable: 'never', disablePadding: true, minWidth: 10 },
+      { title: 'Nombre', field: 'nameAlumno', editable: 'never', disablePadding: true },
+      { title: 'Curso', field: 'curso', editable: 'never', disablePadding: true, minWidth: 10 },
+      { title: 'Opcion', field: 'opcion', editable: 'never', disablePadding: true, minWidth: 10 },
+      { title: 'C1', field: 'calR1', disablePadding: true, minWidth: 10 },
+      { title: 'C2', field: 'calR2', disablePadding: true, minWidth: 10 },
+      { title: 'C3', field: 'calR3', disablePadding: true, minWidth: 10 },
+      { title: 'C4', field: 'calR4', disablePadding: true, minWidth: 10 },
+      { title: '#', field: '#', editable: 'never', size: 'small', disablePadding: true },
+      { title: <input className="inputTemas" type="number" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} onChange={guardarPorcentaje_c1} ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10, disablePadding: true },
+      { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} onChange={guardarPorcentaje_c2} ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10, disablePadding: true },
       { title: <input className="inputTemas" id="porcentajeC3" placeholder="C3" style={{ width: '4ch' }} onChange={guardarPorcentaje_c3}  ></input>, field: 'calCriterio3', editable: 'never', disablePadding: true },
       { title: <input className="inputTemas" id="porcentajeC4" placeholder="C4" style={{ width: '4ch' }} onChange={guardarPorcentaje_c4}  ></input>, field: 'calCriterio4', editable: 'never', disablePadding: true },
-      { title: 'Total', field: 'calificaciontotal', editable: 'never' ,disablePadding: true},
+      { title: 'Total', field: 'calificaciontotal', editable: 'never', disablePadding: true },
     ]
   })
 
@@ -419,8 +433,10 @@ export const MaterialTableDemo = () => {//inicio
 
   return (
     <div>
-
-      <Grid container spacing={3}>
+      <Backdrop className={estilos.backdrop} open={open} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <h3 >INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS</h3>
         </Grid>
@@ -431,11 +447,11 @@ export const MaterialTableDemo = () => {//inicio
           <Paper elevation={0} className={estilos.paperperiodos}>CIERRE DE ACTA: {fecha1}</Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper elevation={0} >
-            <Chip size="small" avatar={<Avatar>{avatarc1}</Avatar>} label={criterio_avatarc1} color="secondary" />
-            <Chip size="small" avatar={<Avatar>{avatarc2}</Avatar>} label={criterio_avatarc2} color="secondary" />
-            <Chip size="small" avatar={<Avatar>{avatarc3}</Avatar>} label={criterio_avatarc3} color="secondary" />
-            <Chip size="small" avatar={<Avatar>{avatarc4}</Avatar>} label={criterio_avatarc4} color="secondary" />
+          <Paper className={estilos.paperAvatar} elevation={0} >
+            <Chip size="small" avatar={<Avatar>{ccx1}</Avatar>} label={crt1} color="secondary" />
+            <Chip size="small" avatar={<Avatar>{ccx2}</Avatar>} label={crt2} color="secondary" />
+            <Chip size="small" avatar={<Avatar>{ccx3}</Avatar>} label={crt3} color="secondary" />
+            <Chip size="small" avatar={<Avatar>{ccx4}</Avatar>} label={crt4} color="secondary" />
 
 
           </Paper>
@@ -449,6 +465,7 @@ export const MaterialTableDemo = () => {//inicio
                 id="materia"
                 onChange={buscarTema}
                 label="Materia"
+                value={materia}
               >
                 {
                   dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))
@@ -466,6 +483,7 @@ export const MaterialTableDemo = () => {//inicio
                 labelId="demo-simple-select-outlined-labe"
                 id="unidad"
                 label="Unidad"
+                value={unidad}
                 onChange={obtenerTema}
               >
                 {
@@ -518,7 +536,7 @@ export const MaterialTableDemo = () => {//inicio
                             console.log(newData.calCriterio3 = (newData.calR3 * (ccx3 / 100)))
                             console.log(newData.calCriterio4 = (newData.calR4 * (ccx4 / 100)))
 
-                            console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3) +parseInt(newData.calCriterio4)))
+                            console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3) + parseInt(newData.calCriterio4)))
                             console.log(newData)//estado fila modificado
                             datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
                             // manejador(newData.c1, newData.c2, newData.c3)
@@ -534,7 +552,7 @@ export const MaterialTableDemo = () => {//inicio
                 headerStyle: {
                   backgroundColor: '#01579b',
                   color: '#FFF',
-                  size:'small'
+                  size: 'small'
                 }
               }}
             />

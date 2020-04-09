@@ -74,9 +74,10 @@ export default function CustomizedTables() { //constante tablas
   };
 
 
-
+const [materia, setMateria] = React.useState('');
   const list_materia = async (materiaid) => {// inicio get datos materias- para el select
     const id = materiaid.target.value;
+    setMateria(id);
     const data = dataMateria;
     const materia_grupo = id.split(" ");
     const materia = parseInt(materia_grupo[0]);
@@ -145,7 +146,7 @@ export default function CustomizedTables() { //constante tablas
   const [date_ficha8, setDate_fecha8] = React.useState(default_fecha);
   const [date_ficha9, setDate_fecha9] = React.useState(default_fecha);
   const [date_ficha10, setDate_fecha10] = React.useState(default_fecha);
-
+  const textFecha = 'La fecha no puede ser menor a la anterior';
 
 
 
@@ -191,12 +192,17 @@ export default function CustomizedTables() { //constante tablas
   //tema 2 configuracion
   const Mitema2 = 'Tema 2';
   const actualizar_fecha_tema2 = date => {//tema1-----------------------------····#####3
+    if(date.target.value > date_ficha1){
     removerTema(Mitema2)
     setChectema2(false) //cambiar checked a false
     setDate_fecha2(date.target.value);
     console.log("------------<")
     console.log(date_ficha2)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha2(default_fecha)
+    }
   };//fin
 
   const tema_2 = async (teman2) => {//tema2
@@ -218,6 +224,7 @@ export default function CustomizedTables() { //constante tablas
   //tema 3 configuracion
   const Mitema3 = 'Tema 3';
   const actualizar_fecha_tema3 = date => {//tema3-----------------------------########
+  if(date.target.value > date_ficha2){
     removerTema(Mitema3)
     setChectema3(false)//canbiar checked a false
     setDate_fecha3(date.target.value);
@@ -225,6 +232,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha3)
     console.log("------------<")
+  }else{
+      alert(textFecha)
+      setDate_fecha3(default_fecha)
+   }
   };
 
 
@@ -247,6 +258,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema4 = 'Tema 4';
   const actualizar_fecha_tema4 = date => {//tema4-----------------------------########
+  if(date.target.value > date_ficha3){
+    
     removerTema(Mitema4)
     setChectema4(false)//canbiar checked a false
     setDate_fecha4(date.target.value);
@@ -254,6 +267,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha4)
     console.log("------------<")
+  }else{
+    alert(textFecha)
+    setDate_fecha4(default_fecha)
+  }
   };
 
 
@@ -277,6 +294,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema5 = 'Tema 5';
   const actualizar_fecha_tema5 = date => {//tema5-----------------------------########
+    if(date.target.value > date_ficha4){
+  
     removerTema(Mitema5)
     setChectema5(false)//canbiar checked a false
     setDate_fecha5(date.target.value);
@@ -284,6 +303,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha5)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha5(default_fecha)
+    }
   };
 
 
@@ -307,6 +330,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema6 = 'Tema 6';
   const actualizar_fecha_tema6 = date => {//tema6-----------------------------########
+    if(date.target.value > date_ficha5){
+    
     removerTema(Mitema6)
     setChectema6(false)//canbiar checked a false
     setDate_fecha6(date.target.value);
@@ -314,6 +339,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha6)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha6(default_fecha)
+    }
   };
 
 
@@ -337,6 +366,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema7 = 'Tema 7';
   const actualizar_fecha_tema7 = date => {//tema4-----------------------------########
+    if(date.target.value > date_ficha6){
+  
     removerTema(Mitema7)
     setChectema7(false)//canbiar checked a false
     setDate_fecha7(date.target.value);
@@ -344,6 +375,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha7)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha7(default_fecha)
+    }
   };
 
 
@@ -367,6 +402,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema8 = 'Tema 8';
   const actualizar_fecha_tema8 = date => {//tema8-----------------------------########
+    if(date.target.value > date_ficha7){
+   
     removerTema(Mitema8)
     setChectema8(false)//canbiar checked a false
     setDate_fecha8(date.target.value);
@@ -374,6 +411,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha8)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha8(default_fecha)
+    }
   };
 
 
@@ -397,6 +438,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema9 = 'Tema 9';
   const actualizar_fecha_tema9 = date => {//tema9-----------------------------########
+    if(date.target.value > date_ficha8){
+  
     removerTema(Mitema9)
     setChectema9(false)//canbiar checked a false
     setDate_fecha9(date.target.value);
@@ -404,6 +447,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha9)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha9(default_fecha)
+    }
   };
 
 
@@ -427,6 +474,8 @@ export default function CustomizedTables() { //constante tablas
 
   const Mitema10 = 'Tema 10';
   const actualizar_fecha_tema10 = date => {//tema10-----------------------------########
+    if(date.target.value > date_ficha9){
+   
     removerTema(Mitema10)
     setChectema10(false)//canbiar checked a false
     setDate_fecha10(date.target.value);
@@ -434,6 +483,10 @@ export default function CustomizedTables() { //constante tablas
     console.log("------------<")
     console.log(date_ficha10)
     console.log("------------<")
+    }else{
+      alert(textFecha)
+      setDate_fecha10(default_fecha)
+    }
   };
 
 
@@ -574,7 +627,9 @@ export default function CustomizedTables() { //constante tablas
 
         <DialogContent>
           <DialogContentText>
-            Esta apunto de guardar datos que no podra modificar
+            Confirme que las fechas seleccionadas
+            son las correctas para las evaluaciones formativas. 
+            No podrá hacer cambios.
           </DialogContentText>
         </DialogContent>
 
@@ -598,6 +653,7 @@ export default function CustomizedTables() { //constante tablas
               id="listmateria"
               onChange={list_materia}
               label="Materia"
+              value={materia}
             >
               {
                 dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria + " " + materias.idGrupos} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))

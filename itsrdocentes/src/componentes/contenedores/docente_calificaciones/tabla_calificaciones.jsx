@@ -13,44 +13,30 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import swal from 'sweetalert';
 import './calificaciones.css';
-
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
-
 //variables
 import { useStyles } from './dialogos_calificacion';
-import { dataMateria } from '../../../home';
-import { getTemas } from '../../servicios/api';
-import { datalista } from '../../servicios/api';
-import { getAlumnos } from '../../servicios/api';
-import { datalistaAlumnos } from '../../servicios/api';
-import { getCriterios } from '../../servicios/api';
-import { dataCriterios } from '../../servicios/api';
-import { putCriteriosc1 } from '../../servicios/api';
-import { putCriteriosc2 } from '../../servicios/api';
-import { putCriteriosc3 } from '../../servicios/api';
-import { putCriteriosc4 } from '../../servicios/api';
-
-import { crearCalificacion } from '../../servicios/api';
-import { updateCalificaion } from '../../servicios/api';
-import { fecha1, fecha2, fecha3 } from '../../../home';
-import { PERIODO_ACTUAL } from '../../../App';
+import { getTemas, dataPeriodo, datalista, getAlumnos } from '../../servicios/api';
+import { datalistaAlumnos, getCriterios, dataCriterios } from '../../servicios/api';
+import { putCriteriosc1, putCriteriosc2, putCriteriosc3, putCriteriosc4 } from '../../servicios/api';
+import { crearCalificacion, updateCalificaion } from '../../servicios/api';
+import { fecha1, fecha2, fecha3, dataMateria } from '../../../home';
 
 
 export var unidad_Tema;
 var ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0, unidadCalificacion, id_criterios;
 var crt1 = 'criterio_1', crt2 = 'criterio_2', crt3 = 'criterio_3', crt4 = 'criterio_4', unidadCalificacion, id_criterios;
 
-var periodo, materia, unidad, grupo;
+var materia, unidad, grupo;
 
 export async function enviarCriteriosc1(porcentageC1, criterio1) {//inicio guardar porcentaje 1 y criterio 1
   // let periodo, materia, unidad, grupo
-  periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
 
-  await putCriteriosc1(periodo, materia, unidad, grupo, porcentageC1, criterio1)
+  await putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
 }//fin
@@ -58,12 +44,11 @@ export async function enviarCriteriosc1(porcentageC1, criterio1) {//inicio guard
 
 export async function enviarCriteriosc2(porcentageC1, criterio1) {//inicio guardar porcentaje 2 y criterio 2
   //  let periodo, materia, unidad, grupo
-  periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
 
-  await putCriteriosc2(periodo, materia, unidad, grupo, porcentageC1, criterio1)
+  await putCriteriosc2(materia, unidad, grupo, porcentageC1, criterio1)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
 }//fin
@@ -71,12 +56,11 @@ export async function enviarCriteriosc2(porcentageC1, criterio1) {//inicio guard
 
 export async function enviarCriteriosc3(porcentageC1, criterio1) {//inicio guardar porcentaje 3 y criterio 3
   // let periodo, materia, unidad, grupo
-  periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
 
-  await putCriteriosc3(periodo, materia, unidad, grupo, porcentageC1, criterio1)
+  await putCriteriosc3(materia, unidad, grupo, porcentageC1, criterio1)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
 }//fin
@@ -84,18 +68,17 @@ export async function enviarCriteriosc3(porcentageC1, criterio1) {//inicio guard
 
 export async function enviarCriteriosc4(porcentageC4, criterio4) {//inicio guardar porcentaje 3 y criterio 3
   // let periodo, materia, unidad, grupo
-  periodo = dataCriterios[0].periodo;
   materia = dataCriterios[0].materias_idmaterias;
   unidad = dataCriterios[0].numUnidad;
   grupo = dataCriterios[0].asingnacion_grupo_id;
 
-  await putCriteriosc4(periodo, materia, unidad, grupo, porcentageC4, criterio4)
+  await putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4)
   //data  criterio1 porcentageC1
   //parametros update periodo, materia, unidad, grupo
 }//fin
 
 
-var idDocenteActual, idMateriaActual, periodoActual, cierreActual; // fun buscarTtema
+var idDocenteActual, idMateriaActual, cierreActual; // fun buscarTtema
 
 export const MaterialTableDemo = () => {//inicio
 
@@ -114,25 +97,22 @@ export const MaterialTableDemo = () => {//inicio
 
   const buscarTema = async materiaid => {//inicio selec materia en la vista
     setListas([])//actualiza el la lista de materias actual
-    await setcalificaciones({ datalistaAlumnos:[] });
+    await setcalificaciones({ datalistaAlumnos: [] });
     //obtener datos para la consulta de unidades actuales y antes delcieere actual
     idDocenteActual = dataMateria[0].id_docente;
     idMateriaActual = materiaid.target.value;
-    periodoActual = 7;
     cierreActual = fecha1; //esta variable vendra de la db el cierre de acta
     setMateria(idMateriaActual)
     //fecha1.setMonth(fecha1.getMonth() - 3);
     setMATERIA_ID(idMateriaActual);//actualizar al estado
     let fecha_resta_acta = moment(fecha1).subtract(2, 'months');
     let getFecha_resta = moment(fecha_resta_acta).format("YYYY-MM-DD");
-
-    await getTemas(idDocenteActual, idMateriaActual, periodoActual, cierreActual);
+    await getTemas(idDocenteActual, idMateriaActual, cierreActual);
     setListas(datalista)//actualiza el la lista de materias actual
-
+    
     console.log("<<<<")
     console.log(datalista)
     console.log(idMateriaActual + ' _actual id')
-
   };//fin
 
 
@@ -146,7 +126,7 @@ export const MaterialTableDemo = () => {//inicio
     console.time('get')
     await getAlumnos(MATERIA_ID, numTemas);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
     await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
-    await getCriterios(PERIODO_ACTUAL, MATERIA_ID, numTemas);// LISTA DE CRITERIO getTem
+    await getCriterios(MATERIA_ID, numTemas);// LISTA DE CRITERIO getTem
 
     //await setCRITERIOS(dataCriterios);
     console.timeEnd('get')
@@ -169,34 +149,19 @@ export const MaterialTableDemo = () => {//inicio
     console.timeEnd('doc')
     setOpen(false)
 
-    /*console.time('avatar')
-    await Promise.all ([
-    setCriterio_avatarC1(dataCriterios[0].criterio1),
-  
-    setCriterio_avatarC2(dataCriterios[0].criterio2),
-    
-    setCriterio_avatarC3(dataCriterios[0].criterio3),
-    
-    setCriterio_avatarC4(dataCriterios[0].criterio4)])
-    console.timeEnd('avatar')*/
-
     unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
     id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
-
     console.log("dataCriterios")
-
     console.log(dataCriterios)
   }//fin
 
 
   const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
-
     let bandera = datos.materiaDocente_id;
     let idcalificacion = datos.idcalificaciones;
 
     if (bandera) {
       console.log("Actualizar datos del alumno....");
-
       if (datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
         console.log("inicializar en cero r2 y r3");
         datos.calR2 = 0;
@@ -209,11 +174,8 @@ export const MaterialTableDemo = () => {//inicio
       } else if (datos.calR4 === null) {
         datos.calR4 = 0;
       }
-
       await updateCalificaion(idcalificacion, datos)
-
     } else {
-
       console.log("crear registro para el alumno en registro calificacion")
       await crearCalificacion(datos, unidadCalificacion, id_criterios);
       //actualizar data alumnos ##  materia_Tema  PERIODO_ACTUAL
@@ -221,12 +183,11 @@ export const MaterialTableDemo = () => {//inicio
       await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
     }
     console.log(datos)
-
   }//fin
 
 
   const updates = async () => {
-    await getCriterios(PERIODO_ACTUAL, idMateriaActual, unidadCalificacion);// LISTA DE CRITERIO getTem
+    await getCriterios(idMateriaActual, unidadCalificacion);// LISTA DE CRITERIO getTem
     await Promise.all([
       ccx1 = dataCriterios[0].porcentageC1,
       ccx2 = dataCriterios[0].porcentageC2,
@@ -269,8 +230,6 @@ export const MaterialTableDemo = () => {//inicio
             } else {
               console.log(input.value + "no pupede estar vacio " + comentario)
             }
-
-
             //swal(`You typed: ${comentario}`);
           });
       }
@@ -281,7 +240,6 @@ export const MaterialTableDemo = () => {//inicio
 
 
   const guardarPorcentaje_c2 = (e) => {//inicio
-
     var input2 = document.getElementById('porcentajeC2');//inicio 1
     input2.addEventListener('input', function () {
       if (this.value.length > 2)
@@ -310,13 +268,10 @@ export const MaterialTableDemo = () => {//inicio
           });
 
         console.log("ejecutar metodo de guardar 1")
-
       }
-
     } else {
       alert("no puede exeder de 100 %")
     }
-
   }//fin
 
 
@@ -393,24 +348,11 @@ export const MaterialTableDemo = () => {//inicio
 
 
 
-
-
-
-  /*const manejador = (cc1, cc2, cc3) => {//creador de table
-    console.log("imprimiendo....." + tema1X)
-    console.log("datos new....." + cc1 + cc2 + cc3)
-  };*/
-
-  //const [ac, setAc] = React.useState('none');//guardar porcentaje #########
-
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
 
     columns: [
       {
         title: 'Nª', field: 'id', editable: 'never',
-
-
-
       },
       { title: 'Control', field: 'control', editable: 'never', disablePadding: true, minWidth: 10 },
       { title: 'Nombre', field: 'nameAlumno', editable: 'never', disablePadding: true },
@@ -441,7 +383,7 @@ export const MaterialTableDemo = () => {//inicio
           <h3 >INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS</h3>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper elevation={0} className={estilos.paperperiodos}>PERIODO: {dataMateria[0].idnomenclaturaPeriodo}</Paper>
+          <Paper elevation={0} className={estilos.paperperiodos}>PERIODO: {dataPeriodo[0].rango}</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.paperperiodos}>CIERRE DE ACTA: {fecha1}</Paper>

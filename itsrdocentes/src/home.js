@@ -1,19 +1,39 @@
 import React, { Component, Suspense } from 'react';
 import TabsWrappedLabel from './componentes/menu_opciones';
-import { materiasD } from './componentes/servicios/api';
+import { materiasD, dataPeriodo, getPeriodo } from './componentes/servicios/api';
 import LinearProgress from '@material-ui/core/LinearProgress';
 export let dataMateria = null;
 
-
+var caches, bandera;
 
 function CargadeDatos() {
 
-  if (!dataMateria) {
+  if (!caches) {
+    /*    console.log(dataMateria + " ..1")
+        throw materiasD().then(data => {dataMateria = data
+        getPeriodo()
+        })
+          .catch(dataMateria = 'error')
+    */
     console.log(dataMateria + " ..1")
-    throw materiasD().then(data => dataMateria = data)
+    throw getPeriodo().then(res => {
+      caches = res
+      bandera = caches
+    })
       .catch(dataMateria = 'error')
-    }
+  }
+
+  if (bandera) {
+    console.log("solisitar personal")
+    throw materiasD().then(data => {
+      dataMateria = data
+      bandera = null
+    })
+      .catch(dataMateria = 'error')
+  }
   console.log(dataMateria)
+  console.log(caches)
+
 
   return (
     <div>

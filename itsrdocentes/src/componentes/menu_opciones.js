@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Docente_principal from './contenedores/docente_principal/vista_principal';
 import Docente_calendario from './contenedores/docente_calendario/docente_calendario';
-import Clase_principal_calificaciones from './contenedores/docente_calificaciones/clase_principal_calificaciones'
+import Tabla_calificaciones from './contenedores/docente_calificaciones/tabla_calificaciones';
 import Grid from '@material-ui/core/Grid';
 
 function TabPanel(props) {
@@ -53,12 +53,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
  const  TabsWrappedLabel =() => {
-
-  
-
   const classes = useStyles();
   const [value, setValue] = React.useState('one');
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -80,15 +76,13 @@ const useStyles = makeStyles(theme => ({
       <TabPanel value={value} index="one">
       <Grid item xs={12}>
      <Docente_principal />
-          
         </Grid>
       </TabPanel>
       <TabPanel value={value} index="two">
         <Docente_calendario/>
       </TabPanel>
       <TabPanel value={value} index="three">
-      <Clase_principal_calificaciones/>
-
+      <Tabla_calificaciones/>
       </TabPanel>
     </div>
   );

@@ -35,7 +35,7 @@ import { StyledTableRow, StyledTableCell, useStyles } from './dialogos';
 import { getStatus_temas } from '../../servicios/api';
 import { dataStatusTemas } from '../../servicios/api';
 
-import {PERIODO_ACTUAL, ID_USUARIO} from '../../../App';
+import {ID_USUARIO} from '../../../App';
 
 
 
@@ -105,7 +105,7 @@ const [materia, setMateria] = React.useState('');
       setActivo('none')
       setBtn(true)
       //listar staus de temas periodo , id personal , id materia
-      await getStatus_temas(PERIODO_ACTUAL, ID_USUARIO, materia )
+      await getStatus_temas( ID_USUARIO, materia )
       await setEleccion_temas({data:dataStatusTemas})
     }
   };//  fin get datos materias- para el select dataStatusTemas

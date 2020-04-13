@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
-import TabsWrappedLabel from './componentes/menu_opciones';
+import TabsWrappedLabel from './componentes/contenedores/menu_opciones';
+import Usuarios from './componentes/menu_usuarios/usuarios'
 import { materiasD, dataPeriodo, getPeriodo } from './componentes/servicios/api';
 import LinearProgress from '@material-ui/core/LinearProgress';
 export let dataMateria = null;
@@ -37,7 +38,7 @@ function CargadeDatos() {
 
   return (
     <div>
-      {dataMateria === 'error' ? <h1>API 404 o Actualmente no cuenta con materias asisgnada...</h1> : <TabsWrappedLabel />
+      {dataMateria === 'error' ? <h1>API 404 o Actualmente no cuenta con materias asisgnada...</h1> : <Usuarios />
         //cache.nm >= 0 ? <TabsWrappedLabel />:<h1>sin conencion al api</h1>
       }
     </div>

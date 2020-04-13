@@ -7,9 +7,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Docente_principal from './contenedores/docente_principal/vista_principal';
-import Docente_calendario from './contenedores/docente_calendario/docente_calendario';
-import Tabla_calificaciones from './contenedores/docente_calificaciones/tabla_calificaciones';
+import Docente_principal from './docente_principal/vista_principal';
+import Docente_calendario from './docente_calendario/docente_calendario';
+import Tabla_calificaciones from './docente_calificaciones/tabla_calificaciones';
 import Grid from '@material-ui/core/Grid';
 
 function TabPanel(props) {
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" style={{background:'#fafafa' , color:'#000'}}>
         <Tabs value={value} onChange={handleChange} aria-label="wrapped label tabs example">
           <Tab
             value="one"

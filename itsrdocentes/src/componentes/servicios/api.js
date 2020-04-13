@@ -232,3 +232,22 @@ export function update(id, data) {
 export function borrer(id) {
   return request(`/materias/${id}`, 'DELETE');
 }
+
+
+//data administrador
+
+export async function crearRegistrosfechas(datas) {//crear calificacion alumno
+  await axios.post(`${urlApi}/api/administrador/fechas/registrar`, {
+    primera_entrega:"2020-01-01T21:11:54", 
+    segunda_entrega:"2020-12-02",
+    tercera_entrega:"2020-12-03", 
+    entrega_final:"2020-12-31", 
+    periodo:"6"
+
+
+  }).then(res => console.log(res))
+    .catch(function (error) {
+      console.log(error)
+      swal("error!", "Verifique su conexion a internet!", "warning");
+    })
+}

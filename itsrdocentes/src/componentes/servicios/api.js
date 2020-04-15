@@ -262,6 +262,6 @@ export async function getAdmiFechas() {
   await axios.get(`${urlApi}/api/administrador/fechas/${PERIODO_ACTUAL}`)
     .then(res => dataFechasCierre = res.data)
     .catch(function (error) {
-      swal("error al buscar fechas!", "Verifique su conexión a internet", "warning");
+      swal("", "Cierre de acta no disponible", "warning");
     })
 }

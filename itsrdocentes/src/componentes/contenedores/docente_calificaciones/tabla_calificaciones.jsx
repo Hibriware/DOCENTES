@@ -129,24 +129,29 @@ export const MaterialTableDemo = () => {//inicio
 
   useEffect(() => {
     async function fechasGet() {//establese el cieere de acta de acuerdo la fecha actual
-      await getAdmiFechas()
-      var primera = moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD');
-      var segunda = moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD');
-      var tercera = moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD');
+      try {
+        await getAdmiFechas()
+        var primera = moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD');
+        var segunda = moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD');
+        var tercera = moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD');
 
-      if (fecha_actual <= primera) {
-        let rest = moment(fecha_actual).subtract(2, 'month');
-        setCierre(primera)
-        setMinimo(moment(rest).format('YYYY-MM-DD'))
-      } else if (fecha_actual <= segunda) {
-        setCierre(segunda)
-        setMinimo(primera)
-      } else if (fecha_actual <= tercera) {
-        setCierre(tercera)
-        setMinimo(segunda)
-      } else {
-        console.log("sin fechas de cierre definidas por el momento "  )
+        if (fecha_actual <= primera) {
+          let rest = moment(fecha_actual).subtract(2, 'month');
+          setCierre(primera)
+          setMinimo(moment(rest).format('YYYY-MM-DD'))
+        } else if (fecha_actual <= segunda) {
+          setCierre(segunda)
+          setMinimo(primera)
+        } else if (fecha_actual <= tercera) {
+          setCierre(tercera)
+          setMinimo(segunda)
+        } else {
+          console.log("sin fechas de cierre definidas por el momento ")
+        }
+      } catch (error) {
+
       }
+
 
     }
     fechasGet()
@@ -390,7 +395,7 @@ export const MaterialTableDemo = () => {//inicio
       </Backdrop>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-            <h3 >INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS</h3>
+          <h3 >INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS</h3>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.paperperiodos}>PERIODO: {dataPeriodo[0].rango}</Paper>
@@ -488,9 +493,9 @@ export const MaterialTableDemo = () => {//inicio
                   color: '#FFF',
                   size: 'small'
                 },
-                rowStyle:{
+                rowStyle: {
                   white: 'pre',
-                
+
                 }
               }}
             />

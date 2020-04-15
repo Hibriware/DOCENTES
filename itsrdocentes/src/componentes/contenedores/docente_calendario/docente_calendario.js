@@ -86,15 +86,23 @@ export default function CustomizedTables() { //constante tablas
   const [fecha1,setFecha1] = React.useState(fecha_Defaul)
   const [fecha2,setFecha2] = React.useState(fecha_Defaul)
   const [fecha3,setFecha3] = React.useState(fecha_Defaul)
+  const [disablesd,setDisablesd] = React.useState(false)
+
 
 
   
  useEffect(() => {
+
    async function fechas(){
-     await getAdmiFechas()//moment().format('DD-MM-YYYY')
-     setFecha1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD'))
-     setFecha2(moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD'))
-     setFecha3(moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD'))
+     try {
+      await getAdmiFechas()//moment().format('DD-MM-YYYY')
+      setFecha1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD'))
+      setFecha2(moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD'))
+      setFecha3(moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD'))
+     } catch (error) {
+      setDisablesd(true)
+     }
+    
    }
    fechas()
   },[])
@@ -661,6 +669,7 @@ const [materia, setMateria] = React.useState('');
               onChange={list_materia}
               label="Materia"
               value={materia}
+              disabled={disablesd}
             >
               {
                 dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria + " " + materias.idGrupos} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))

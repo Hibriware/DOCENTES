@@ -6,3 +6,7 @@
 }
 
 /*https://loading.io/progress/*/
+
+tbody{
+    white-space: nowrap;
+}

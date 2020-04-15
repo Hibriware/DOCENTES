@@ -14,6 +14,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import moment from 'moment';
+
 
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
@@ -29,11 +31,11 @@ import Paper from '@material-ui/core/Paper';
 
 import { dataMateria } from '../../../home';
 import { dataMaterias } from '../../../home';
-import { fecha1, fecha2, fecha3 } from '../../../home';
+//import { fecha1, fecha2, fecha3 } from '../../../home';//fechasssssssssssssssss
 import { treeApi } from '../../servicios/api';
 import { StyledTableRow, StyledTableCell, useStyles } from './dialogos';
 import { getStatus_temas } from '../../servicios/api';
-import { dataStatusTemas } from '../../servicios/api';
+import { dataStatusTemas, getAdmiFechas,dataFechasCierre } from '../../servicios/api';
 
 import {ID_USUARIO} from '../../../App';
 
@@ -53,6 +55,52 @@ export default function CustomizedTables() { //constante tablas
   const [resul_state, setResul] = React.useState();
   const [btn, setBtn]=React.useState(true);
 
+
+    //fecha
+    var default_fecha = new Date('2014-08-18T21:11:54');
+    const [date_ficha1, setDate_fecha1] = React.useState(default_fecha);
+    const [date_ficha2, setDate_fecha2] = React.useState(default_fecha);
+    const [date_ficha3, setDate_fecha3] = React.useState(default_fecha);
+    const [date_ficha4, setDate_fecha4] = React.useState(default_fecha);
+    const [date_ficha5, setDate_fecha5] = React.useState(default_fecha);
+    const [date_ficha6, setDate_fecha6] = React.useState(default_fecha);
+    const [date_ficha7, setDate_fecha7] = React.useState(default_fecha);
+    const [date_ficha8, setDate_fecha8] = React.useState(default_fecha);
+    const [date_ficha9, setDate_fecha9] = React.useState(default_fecha);
+    const [date_ficha10, setDate_fecha10] = React.useState(default_fecha);
+    const textFecha = 'La fecha no puede ser menor a la anterior';
+
+    //checked
+  const [checTema1, setChectema1] = React.useState(false)
+  const [checTema2, setChectema2] = React.useState(false)
+  const [checTema3, setChectema3] = React.useState(false)
+  const [checTema4, setChectema4] = React.useState(false)
+  const [checTema5, setChectema5] = React.useState(false)
+  const [checTema6, setChectema6] = React.useState(false)
+  const [checTema7, setChectema7] = React.useState(false)
+  const [checTema8, setChectema8] = React.useState(false)
+  const [checTema9, setChectema9] = React.useState(false)
+  const [checTema10, setChectema10] = React.useState(false)
+
+  const fecha_Defaul = moment(new Date()).format('DD-MM-YYYY');
+  const [fecha1,setFecha1] = React.useState(fecha_Defaul)
+  const [fecha2,setFecha2] = React.useState(fecha_Defaul)
+  const [fecha3,setFecha3] = React.useState(fecha_Defaul)
+
+
+  
+ useEffect(() => {
+   async function fechas(){
+     await getAdmiFechas()//moment().format('DD-MM-YYYY')
+     setFecha1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD'))
+     setFecha2(moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD'))
+     setFecha3(moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD'))
+   }
+   fechas()
+  },[])
+
+  
+
   const classes = useStyles();
   //variable filtro
   var resultado;
@@ -70,7 +118,6 @@ export default function CustomizedTables() { //constante tablas
   const GuardarTemas = async () => {
     setOpen(false);
     await guardar()
-    console.log('Guardando ........')
   };
 
 
@@ -109,46 +156,6 @@ const [materia, setMateria] = React.useState('');
       await setEleccion_temas({data:dataStatusTemas})
     }
   };//  fin get datos materias- para el select dataStatusTemas
-
-
-
-  //checked
-  const [checTema1, setChectema1] = React.useState(false)
-  const [checTema2, setChectema2] = React.useState(false)
-  const [checTema3, setChectema3] = React.useState(false)
-  const [checTema4, setChectema4] = React.useState(false)
-  const [checTema5, setChectema5] = React.useState(false)
-  const [checTema6, setChectema6] = React.useState(false)
-  const [checTema7, setChectema7] = React.useState(false)
-  const [checTema8, setChectema8] = React.useState(false)
-  const [checTema9, setChectema9] = React.useState(false)
-  const [checTema10, setChectema10] = React.useState(false)
-
-
-
-
- /* useEffect(() => {
-    console.log('.....loadddd......1')
-    console.log(eleccion_temas)
-    console.log('.....loadddd......2')
-  })
-*/
-
-  //fecha
-  var default_fecha = new Date('2014-08-18T21:11:54');
-  const [date_ficha1, setDate_fecha1] = React.useState(default_fecha);
-  const [date_ficha2, setDate_fecha2] = React.useState(default_fecha);
-  const [date_ficha3, setDate_fecha3] = React.useState(default_fecha);
-  const [date_ficha4, setDate_fecha4] = React.useState(default_fecha);
-  const [date_ficha5, setDate_fecha5] = React.useState(default_fecha);
-  const [date_ficha6, setDate_fecha6] = React.useState(default_fecha);
-  const [date_ficha7, setDate_fecha7] = React.useState(default_fecha);
-  const [date_ficha8, setDate_fecha8] = React.useState(default_fecha);
-  const [date_ficha9, setDate_fecha9] = React.useState(default_fecha);
-  const [date_ficha10, setDate_fecha10] = React.useState(default_fecha);
-  const textFecha = 'La fecha no puede ser menor a la anterior';
-
-
 
   //paso despues de validar materia
   //var fecha1 = '2020-02-27', fecha2 = '2020-03-27', fecha3 = '2020-04-27';

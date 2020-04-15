@@ -1,10 +1,12 @@
 import swal from 'sweetalert';
+import moment from 'moment';
+
 import { ID_USUARIO } from '../../App';
 const axios = require('axios')
 const urlApi = 'http://localhost:4000';
 
 
-export var PERIODO_ACTUAL;
+export var PERIODO_ACTUAL,EXISTNCIA_ACTA;
 export var datalista = [];
 export var datalistaAlumnos = [];
 export var dataCriterios = [];
@@ -12,6 +14,8 @@ export var dataStatusTemas = [];
 export var dataReportHorario = [];
 export var dataReportLista = [];
 export var dataPeriodo = [];
+export var dataFechasCierre = [];
+
 
 
 
@@ -77,11 +81,12 @@ export async function getPeriodo() {
       swal(" Sin periodos disponibles!", ":) ", "warning");
     })
   PERIODO_ACTUAL = response[0].periodo;
+  EXISTNCIA_ACTA = response[0].existenciaActa;
   return response;
 }
 
-export async function getTemas(idDocente, idMateria, cierre) {
-  await axios.get(`${urlApi}/api/personal/consultarTema/${idDocente}/${idMateria}/${PERIODO_ACTUAL}/${cierre}`)
+export async function getTemas(idDocente, idMateria, minimo ,cierre) {
+  await axios.get(`${urlApi}/api/personal/consultarTema/${idDocente}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
     .then(res => datalista = res.data)
     .catch(function (error) {
       swal(" Actualmente no cuenta con temas disponibles!", " o Verifique su conexión a internet", "warning");
@@ -238,16 +243,25 @@ export function borrer(id) {
 
 export async function crearRegistrosfechas(datas) {//crear calificacion alumno
   await axios.post(`${urlApi}/api/administrador/fechas/registrar`, {
-    primera_entrega:"2020-01-01T21:11:54", 
-    segunda_entrega:"2020-12-02",
-    tercera_entrega:"2020-12-03", 
-    entrega_final:"2020-12-31", 
-    periodo:"6"
+    primera_entrega:moment(datas.primera).format('YYYY-MM-DD'),
+    segunda_entrega:moment(datas.segunda).format('YYYY-MM-DD'),
+    tercera_entrega:moment(datas.tercera).format('YYYY-MM-DD'),
+    entrega_final:moment(datas.final).format('YYYY-MM-DD'),
+    periodo:PERIODO_ACTUAL
 
 
-  }).then(res => console.log(res))
+  }).then(res => swal("", `FECHAS REGISTRADAS AL PERIODO ${PERIODO_ACTUAL}`, "success"))
     .catch(function (error) {
       console.log(error)
       swal("error!", "Verifique su conexion a internet!", "warning");
+    })
+}
+
+
+export async function getAdmiFechas() {
+  await axios.get(`${urlApi}/api/administrador/fechas/${PERIODO_ACTUAL}`)
+    .then(res => dataFechasCierre = res.data)
+    .catch(function (error) {
+      swal("error al buscar fechas!", "Verifique su conexión a internet", "warning");
     })
 }

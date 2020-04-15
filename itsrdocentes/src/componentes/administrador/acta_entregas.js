@@ -1,17 +1,18 @@
 import 'date-fns';
-import React from 'react';
-import { useStyles } from './styles';
+import React,{useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import moment from 'moment';
 import {Btn_evaluar} from './funciones';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-
+import { useStyles } from './styles';
+import {EXISTNCIA_ACTA} from '../servicios/api';
 
 
 
@@ -19,11 +20,27 @@ import {
 const Entregas = () => {
 
     const classes = useStyles();
-    const fecha_Defaul = new Date('2020-01-01T21:11:54');
+    const fecha_Defaul = moment(new Date()).format('YYYY-MM-DD, h:mm:ss a');
     const [entrega1, setEntrega1] = React.useState(fecha_Defaul);
     const [entrega2, setEntrega2] = React.useState(fecha_Defaul);
     const [entrega3, setEntrega3] = React.useState(fecha_Defaul);
     const [entregaFinal, setFinal] = React.useState(fecha_Defaul);
+    const [status, setStatus] = React.useState(false);
+
+
+useEffect(()=>{
+function statusDate(){
+    console.log(EXISTNCIA_ACTA)
+if(EXISTNCIA_ACTA){
+    console.log('blokear')
+    setStatus(true)
+}
+}
+statusDate()
+
+},[])
+
+
 
     return (
         <div>
@@ -31,13 +48,14 @@ const Entregas = () => {
             <div className={classes.root}>
                 <React.Fragment>
                     <CssBaseline />
-                    <Container maxWidth="sm" style={{ maxWidth:'fit-content'}}>
+                    <Container >
                         <Grid container spacing={5}>
-                            <Grid item xs={4}>
-                                <Paper className={classes.paper}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid item  xs={12}  sm={4} >
+                            <Paper className={classes.paper} elevation={0}>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils} >
                                         <Grid container justify="space-around">
                                             <KeyboardDatePicker
+                                                disabled ={status}
                                                 margin="normal"
                                                 id="date-picker-dialog"
                                                 label="Primera entrega"
@@ -50,13 +68,14 @@ const Entregas = () => {
                                             />
                                         </Grid>
                                     </MuiPickersUtilsProvider>
-                                </Paper>
+                                    </Paper>
                             </Grid>
-                            <Grid item xs={4}>
-                                <Paper className={classes.paper}>
+                            <Grid item xs={12}sm={4}>
+                                <Paper className={classes.paper} elevation={0}>
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <Grid container justify="space-around">
                                             <KeyboardDatePicker
+                                             disabled ={status}
                                                 margin="normal"
                                                 id="date-picker-dialog"
                                                 label="Segunda entrega"
@@ -71,11 +90,12 @@ const Entregas = () => {
                                     </MuiPickersUtilsProvider>
                                 </Paper>
                             </Grid>
-                            <Grid item xs={4}>
-                                <Paper className={classes.paper}>
+                            <Grid item xs={12} sm={4}>
+                                <Paper className={classes.paper} elevation={0}>
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <Grid container justify="space-around">
                                             <KeyboardDatePicker
+                                             disabled ={status}
                                                 margin="normal"
                                                 id="date-picker-dialog"
                                                 label="Tercera entrega"
@@ -95,6 +115,7 @@ const Entregas = () => {
                                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <Grid container justify="space-around">
                                             <KeyboardDatePicker
+                                             disabled ={status}
                                                 margin="normal"
                                                 id="date-picker-dialog"
                                                 label="Entrega Final"
@@ -111,12 +132,15 @@ const Entregas = () => {
                             </Grid>
                             <Grid item xs={4}>
                                 <Paper className={classes.paper}>
-                                <Btn_evaluar primera={entrega1} segunda={entrega2} tercera={entrega3} final={entregaFinal} />
+                                <Btn_evaluar 
+                                primera={entrega1} 
+                                segunda={entrega2} 
+                                tercera={entrega3} 
+                                final={entregaFinal} 
+                                />
                             </Paper>
                             </Grid>
                         </Grid>
-
-
                     </Container>
                 </React.Fragment>
             </div>

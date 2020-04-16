@@ -1,12 +1,12 @@
 import swal from 'sweetalert';
 import moment from 'moment';
-
 import { ID_USUARIO } from '../../App';
+
 const axios = require('axios')
 const urlApi = 'http://localhost:4000';
 
 
-export var PERIODO_ACTUAL,EXISTNCIA_ACTA;
+export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
 export var datalista = [];
 export var datalistaAlumnos = [];
 export var dataCriterios = [];
@@ -17,10 +17,7 @@ export var dataPeriodo = [];
 export var dataFechasCierre = [];
 
 
-
-
 async function request(url, metodo, data) {
-
   const response = await fetch(`${urlApi}${url}`, {
     metodo,
     headers: {
@@ -44,7 +41,6 @@ export function treeApi(datas) {
       swal("error!", "Verifique su conexion a internet!", "warning");
     })
 }
-
 
 export async function crearCalificacion(datas, unidad, id_criterios) {//crear calificacion alumno
   await axios.post(`${urlApi}/api/personal/add/calificacion`, {
@@ -71,8 +67,6 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
     })
 }
 
-
-
 export async function getPeriodo() {
   console.log("periodo")
   const response = await axios.get(`${urlApi}/api/personal/consultar/periodo`)
@@ -85,12 +79,11 @@ export async function getPeriodo() {
   return response;
 }
 
-export async function getTemas(idDocente, idMateria, minimo ,cierre) {
+export async function getTemas(idDocente, idMateria, minimo, cierre) {
   await axios.get(`${urlApi}/api/personal/consultarTema/${idDocente}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
     .then(res => datalista = res.data)
     .catch(function (error) {
       swal(" Actualmente no cuenta con temas disponibles!", " o Verifique su conexión a internet", "warning");
-
     })
 }
 
@@ -108,7 +101,6 @@ export async function getAlumnos(idMateria, unidad) {//consultarAlumnos/:idMater
     .then(res => datalistaAlumnos = res.data)
     .catch(function (error) {
       swal("Error", "Verifique su conexion a internet!", "warning");
-
     })
 }
 
@@ -119,7 +111,6 @@ export async function getCriterios(idMateria, unidad) {
       swal("Sin temas disponibles!", " o Verifique su conexion a internet!", "warning");
     })
 }
-
 
 export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1) {
   await axios.put(`${urlApi}/api/personal/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
@@ -158,7 +149,6 @@ export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, crite
     .catch(function (error) {
       console.log(error);
     });
-
 }
 
 export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4) {
@@ -173,7 +163,6 @@ export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, crite
       console.log(error);
     });
 }
-
 
 export async function updateCalificaion(idCalificacion, data) {// actalizar calificacion
   await axios.put(`${urlApi}/api/personal/update/calificaciones/${idCalificacion}`, {
@@ -193,7 +182,6 @@ export async function updateCalificaion(idCalificacion, data) {// actalizar cali
     .catch(function (error) {
       console.log(error);
     });
-
 }
 
 export async function materiasD() {
@@ -238,25 +226,20 @@ export function borrer(id) {
   return request(`/materias/${id}`, 'DELETE');
 }
 
-
 //data administrador
-
 export async function crearRegistrosfechas(datas) {//crear calificacion alumno
   await axios.post(`${urlApi}/api/administrador/fechas/registrar`, {
-    primera_entrega:moment(datas.primera).format('YYYY-MM-DD'),
-    segunda_entrega:moment(datas.segunda).format('YYYY-MM-DD'),
-    tercera_entrega:moment(datas.tercera).format('YYYY-MM-DD'),
-    entrega_final:moment(datas.final).format('YYYY-MM-DD'),
-    periodo:PERIODO_ACTUAL
-
-
+    primera_entrega: moment(datas.primera).format('YYYY-MM-DD'),
+    segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
+    tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
+    entrega_final: moment(datas.final).format('YYYY-MM-DD'),
+    periodo: PERIODO_ACTUAL
   }).then(res => swal("", `FECHAS REGISTRADAS AL PERIODO ${PERIODO_ACTUAL}`, "success"))
     .catch(function (error) {
       console.log(error)
       swal("error!", "Verifique su conexion a internet!", "warning");
     })
 }
-
 
 export async function getAdmiFechas() {
   await axios.get(`${urlApi}/api/administrador/fechas/${PERIODO_ACTUAL}`)

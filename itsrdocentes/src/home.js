@@ -1,46 +1,32 @@
 import React, { Component, Suspense } from 'react';
-import TabsWrappedLabel from './componentes/contenedores/menu_opciones';
 import Usuarios from './componentes/menu_usuarios/usuarios'
-import { materiasD, dataPeriodo, getPeriodo } from './componentes/servicios/api';
+import { materiasD, getPeriodo } from './componentes/servicios/api';
 import LinearProgress from '@material-ui/core/LinearProgress';
 export let dataMateria = null;
-
 var caches, bandera;
 
 function CargadeDatos() {
 
   if (!caches) {
-    /*    console.log(dataMateria + " ..1")
-        throw materiasD().then(data => {dataMateria = data
-        getPeriodo()
-        })
-          .catch(dataMateria = 'error')
-    */
-    console.log(dataMateria + " ..1")
     throw getPeriodo().then(res => {
-      caches = res
-      bandera = caches
+       caches = res
+       bandera = caches
     })
       .catch(dataMateria = 'error')
   }
 
   if (bandera) {
-    console.log("solisitar personal")
-    throw materiasD().then(data => {
+      throw materiasD().then(data => {
       dataMateria = data
       bandera = null
     })
       .catch(dataMateria = 'error')
   }
-  console.log(dataMateria)
-  console.log(caches)
 
 
   return (
     <div>
-      {dataMateria === 'error' ? <h1>API 404 o Actualmente no cuenta con materias asisgnada...</h1> : <Usuarios />
-        //cache.nm >= 0 ? <TabsWrappedLabel />:<h1>sin conencion al api</h1>
-      }
+      {dataMateria === 'error' ? <h1>API 404 o Actualmente no cuenta con materias asisgnada...</h1> : <Usuarios />}
     </div>
   );
 }
@@ -58,11 +44,8 @@ class Home extends Component {
   constructor(props) {
     super();
     this.state = {
-
     }
-
   }
-
 
   render() {
     return (

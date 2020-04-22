@@ -1,33 +1,21 @@
 import React, { useEffect } from 'react';
 import 'date-fns';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
 import swal from 'sweetalert';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import moment from 'moment';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Paper from '@material-ui/core/Paper';
 import { dataMaterias, dataMateria } from '../../../home';
-import { StyledTableRow, StyledTableCell, useStyles } from './dialogos';
+import { useStyles } from './dialogos';
 import { dataStatusTemas, getAdmiFechas, dataFechasCierre, treeApi, getStatus_temas } from '../../servicios/api';
 import { ID_USUARIO } from '../../../App';
+import { Confirmacion } from './Confirmacion';
+import { SelectMaterias } from './select_materias';
+import { TablaAsignacionFecha } from './Tabla_fechas_evaluacion';
+import { TablaVerTemas } from './tabla_lista_temas';
 var resultado;
 
 
@@ -74,7 +62,7 @@ export default function CustomizedTables() { //constante tablas
   const [fecha2, setFecha2] = React.useState(fecha_Defaul);
   const [fecha3, setFecha3] = React.useState(fecha_Defaul);
   const [disablesd, setDisablesd] = React.useState(false);
-  const [materia, setMateria] = React.useState('');
+  const [state_materia, setMateria] = React.useState('');
   const classes = useStyles();
 
 
@@ -94,6 +82,7 @@ export default function CustomizedTables() { //constante tablas
 
 
   const handleClickOpen = () => {
+    console.log('pasar tru')
     setOpen(true);
   };
 
@@ -102,6 +91,7 @@ export default function CustomizedTables() { //constante tablas
   };
 
   const GuardarTemas = async () => {
+    console.log('guar.....')
     setOpen(false);
     await guardar()
   };
@@ -109,11 +99,11 @@ export default function CustomizedTables() { //constante tablas
 
   const list_materia = async (materiaid) => {// inicio get datos materias- para el select
     var id = materiaid.target.value;
+    var materia = materiaid.target.value.idMateria
+    var grupo = materiaid.target.value.idGrupos
     setMateria(id);
-    var materia_grupo = id.split(" "); // separa los datos del arry
-    var materia = parseInt(materia_grupo[0]);
-    var grupo = parseInt(materia_grupo[1]);
-
+    console.log(materiaid)
+    //var materia_grupo = id.split(" "); // separa los datos del arry
     resultado = await dataMateria.filter(idMateria => (idMateria.idMateria === materia && idMateria.idGrupos === grupo));
     setResul(resultado)
     if (resultado[0].exis_unidad === null) { // activar la tabla
@@ -464,96 +454,27 @@ export default function CustomizedTables() { //constante tablas
     <div>
       <Backdrop className={classes.backdrop} open={loaddig}>
         <CircularProgress color="inherit" /></Backdrop>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Nota...</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Confirme que las fechas seleccionadas
-            son las correctas para las evaluaciones formativas.
-            No podrá hacer cambios.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={GuardarTemas} color="primary">
-            Confirmar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Confirmacion open={open} onGuardar={GuardarTemas} close={handleClose} />
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="InputLabel">Materia</InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined"
-              id="listmateria"
-              onChange={list_materia}
-              label="Materia"
-              value={materia}
-              disabled={disablesd}>
-              {dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria + " " + materias.idGrupos} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))}
-            </Select>
-          </FormControl>
+          <SelectMaterias disabled={disablesd} mos_Materias={list_materia} value={state_materia} />
           <div id="mostrar" style={{ display: activo }}>
-            <TableContainer id="tablaMaterias" component={Paper} >
-              <Table className={classes.table} aria-label="customized table" id="undateTable">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell >Save</StyledTableCell>
-                    <StyledTableCell align="right"  >Temas</StyledTableCell>
-                    <StyledTableCell align="right">Fecha de Evaluacion</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {temasFilas.map((row1, i) => (
-                    <StyledTableRow key={i}>
-                      <StyledTableCell component="th" scope="row">
-                        {row1.save}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">{row1.tema}</StyledTableCell>
-                      <StyledTableCell align="right">{row1.fecha}</StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <TablaAsignacionFecha temasFilas={temasFilas} />
           </div>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <h2>DOCENTE: {dataMateria[0].nameDocente}</h2>
-          <TableContainer component={Paper}>
-            <Table className={classes.table} size="small" aria-label="a dense table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Primera entrega:{fecha1}</TableCell>
-                  <TableCell align="right">Segunda entrega:{fecha2}</TableCell>
-                  <TableCell align="right">Tercera entrega:{fecha3}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {eleccion_temas.data.map((row, i) => (
-                  <TableRow key={i}>
-                    <TableCell component="th" scope="row">
-                      {row.fecha_limite <= fecha1 ? row.tema1_nombre : '--'}
-                    </TableCell>
-                    <TableCell align="right">{row.fecha_limite > fecha1 && row.fecha_limite <= fecha2 ? row.tema1_nombre : '--'}</TableCell>
-                    <TableCell align="right">{row.fecha_limite > fecha2 && row.fecha_limite <= fecha3 ? row.tema1_nombre : '--'}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <Button
-              disabled={btn}
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={handleClickOpen}
-              startIcon={<SaveIcon />}>
-              Guardar
+          <h3>DOCENTE: {dataMateria[0].nameDocente}</h3>
+          <TablaVerTemas eleccion_temas={eleccion_temas} fecha1={fecha1} fecha2={fecha2} fecha3={fecha3} />
+          <Button
+            style={{ marginTop: '5px' }}
+            disabled={btn}
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={handleClickOpen}
+            startIcon={<SaveIcon />}>
+            Guardar
              </Button>
-          </TableContainer>
         </Grid>
       </Grid>
     </div>

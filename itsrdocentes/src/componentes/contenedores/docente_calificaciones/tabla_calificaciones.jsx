@@ -1,32 +1,27 @@
 import React, { useEffect, useRef } from 'react';
-import MaterialTable from 'material-table';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import SaveIcon from '@material-ui/icons/Save';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import swal from 'sweetalert';
 import './calificaciones.css';
-import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
 import { useStyles } from './dialogos_calificacion';
-import { getTemas, dataPeriodo, datalista, getAlumnos, getAdmiFechas } from '../../servicios/api';
-import { datalistaAlumnos, getCriterios, dataCriterios } from '../../servicios/api';
-import { putCriteriosc1, putCriteriosc2, putCriteriosc3, putCriteriosc4 } from '../../servicios/api';
+import {  dataPeriodo, getAlumnos, getAdmiFechas } from '../../servicios/api';
+import { datalistaAlumnos, getCriterios, dataCriterios,  } from '../../servicios/api';
 import { crearCalificacion, updateCalificaion, dataFechasCierre } from '../../servicios/api';
-import { dataMateria } from '../../../home';
+import {SelecMaterias} from './select_materia';
+import { SelectTemas} from './select_temas';
+import {ChipCriterios} from './chip_criterios';
+import { TablaCapturaCalificaciones} from './Tabla_registro';
+import {EnviarCriterios} from './cont_criterios';
 export var unidad_Tema;
 
 var ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0, unidadCalificacion, id_criterios;
 var crt1 = 'criterio_1', crt2 = 'criterio_2', crt3 = 'criterio_3', crt4 = 'criterio_4';
-var idDocenteActual, idMateriaActual; // fun buscarTtema
-var materia, unidades, grupo;
+
 
 
 
@@ -39,7 +34,6 @@ export const MaterialTableDemo = () => {//inicio del componente
   const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
   const [listasTemas, setListas] = React.useState([]);
   const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
-  const [materia, setMateria] = React.useState('');
   const [unidad, setUnidad] = React.useState('');
   const [cierre, setCierre] = React.useState(false);
   const [minimo, setMinimo] = React.useState(false);
@@ -93,48 +87,10 @@ export const MaterialTableDemo = () => {//inicio del componente
     fechasGet()
 
   }, [])
-
-
-
-  const enviarCriteriosc1= async (porcentageC1, criterio1) => {//parametros update periodo, materia, unidad, grupo
-    let materia = dataCriterios[0].materias_idmaterias;
-    let unidad = dataCriterios[0].numUnidad;
-    grupo = dataCriterios[0].asingnacion_grupo_id;
-    await putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1)
-    await updates(materia,unidad)
-    return 'listo'
-  }//fin
+   
   
   
-   const enviarCriteriosc2 = async (porcentageC1, criterio1) => {//inicio guardar porcentaje 2 y criterio 2
-    let materia = dataCriterios[0].materias_idmaterias;
-   let unidad = dataCriterios[0].numUnidad;
-    grupo = dataCriterios[0].asingnacion_grupo_id;
-    await putCriteriosc2(materia, unidad, grupo, porcentageC1, criterio1)
-    await updates(materia,unidad)
-
-  }//fin
-  
-  
-   const enviarCriteriosc3 = async(porcentageC1, criterio1) => {//inicio guardar porcentaje 3 y criterio 3
-    let materia = dataCriterios[0].materias_idmaterias;
-    let unidad = dataCriterios[0].numUnidad;
-    grupo = dataCriterios[0].asingnacion_grupo_id;
-    await putCriteriosc3(materia, unidad, grupo, porcentageC1, criterio1)
-    await updates(materia,unidad)
-
-  }//fin
-  
-   const enviarCriteriosc4 = async (porcentageC4, criterio4) => {//inicio guardar porcentaje 3 y criterio 3
-    let materia = dataCriterios[0].materias_idmaterias;
-    let unidad = dataCriterios[0].numUnidad;
-    grupo = dataCriterios[0].asingnacion_grupo_id;
-    await putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4)
-    await updates(materia,unidad)
-  }//fin
-  
-  const updates = async (m,u) => {//actualiza los griterios despues de incertar en la db
-    console.log(m+' actualizar vista '+u)
+  const updates = async (m,u) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
     await getCriterios(m,u);// LISTA DE CRITERIO getTem
     await Promise.all([
       ccx1 = dataCriterios[0].porcentageC1,
@@ -150,35 +106,20 @@ export const MaterialTableDemo = () => {//inicio del componente
       setC3(crt3)
       setC4(crt4)
 
-
     BC1.current.value = ccx1
     BC2.current.value = ccx2
     BC3.current.value = ccx3
     BC4.current.value = ccx4
 
-    
     BC1.current.style.display = 'block'
     BC2.current.style.display = 'block'
     BC3.current.style.display = 'block'
     BC4.current.style.display = 'block'
    console.log('finnn-......')
+   return true
   }
 
-
- 
-
-
-  const buscarTema = async materiaid => {//inicio selec materia en la vista
-    setListas([])//actualiza el la lista de materias actual
-    await setcalificaciones({ datalistaAlumnos: [] });
-    idDocenteActual = dataMateria[0].id_docente;
-    idMateriaActual = materiaid.target.value;
-    setMateria(idMateriaActual)
-    setMATERIA_ID(idMateriaActual);//actualizar al estado
-    await getTemas(idDocenteActual, idMateriaActual, minimo, cierre);
-    setListas(datalista)//actualiza el la lista de materias actual
-  };//fi
-
+  
   const obtenerTema = async (tem) => {//inico
     setOpen(true)
     let numTemas = tem.target.value;
@@ -192,8 +133,6 @@ export const MaterialTableDemo = () => {//inicio del componente
 
     unidadCalificacion = dataCriterios[0].numUnidad;//public unidad del criterio seleccinado
     id_criterios = dataCriterios[0].idcat_Unidad;//public id_criterios del criterio seleccinado
-
-    
   }//fin
 
   const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
@@ -233,8 +172,8 @@ export const MaterialTableDemo = () => {//inicio del componente
         })
           .then((comentario) => {
             if (comentario) {
-              //enviar porcentage y comentario
-              enviarCriteriosc1(input.value, comentario).then(res => { console.log(res) })
+              //enviar porcentage y comentario   
+             EnviarCriterios( 1 ,input.value, comentario, updates).then(res =>{console.log(res)})
             } else {
               alert("No puede estar vacio")
             }
@@ -261,8 +200,7 @@ export const MaterialTableDemo = () => {//inicio del componente
         })
           .then((comentario) => {
             if (comentario) {
-              console.log("estos es :" + unidadCalificacion + "  y " + idMateriaActual)
-              enviarCriteriosc2(input2.value, comentario)
+             EnviarCriterios( 2 ,input2.value, comentario, updates).then(res =>{console.log(res)})
             } else {
               console.log("No puede estar vacio")
             }
@@ -287,8 +225,9 @@ export const MaterialTableDemo = () => {//inicio del componente
         })
           .then((comentario) => {
             if (comentario) {
-              enviarCriteriosc3(input3.value, comentario)
-            } else {
+            EnviarCriterios( 3 ,input3.value, comentario, updates).then(res =>{console.log(res)})
+            
+          } else {
               alert("No puede estar vacio ")
             }
           });
@@ -312,7 +251,9 @@ export const MaterialTableDemo = () => {//inicio del componente
         })
           .then((comentario) => {
             if (comentario) {
-              enviarCriteriosc4(input4.value, comentario)
+              //enviarCriteriosc4(input4.value, comentario)
+             EnviarCriterios( 4 ,input4.value, comentario, updates).then(res =>{console.log(res)})
+
             } else {
               alert("No puede estar vacio ")
             }
@@ -363,84 +304,30 @@ export const MaterialTableDemo = () => {//inicio del componente
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={estilos.paperAvatar} elevation={0} >
-            <Chip size="small" avatar={<Avatar>{ccx1}</Avatar>} label={c1} color="secondary" />
-            <Chip size="small" avatar={<Avatar>{ccx2}</Avatar>} label={c2} color="secondary" />
-            <Chip size="small" avatar={<Avatar>{ccx3}</Avatar>} label={c3} color="secondary" />
-            <Chip size="small" avatar={<Avatar>{ccx4}</Avatar>} label={c4} color="secondary" />
+          <ChipCriterios 
+           ccx1={ccx1} ccx2={ccx2} ccx3={ccx3} ccx4={ccx4} 
+           c1={c1} c2={c2} c3={c3} c4={c4} />
           </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
-            <FormControl variant="outlined" className={estilos.formControl}>
-              <InputLabel id="InputLabel">Materia</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined"
-                id="materia"
-                onChange={buscarTema}
-                label="Materia"
-                value={materia}>
-                {dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))}
-              </Select>
-            </FormControl>
+          <SelecMaterias setListas={setListas} setcalificaciones={setcalificaciones} 
+           setMATERIA_ID={setMATERIA_ID} minimo={minimo} cierre={cierre} />
           </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
-            <FormControl variant="outlined" className={estilos.formControl}>
-              <InputLabel id="demo-simple-select-outlined-labe">Unidad</InputLabel>
-              <Select
-                labelId="demo-simple-select-outlined-labe"
-                id="unidad"
-                label="Unidad"
-                value={unidad}
-                onChange={obtenerTema}>
-                {listasTemas.map((tem, i) => (<MenuItem key={i} value={tem.numUnidad}>{tem.tema}</MenuItem>))}
-              </Select>
-            </FormControl>
+            <SelectTemas unidad={unidad} lisTemas={obtenerTema}  listasTemas={listasTemas}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
         </Grid>
         <Grid item xs={12} sm={12}>
           <Paper elevation={3} >
-            <MaterialTable
-              title="Captura de calificaciones"
-              columns={alumnos.columns}//columnas
-              data={calificaciones.datalistaAlumnos}//filas
-              editable={
-                {
-                  onRowUpdate: (newData, oldData) =>
-                    new Promise(resolve => {
-                      setTimeout(() => {
-                        resolve();
-                        if (oldData) {
-                          setcalificaciones(prevState => {
-                            const datalistaAlumnos = [...prevState.datalistaAlumnos];//obtenr data
-                            console.log(newData.calCriterio1 = (newData.calR1 * (ccx1 / 100)))
-                            console.log(newData.calCriterio2 = (newData.calR2 * (ccx2 / 100)))
-                            console.log(newData.calCriterio3 = (newData.calR3 * (ccx3 / 100)))
-                            console.log(newData.calCriterio4 = (newData.calR4 * (ccx4 / 100)))
-                            console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3) + parseInt(newData.calCriterio4)))
-                            console.log(newData)//estado fila modificado
-                            datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
-                            guardarPromedio(newData)
-                            return { ...prevState, datalistaAlumnos };
-                          });
-                        }
-                      }, 600);
-                    }),
-                }
-              }
-              options={{
-                headerStyle: {
-                  backgroundColor: '#01579b',
-                  color: '#FFF',
-                  size: 'small'
-                },
-                rowStyle: {
-                  white: 'pre',
-                }
-              }} />
+            <TablaCapturaCalificaciones 
+            alumnos={alumnos} calificaciones={calificaciones}  setcalificaciones={setcalificaciones} 
+            ccx1={ccx1} ccx2={ccx2}  ccx3={ccx3} ccx4={ccx4}
+            guardarPromedio={guardarPromedio}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -461,12 +348,6 @@ export const MaterialTableDemo = () => {//inicio del componente
     </div>
   );
 }
-
-
-
-
-
-
 
 
 

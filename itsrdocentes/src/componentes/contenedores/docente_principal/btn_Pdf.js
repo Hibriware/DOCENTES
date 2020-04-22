@@ -1,22 +1,15 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import  React from 'react';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { dataMateria } from '../../../home';
-import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista} from '../../servicios/api';
-import { useStyles } from './dialogos_principal';
 import moment from 'moment';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
+import { dataMateria } from '../../../home';
+import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista} from '../../servicios/api';
 
-
-export default function ComposedTextField() {
+export const ButtonPdf =  (data) =>{
   const [activo, setActio] = React.useState(false)
-  const classes = useStyles();
-
+    
   const informacionPdf = async () => {//http://localhost:4000/api/personal/consultar/reporte/lista/7/403/251/11
     try {
       setActio(true)
@@ -35,6 +28,7 @@ export default function ComposedTextField() {
       console.log(error)
     }
   }
+
 
   const pdfAsistencia = (nomMateria, docente_actual) => {
     const Horas_clases = dataReportHorario[0].semanas;
@@ -88,6 +82,7 @@ export default function ComposedTextField() {
       }
     );
 
+
     //piede paginas
     const pageCount = pdf.internal.getNumberOfPages();
     for (var i = 1; i <= pageCount; i++) {
@@ -102,46 +97,19 @@ export default function ComposedTextField() {
     pdf.save(nomMateria + '.pdf');
     console.log(dataReportLista)
   }
+  
 
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <div className={classes.avatar}>
-          <Avatar src="/broken-image.jpg" />
-        </div>
-        <Typography variant="button" display="block" gutterBottom>
-          Nombre: {dataMateria[0].nameDocente}
-        </Typography>
-        <Typography variant="button" display="block" gutterBottom>
-          Clave: {dataMateria[0].clavePersonal}
-        </Typography>
-        <Typography variant="button" display="block" gutterBottom>
-          Divicion: {dataMateria[0].nombreCorto}
-        </Typography>
-        <div className={classes.pdfss}>
-          <Button
+    
+    return(
+        <div>
+        <Button
             disabled={activo}
             onClick={informacionPdf}
             variant="contained"
             color="primary"
             startIcon={<GetAppIcon />}>
             Descargar lista de asistencia
-          </Button>
+        </Button>
         </div>
-      </Container>
-    </React.Fragment>
-
-
-
-
-
-
-
-
-
-
-
-  );
+    );
 }

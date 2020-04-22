@@ -79,8 +79,8 @@ export async function getPeriodo() {
   return response;
 }
 
-export async function getTemas(idDocente, idMateria, minimo, cierre) {
-  await axios.get(`${urlApi}/api/personal/consultarTema/${idDocente}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
+export async function getTemas(idMateria, minimo, cierre) {
+  await axios.get(`${urlApi}/api/personal/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
     .then(res => datalista = res.data)
     .catch(function (error) {
       swal(" Actualmente no cuenta con temas disponibles!", " o Verifique su conexión a internet", "warning");

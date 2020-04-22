@@ -4,15 +4,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment';
 import { Btn_evaluar } from './funciones';
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-} from '@material-ui/pickers';
 import { useStyles } from './styles';
 import { EXISTNCIA_ACTA } from '../servicios/api';
+import {FechaDate} from './dates'
 
 
 
@@ -50,78 +46,22 @@ const Entregas = () => {
                         <Grid container spacing={5}>
                             <Grid item xs={12} sm={4} >
                                 <Paper className={classes.paper} elevation={0}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                                        <Grid container justify="space-around">
-                                            <KeyboardDatePicker
-                                                disabled={status}
-                                                margin="normal"
-                                                id="date-picker-dialog"
-                                                label="Primera entrega"
-                                                format="MM/dd/yyyy"
-                                                value={entrega1}
-                                                onChange={date => setEntrega1(date)}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }} />
-                                        </Grid>
-                                    </MuiPickersUtilsProvider>
+                                <FechaDate entrega ={entrega1}  status={status} onGuardar={date => setEntrega1(date)} info="Primera entrega" />
                                 </Paper>
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <Paper className={classes.paper} elevation={0}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <Grid container justify="space-around">
-                                            <KeyboardDatePicker
-                                                disabled={status}
-                                                margin="normal"
-                                                id="date-picker-dialog"
-                                                label="Segunda entrega"
-                                                format="MM/dd/yyyy"
-                                                value={entrega2}
-                                                onChange={date => setEntrega2(date)}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }} />
-                                        </Grid>
-                                    </MuiPickersUtilsProvider>
+                                <FechaDate entrega ={entrega2}  status={status} onGuardar={date => setEntrega2(date)} info="Segunda entrega" />
                                 </Paper>
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <Paper className={classes.paper} elevation={0}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <Grid container justify="space-around">
-                                            <KeyboardDatePicker
-                                                disabled={status}
-                                                margin="normal"
-                                                id="date-picker-dialog"
-                                                label="Tercera entrega"
-                                                format="MM/dd/yyyy"
-                                                value={entrega3}
-                                                onChange={date => setEntrega3(date)}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }} />
-                                        </Grid>
-                                    </MuiPickersUtilsProvider>
+                                <FechaDate entrega ={entrega3}  status={status} onGuardar={date => setEntrega3(date)} info="Tercera entrega" />
                                 </Paper>
                             </Grid>
                             <Grid item xs={12}>
                                 <Paper className={classes.paper}>
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <Grid container justify="space-around">
-                                            <KeyboardDatePicker
-                                                disabled={status}
-                                                margin="normal"
-                                                id="date-picker-dialog"
-                                                label="Entrega Final"
-                                                format="MM/dd/yyyy"
-                                                value={entregaFinal}
-                                                onChange={date => setFinal(date)}
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }} />
-                                        </Grid>
-                                    </MuiPickersUtilsProvider>
+                                <FechaDate entrega ={entregaFinal}  status={status} onGuardar={date => setFinal(date)} info="Entrega Final" />
                                 </Paper>
                             </Grid>
                             <Grid item xs={4}>

@@ -7,29 +7,29 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-export default function MaterialUIPickers() {
-  // The first commit of Material-UI
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
 
-  const handleDateChange = date => {
-    setSelectedDate(date);
-  };
+export  const FechaDate = (data) => {
+const {status,entrega, onGuardar,info } =  data;
+
+const _guardarState=(e)=>{
+  onGuardar(e)
+}
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container justify="space-around">
+    <MuiPickersUtilsProvider utils={DateFnsUtils} >
+    <Grid container justify="space-around">
         <KeyboardDatePicker
-          margin="normal"
-          id="date-picker-dialog"
-          label="Date picker dialog"
-          format="MM/dd/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-      </Grid>
-    </MuiPickersUtilsProvider>
+            disabled={status}
+            margin="normal"
+            id="date-picker-dialog"
+            label={info}
+            format="MM/dd/yyyy"
+            value={entrega}
+            onChange={_guardarState}
+            KeyboardButtonProps={{
+                'aria-label': 'change date',
+            }} />
+    </Grid>
+  </MuiPickersUtilsProvider>
   );
 }

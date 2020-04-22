@@ -13,6 +13,9 @@ export const useStyles = makeStyles((theme) => ({
       formControl: {
         display: 'flex',
         minWidth: 100,
+                                                                  //width: -webkit-fill-available;
+
+        width:'-webkit-fill-available',
       },
   }));
 

@@ -28,4 +28,7 @@ export const useStyles = makeStyles(theme => ({
     paperAvatar:{
       textAlign:'center'
     },
+   td:{
+     padding:'0px !important',
+   }
   }));

@@ -2,8 +2,10 @@ import React from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
+import swal from 'sweetalert';
 import { crearRegistrosfechas, EXISTNCIA_ACTA, getPeriodo } from '../servicios/api';
-import { useStyles } from './styles'
+import { useStyles } from './styles';
+
 
 
 export const Btn_evaluar = (fechas) => {
@@ -18,15 +20,19 @@ export const Btn_evaluar = (fechas) => {
                 await getPeriodo()
                 setLoading(false)
             } else {
-                alert("Ejemplo: la segunda entrega debe ser mayor a la primera entrega ")
+                alert("Ejemplo: La segunda entrega no puede ser menor a la primera entrega ")
             }
         } else {
-            alert("Hasta el siguente periodo")
+            swal("Disponible hasta el siguiente periodo", {
+                button: false,
+              });
+            
         }
     }
 
     return (
         <div>
+            
             <p>{loading}</p>
             <Backdrop className={classes.backdrop} open={loading} >
                 <CircularProgress color="inherit" />

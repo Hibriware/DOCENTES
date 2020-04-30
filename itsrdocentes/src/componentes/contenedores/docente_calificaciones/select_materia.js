@@ -8,18 +8,21 @@ import { dataMateria } from '../../../home'
 
 import { useStyles } from './dialogos_calificacion';
 
-export const SelecMaterias = (data) => {
+export const SelecMaterias = React.memo((data) => {
+    console.log('memo materias')
     const estilos = useStyles();
     const [materia, setMateria] = React.useState('');
 
 
     const _buscarTema = async materiaid => {//inicio selec materia en la vista
+
         let idMateriaActual = materiaid.target.value;
         data.setListas([])//actualiza el la lista de materias actual
         await data.setcalificaciones({ datalistaAlumnos: [] });
         setMateria(idMateriaActual)
         data.setMATERIA_ID(idMateriaActual);//actualizar al estado
         await getTemas(idMateriaActual, data.minimo, data.cierre);
+
         data.setListas(datalista)//actualiza el la lista de materias actual
     };//fi
 
@@ -38,4 +41,4 @@ export const SelecMaterias = (data) => {
             </FormControl>
         </div>
     );
-}
+})

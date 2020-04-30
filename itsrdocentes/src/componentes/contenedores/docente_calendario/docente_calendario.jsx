@@ -67,9 +67,14 @@ export default function CustomizedTables() { //constante tablas
 
 
   useEffect(() => {
+    console.log(dataFechasCierre.length)
     async function fechas() {
       try {
-        await getAdmiFechas()//moment().format('DD-MM-YYYY')
+        if(dataFechasCierre.length === 0){
+          console.log('actualizar fechas de cierre')
+          await getAdmiFechas()//moment().format('DD-MM-YYYY')
+
+        }
         setFecha1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD'))
         setFecha2(moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD'))
         setFecha3(moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD'))
@@ -78,7 +83,7 @@ export default function CustomizedTables() { //constante tablas
       }
     }
     fechas()
-  }, [])
+  }, [state_materia])
 
 
   const handleClickOpen = () => {

@@ -15,6 +15,8 @@ export var dataReportHorario = [];
 export var dataReportLista = [];
 export var dataPeriodo = [];
 export var dataFechasCierre = [];
+export var dataReporteParciales = [];
+
 
 
 async function request(url, metodo, data) {
@@ -59,7 +61,8 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
     materiaDocente_id: datas.idMateriaDocente,
     criterios_idcat_Unidad: id_criterios,
     aspirante_Folio: datas.folioAspirante,
-    periodo: datas.idnomenclaturaPeriodo
+    periodo: datas.idnomenclaturaPeriodo,
+    opcion:datas.opcion
   }).then(res => console.log(res))
     .catch(function (error) {
       console.log(error)
@@ -83,7 +86,7 @@ export async function getTemas(idMateria, minimo, cierre) {
   await axios.get(`${urlApi}/api/personal/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
     .then(res => datalista = res.data)
     .catch(function (error) {
-      swal(" Actualmente no cuenta con temas disponibles!", " o Verifique su conexión a internet", "warning");
+      swal("La materia actual no cuenta con temas asignados !", "Puede asignarlos en la pestaña  “CALENDARIO”", "warning");
     })
 }
 
@@ -175,6 +178,7 @@ export async function updateCalificaion(idCalificacion, data) {// actalizar cali
     calR2: data.calR2,
     calR3: data.calR3,
     calR4: data.calR4,
+    opcion:data.opcion,
   })
     .then(function (response) {
       console.log(response.data);
@@ -245,6 +249,16 @@ export async function getAdmiFechas() {
   await axios.get(`${urlApi}/api/administrador/fechas/${PERIODO_ACTUAL}`)
     .then(res => dataFechasCierre = res.data)
     .catch(function (error) {
-      swal("", "Cierre de acta no disponible", "warning");
+      swal("", "Probablemente el administrador no ha asignado las fechas de cierre ", "warning");
+    })
+}
+                //periodo materia personal grupo
+
+export async function getReporteParcial(materia, grupo) {
+  await axios.get(`${urlApi}/api/reportes/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`)
+    .then(res => dataReporteParciales = res.data)
+    .catch(function (error) {
+      swal("", "No se encontraron TEMAS finalizados.", "warning");
+      console.log(error)
     })
 }

@@ -21,13 +21,13 @@ export default function ComposedTextField() {
           <Avatar src="/broken-image.jpg" />
         </div>
         <Typography variant="button" display="block" gutterBottom>
-          Nombre: {dataMateria[0].nameDocente}
+         <strong>Nombre:</strong>  {dataMateria[0].nameDocente}
         </Typography>
         <Typography variant="button" display="block" gutterBottom>
-          Clave: {dataMateria[0].clavePersonal}
+         <strong>Clave:</strong> {dataMateria[0].clavePersonal}
         </Typography>
         <Typography variant="button" display="block" gutterBottom>
-          Divicion: {dataMateria[0].nombreCorto}
+         <strong>Divicion:</strong>  {dataMateria[0].nombreCorto}
         </Typography>
         <div className={classes.pdfss}>
           <ButtonPdf/>

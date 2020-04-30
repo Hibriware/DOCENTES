@@ -5,9 +5,11 @@ import moment from 'moment';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { dataMateria } from '../../../home';
-import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista} from '../../servicios/api';
+import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista, dataPeriodo} from '../../servicios/api';
+import Itsr from '../../img/Logo-Tec.png';
 
 export const ButtonPdf =  (data) =>{
+  console.log('memo button')
   const [activo, setActio] = React.useState(false)
     
   const informacionPdf = async () => {//http://localhost:4000/api/personal/consultar/reporte/lista/7/403/251/11
@@ -29,56 +31,47 @@ export const ButtonPdf =  (data) =>{
     }
   }
 
-
   const pdfAsistencia = (nomMateria, docente_actual) => {
     const Horas_clases = dataReportHorario[0].semanas;
     const Grupo = dataReportHorario[0].grupo;
     const Semestre = dataReportHorario[0].semestre;
+    var img = new Image();
+
+    img.src = Itsr;
     const pdf = new jsPDF('p', 'pt', 'letter')
 
-    pdf.setFontSize(14)
-    pdf.text(130, 15, 'INSTITUTO TECNOLOGICO SUPERIOR DE LOS RIOS')
-    pdf.line(100, 17, 500, 17) // horizontal line
-    pdf.setFontSize(8)
-    pdf.text(262, 26, "Lista de asistencia");
-    pdf.roundedRect(102, 31, 400, 12, 3, 3)
-    pdf.setFontSize(7)
-    pdf.text(122, 40, Horas_clases);
-    pdf.setFontSize(8)
-    pdf.text(100, 56, `MATERIA: ${nomMateria}`);
-    pdf.setFontSize(8)
-    pdf.text(500, 56, `GRUPO: ${Semestre} ${Grupo}`);
-    pdf.setFontSize(8)
-    pdf.text(100, 66, `DOCENTE: ${docente_actual}`);
-    pdf.setFontSize(8)
-    pdf.text(500, 66, `FECHA: ${moment().format('L')}`);
-
-    var columns = [{ title: "Control", dataKey: "numeroControl" },
-    { title: "Nombre", dataKey: "nombre" },
+    
+    var columns = [
+      { title: "Nº", dataKey: "nm" },
+      { title: "Control", dataKey: "numeroControl" },
+    { title: "Nombre", dataKey: "nombre" ,},
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
-    { title: "", dataKey: "" },
+    { title: "A", dataKey: "" },
+    { title: "N", dataKey: "" },
+    { title: "O", dataKey: "" },
+    { title: "T", dataKey: "" },
+    { title: "A", dataKey: "" },
+    { title: "C", dataKey: "" },
+    { title: "I", dataKey: "" },
+    { title: "O", dataKey: "" },
+    { title: "N", dataKey: "" },
+    { title: "E", dataKey: "" },
+    { title: "S", dataKey: "" },
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
     { title: "C", dataKey: "modalidad" },
     ];
-
-    pdf.autoTable(columns, dataReportLista,
+    //dataReportLista,
+    pdf.autoTable(columns,dataReportLista, 
       {
         margin: { top: 75 },
-        styles: { halign: 'center', cellPadding: 0.5, fontSize: 7 },
+        styles: { halign:'center',cellPadding: 0.5, fontSize: 7 },
         theme: 'grid',
+        columnStyles: { 2: { halign: 'left' } },
+       
       }
     );
 
@@ -87,8 +80,32 @@ export const ButtonPdf =  (data) =>{
     const pageCount = pdf.internal.getNumberOfPages();
     for (var i = 1; i <= pageCount; i++) {
       pdf.setPage(i);
-      pdf.setFontSize(7)
+
+
+    pdf.setFontSize(14)//encabezado
+    pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS')
+    pdf.line(100, 17, 500, 17) // horizontal line
+    pdf.setFontSize(8)
+    pdf.text(262, 26, "PRELISTA");
+    pdf.roundedRect(102, 45, 400, 12, 3, 3)
+    pdf.setFontSize(8)
+    pdf.text(100, 40, `MATERIA: ${nomMateria}`);
+    pdf.setFontSize(8)
+    pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
+    pdf.setFontSize(8)
+    pdf.text(500, 40, `FECHA: ${moment().format('L')}`);
+    pdf.setFontSize(7)
+    pdf.text(122, 54, Horas_clases);
+    pdf.setFontSize(8)
+    pdf.text(500, 66, `GRUPO: ${Semestre} ${Grupo}`);
+    pdf.setFontSize(8)
+    pdf.text(100, 66, `DOCENTE: ${docente_actual}`);
+    pdf.addImage(img, 'PNG', 13, 10, 63, 63)
+
+
+      pdf.setFontSize(7)//pie de pagina
       pdf.text(20, 760, "C (Curso, R:Repetición, E:Especial)");
+      pdf.setLineWidth(1.6)
       pdf.line(390, 760, 500, 760)
       pdf.setFontSize(7)
       pdf.text(413, 767, "FIRMA DOCENTE");
@@ -107,6 +124,7 @@ export const ButtonPdf =  (data) =>{
             onClick={informacionPdf}
             variant="contained"
             color="primary"
+            size="small"
             startIcon={<GetAppIcon />}>
             Descargar lista de asistencia
         </Button>

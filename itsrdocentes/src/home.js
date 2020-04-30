@@ -2,6 +2,7 @@ import React, { Component, Suspense } from 'react';
 import Usuarios from './componentes/menu_usuarios/usuarios'
 import { materiasD, getPeriodo } from './componentes/servicios/api';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Loader from './login/cargaDedatos'
 export let dataMateria = null;
 var caches, bandera;
 
@@ -50,7 +51,7 @@ class Home extends Component {
   render() {
     return (
       <Suspense fallback={
-        <LinearProgress />}>
+        <Loader />}>
         <CargadeDatos />
       </Suspense>
     )

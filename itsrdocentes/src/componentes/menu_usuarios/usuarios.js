@@ -58,6 +58,7 @@ console.log(userType + " menus disponibles para vos")
       <CssBaseline />
       <AppBar style={{background:'#3f51b5'}}
         position="fixed"
+        size="small"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}

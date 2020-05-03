@@ -48,8 +48,8 @@ class Menu extends Component {
 console.log(userType + " menus disponibles para vos")
   // const sections=(userType==='Administrador')?['Inicio','Monitoreo','Catalogo Personal','Reportes','Accesos']:
   //                 (userType==='Guardia')?['Inicio','Reporte observaciones']:['Inicio','Reportes','Monitoreo'];
-  const sections=(userType==='Administrador')?['INICIO','docentes']:
-  (userType==='Docentes')?[,'docentes']:['INICIO'];
+  const sections=(userType==='Administrador')?['Inicio','Docentes']:
+  (userType==='Docentes')?[,'Docentes']:['Inicio'];
 
 
 

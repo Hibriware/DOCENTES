@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -6,44 +6,32 @@ import Container from '@material-ui/core/Container';
 import { dataMateria } from '../../../home';
 import { useStyles } from './dialogos_principal';
 import 'jspdf-autotable';
-import { ButtonPdf } from './btn_Pdf'
+import { ButtonPdf } from './btn_Pdf';
 
 
 export default function ComposedTextField() {
-  const classes = useStyles();
+	const classes = useStyles();
 
-
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <div className={classes.avatar}>
-          <Avatar src="/broken-image.jpg" />
-        </div>
-        <Typography variant="button" display="block" gutterBottom>
-         <strong>Nombre:</strong>  {dataMateria[0].nameDocente}
-        </Typography>
-        <Typography variant="button" display="block" gutterBottom>
-         <strong>Clave:</strong> {dataMateria[0].clavePersonal}
-        </Typography>
-        <Typography variant="button" display="block" gutterBottom>
-         <strong>Divicion:</strong>  {dataMateria[0].nombreCorto}
-        </Typography>
-        <div className={classes.pdfss}>
-          <ButtonPdf/>
-        </div>
-      </Container>
-    </React.Fragment>
-
-
-
-
-
-
-
-
-
-
-
-  );
+	return (
+		<React.Fragment>
+			<CssBaseline />
+			<Container maxWidth="sm">
+				<div className={classes.avatar}>
+					<Avatar src="/broken-image.jpg" />
+				</div>
+				<Typography variant="button" display="block" gutterBottom>
+					<strong>Nombre:</strong> {dataMateria[0].nameDocente}
+				</Typography>
+				<Typography variant="button" display="block" gutterBottom>
+					<strong>Clave:</strong> {dataMateria[0].clavePersonal}
+				</Typography>
+				<Typography variant="button" display="block" gutterBottom>
+					<strong>División:</strong> {dataMateria[0].nombreCorto}
+				</Typography>
+				<div className={classes.pdfss}>
+					<ButtonPdf />
+				</div>
+			</Container>
+		</React.Fragment>
+	);
 }

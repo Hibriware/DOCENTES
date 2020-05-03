@@ -93,7 +93,7 @@ export const ButtonPdf =  (data) =>{
     pdf.setFontSize(8)
     pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
     pdf.setFontSize(8)
-    pdf.text(500, 40, `FECHA: ${moment().format('L')}`);
+    pdf.text(500, 40, `FECHA: ${moment().format('DD/MM/YYYY')}`);
     pdf.setFontSize(7)
     pdf.text(122, 54, Horas_clases);
     pdf.setFontSize(8)
@@ -104,7 +104,7 @@ export const ButtonPdf =  (data) =>{
 
 
       pdf.setFontSize(7)//pie de pagina
-      pdf.text(20, 760, "C (Curso, R:Repetición, E:Especial)");
+      pdf.text(20, 760, "C= curso (O: Ordinario, R: Repetición, E: Especial)");
       pdf.setLineWidth(1.6)
       pdf.line(390, 760, 500, 760)
       pdf.setFontSize(7)
@@ -126,7 +126,7 @@ export const ButtonPdf =  (data) =>{
             color="primary"
             size="small"
             startIcon={<GetAppIcon />}>
-            Descargar lista de asistencia
+            lista de asistencia
         </Button>
         </div>
     );

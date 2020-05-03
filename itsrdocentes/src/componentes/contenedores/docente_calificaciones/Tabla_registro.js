@@ -1,25 +1,13 @@
 import React from 'react';
 import MaterialTable from 'material-table';
-import { useStyles } from './dialogos_calificacion';
 import { crearCalificacion, updateCalificaion, getAlumnos, datalistaAlumnos } from '../../servicios/api';
 import './calificaciones.css';
 import { id_criterios, unidadCalificacion } from './select_temas';
-import { withStyles } from '@material-ui/core/styles';
-
-
-const StyledMaterialTable = withStyles({
- 
-  'MuiTableCell-root': {
-    padding:'2px',
-  }
-
-})(MaterialTable);
 
 
 
 export const TablaCapturaCalificaciones = React.memo((data) => {
   console.log('memo Tabla registro ')
-  const estilos = useStyles();
   const { alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4 } = data;
 
   const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
@@ -61,9 +49,7 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
 
   return (
     <div style={{maxWidth:'100%'}}>
-    <StyledMaterialTable  cellpadding="0" cellspacing="0"
-      id="mytable"
-      estilos={{ td: estilos.td }}
+    <MaterialTable  margin="none" size="small"
       title="Captura de calificaciones"
       columns={alumnos.columns}//columnas
       data={calificaciones.datalistaAlumnos}//filas

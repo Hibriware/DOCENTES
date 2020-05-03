@@ -8,6 +8,7 @@ import {
 } from '@material-ui/pickers';
 
 
+
 export  const FechaDate = (data) => {
 const {status,entrega, onGuardar,info } =  data;
 
@@ -23,7 +24,7 @@ const _guardarState=(e)=>{
             margin="normal"
             id="date-picker-dialog"
             label={info}
-            format="MM/dd/yyyy"
+            format="dd/MM/yyyy"
             value={entrega}
             onChange={_guardarState}
             KeyboardButtonProps={{

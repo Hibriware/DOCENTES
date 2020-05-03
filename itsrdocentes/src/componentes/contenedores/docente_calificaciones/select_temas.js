@@ -33,12 +33,13 @@ export const SelectTemas = React.memo((data) => {
 
     return (
         <div>
-            <FormControl variant="outlined" className={estilos.formControl}>
-                <InputLabel id="demo-simple-select-outlined-labe">Unidad</InputLabel>
+            <FormControl variant="outlined" className={estilos.formControl}  margin="none" size="small">
+                <InputLabel id="demo-simple-select-outlined-labe">Tema</InputLabel>
                 <Select
+               
                     labelId="demo-simple-select-outlined-labe"
-                    id="unidad"
-                    label="Unidad"
+                    id="Tema"
+                    label="Tema"
                     value={unidad}
                     onChange={_obtenerTema}>
                     {data.listasTemas.map((tem, i) => (<MenuItem key={i} value={tem.numUnidad}>{tem.tema}</MenuItem>))}

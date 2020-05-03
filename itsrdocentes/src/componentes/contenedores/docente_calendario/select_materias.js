@@ -20,7 +20,7 @@ export const SelectMaterias = (data) => {
 
     return (
         <div>
-            <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl variant="outlined" margin="none" size="small" className={classes.formControl}>
                 <InputLabel id="InputLabel">Materia</InputLabel>
                 <Select
                     labelId="demo-simple-select-outlined"

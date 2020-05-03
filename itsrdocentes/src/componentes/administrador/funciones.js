@@ -9,6 +9,7 @@ import { useStyles } from './styles';
 
 
 export const Btn_evaluar = (fechas) => {
+
     const classes = useStyles();
     const [loading, setLoading] = React.useState(false);
 
@@ -20,7 +21,9 @@ export const Btn_evaluar = (fechas) => {
                 await getPeriodo()
                 setLoading(false)
             } else {
-                alert("Ejemplo: La segunda entrega no puede ser menor a la primera entrega ")
+                swal("Verifique la cronología de fechas, la segunda entrega no puede ser antes que la primera", {
+                    button: false,
+                  });
             }
         } else {
             swal("Disponible hasta el siguiente periodo", {

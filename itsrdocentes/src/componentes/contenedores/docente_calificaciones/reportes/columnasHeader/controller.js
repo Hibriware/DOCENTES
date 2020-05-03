@@ -374,7 +374,7 @@ const pdfParcial = (nomMateria, docente_actual,ClaveMateria,ClavePersonal, Clave
             margin: { top: 78 },
             styles: { halign: 'center', cellPadding: 0.5, fontSize: 7 },
             theme: 'grid',
-            columnStyles: { 2: { halign: 'left', fillColor: [0, 255, 0] } },
+            columnStyles: { 2: { halign: 'left' } },
 
         }
     );
@@ -472,7 +472,7 @@ const pdActaFinal = (nomMateria, docente_actual, ClaveMateria,ClavePersonal, Cla
             margin: { top: 78 },
             styles: { halign: 'center', cellPadding: 0.5, fontSize: 7 },
             theme: 'grid',
-            columnStyles: { 2: { halign: 'left', fillColor: [0, 255, 0] } },
+            columnStyles: { 2: { halign: 'left' } },
 
         }
     );

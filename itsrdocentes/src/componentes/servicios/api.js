@@ -1,6 +1,7 @@
 import swal from 'sweetalert';
 import moment from 'moment';
-import { ID_USUARIO } from '../../App';
+import { ID_USUARIO } from '../../home';
+import AuthServise from './AuthService';
 
 const axios = require('axios')
 const urlApi = 'http://localhost:4000';
@@ -17,6 +18,24 @@ export var dataPeriodo = [];
 export var dataFechasCierre = [];
 export var dataReporteParciales = [];
 
+
+  /*export class token{
+
+    constructor(props){
+      super(props)
+      this.AuthServise = new AuthServise()
+        }
+  }*/
+ 
+/*  function isLoggedIn(){
+    console.log("met isLoggedIn")
+    return !! getToken();
+}
+
+
+function getToken(){
+    return localStorage.getItem('token_id');
+}*/
 
 
 async function request(url, metodo, data) {
@@ -69,13 +88,20 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
       swal("error!", "Verifique su conexion a internet!", "warning");
     })
 }
+var config = {};
 
 export async function getPeriodo() {
+  
+ config = {headers: { token: `${localStorage.getItem('token_id')}` }}
+
   console.log("periodo")
-  const response = await axios.get(`${urlApi}/api/personal/consultar/periodo`)
+  console.log(config)
+
+
+  const response = await axios.get(`${urlApi}/api/personal/consultar/periodo`,config)
     .then(res => dataPeriodo = res.data)
     .catch(function (error) {
-      swal(" Sin periodos disponibles!", ":) ", "warning");
+      swal(" Sin periodos disponibles!", `${error}`, "warning");
     })
   PERIODO_ACTUAL = response[0].periodo;
   EXISTNCIA_ACTA = response[0].existenciaActa;
@@ -262,3 +288,4 @@ export async function getReporteParcial(materia, grupo) {
       console.log(error)
     })
 }
+

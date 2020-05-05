@@ -1,0 +1,12 @@
+.notfound-bg {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+    z-index: -1;
+    font-family: sans-serif;
+  }
+  

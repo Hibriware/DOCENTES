@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { dataMaterias, dataMateria } from '../../../home';
 import { useStyles } from './dialogos';
 import { dataStatusTemas, getAdmiFechas, dataFechasCierre, treeApi, getStatus_temas } from '../../servicios/api';
-import { ID_USUARIO } from '../../../App';
+import { ID_USUARIO } from '../../../home';
 import { Confirmacion } from './Confirmacion';
 import { SelectMaterias } from './select_materias';
 import { TablaAsignacionFecha } from './Tabla_fechas_evaluacion';

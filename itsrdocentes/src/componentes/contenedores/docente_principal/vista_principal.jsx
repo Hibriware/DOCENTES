@@ -11,6 +11,8 @@ import { ButtonPdf } from './btn_Pdf';
 
 export default function ComposedTextField() {
 	const classes = useStyles();
+console.log(dataMateria)
+console.log('dataMateria <<<')
 
 	return (
 		<React.Fragment>

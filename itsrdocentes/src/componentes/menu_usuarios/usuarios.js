@@ -23,33 +23,43 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DescriptionIcon from '@material-ui/icons/Description';
 import {useStyles} from './styles';
 import Menu_docentes from '../contenedores/menu_opciones';
-import Acta_entregas from '../administrador/acta_entregas'
+import Acta_entregas from '../administrador/acta_entregas';
+import ErrorImg from '../404'
+import AuthService from '../servicios/AuthService';
+
 
 class Menu extends Component {
   constructor(props){
     super(props);
+   
+    
+    this.AuthService = new AuthService();
+    this.logout=this.logout.bind(this);
     this.state={
-        open:false
-     };
-    //this.AuthService=new AuthService();
-    //this.logout=this.logout.bind(this);
+      open:false
+   };
+   
     this.menuItems=[
-      {icon:<HomeIcon></HomeIcon>,link:'/'},
-      {icon:<DescriptionIcon></DescriptionIcon>,link:'/docentes'}    
+     // {icon:<HomeIcon></HomeIcon>,link:'/'},
+      {icon:<DescriptionIcon></DescriptionIcon>,link:'/inicio'},    
+      {icon:<DescriptionIcon></DescriptionIcon>,link:'/Docente'}    
     ];
   }
   
   render(){
+   
   const {classes}=this.props;
   const{open}=this.state;
 
- // const userType=this.AuthService.getUserAccess();
-  const userType='Administrador';
-console.log(userType + " menus disponibles para vos")
+ const userType=this.AuthService.getUserAccess();
+  //const userType='Administrador';
+console.log(userType)
   // const sections=(userType==='Administrador')?['Inicio','Monitoreo','Catalogo Personal','Reportes','Accesos']:
   //                 (userType==='Guardia')?['Inicio','Reporte observaciones']:['Inicio','Reportes','Monitoreo'];
-  const sections=(userType==='Administrador')?['Inicio','Docentes']:
-  (userType==='Docentes')?[,'Docentes']:['Inicio'];
+  const sections=(userType==='Administrador')?['Inicio']:
+  (userType==='administradorse')?['Inicio']:
+  (userType==='Gestión Escolar')?['Inicio']:
+  (userType==='Docente')?[,'Docente']:[,'Inicio'];
 
 
 
@@ -80,7 +90,7 @@ console.log(userType + " menus disponibles para vos")
             
           </Typography>
           </div>
-          <IconButton  style={{color:'white'}}>
+          <IconButton onClick={this.logout} style={{color:'white'}}>
             <ExitToAppIcon/> 
             </IconButton>
     
@@ -127,14 +137,15 @@ console.log(userType + " menus disponibles para vos")
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-                  <Route path='/' exact render={routeProps=><Acta_entregas {...routeProps} />}></Route>
-                 { /*<Route path='/monitoreo' exact render={routeProps=><Monitoreo{...routeProps} propname={'m'}/>}></Route>
+        { /*  <Route path='/' exact render={ routeProps=><ErrorImg {...routeProps}/> }></Route>
+               <Route path='/monitoreo' exact render={routeProps=><Monitoreo{...routeProps} propname={'m'}/>}></Route>
                   <Route path='/catalogoPersonal' exact render={routeProps=><CatalogoPersonal{...routeProps} propname={'cp'}/>}></Route>
                   <Route path='/catalogoUsuario' exact render={routeProps=><CatalogoUsuario{...routeProps} propname={'cu'}/>}></Route>
                   <Route path='/guardiasObservaciones' exact render={routeProps=><GuardiasObservaciones{...routeProps} propname={'go'}/>}></Route>
                   <Route path='/reporte_monitoreo' exact render={routeProps=><Reporte_m{...routeProps} propname={'g'}/>}></Route>
                         <Route path='/reporte_personal' exact render={routeProps=><Reporte_p{...routeProps} propname={'o'}/>}></Route>*/}  
-                  <Route path='/docentes' exact render={routeProps=><Menu_docentes{...routeProps} propname={'o'}/>}></Route>  
+                  <Route path='/inicio' exact render={routeProps=><Acta_entregas{...routeProps} propname={'a'}/>}></Route>  
+                  <Route path='/Docente' exact render={routeProps=><Menu_docentes{...routeProps} propname={'o'}/>}></Route>  
                   <Redirect from="*" to="/"/>
               </Switch>
       </main>
@@ -152,6 +163,7 @@ handleDrawerClose = () => {
 logout(){
   this.AuthService.logout();
   this.props.onAuthChange();
+ this.props.resetear();
 }
 }
 

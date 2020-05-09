@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import { Btn_evaluar } from './funciones';
 import { useStyles } from './styles';
-import { EXISTNCIA_ACTA, getPeriodo, dataPeriodo } from '../servicios/api';
+import { EXISTNCIA_ACTA, getPeriodo, dataPeriodo ,getAdmiFechas,dataFechasCierre} from '../servicios/api';
 import { FechaDate } from './dates';
 
 const Entregas = () => {
@@ -18,17 +18,25 @@ const Entregas = () => {
 	const [ entrega2, setEntrega2 ] = React.useState(fecha_Defaul);
 	const [ entrega3, setEntrega3 ] = React.useState(fecha_Defaul);
 	const [ entregaFinal, setFinal ] = React.useState(fecha_Defaul);
+	const [ recargar, setRecargar ] = React.useState(false);
 	const [ status, setStatus ] = React.useState(false);
 	const [ PERIODO, setPeriodo ] = React.useState(false);
 
 	useEffect(() => {
-		function statusDate() {
+		async function statusDate() {
 			if (EXISTNCIA_ACTA) {
 				setStatus(true);
+				if(dataFechasCierre.length === 0){
+					await getAdmiFechas()
+				}
+			setEntrega1(dataFechasCierre[0].primera_entrega)
+			setEntrega2(dataFechasCierre[0].segunda_entrega)
+			setEntrega3(dataFechasCierre[0].tercera_entrega)
+			setFinal(dataFechasCierre[0].entrega_final)
+			console.log(dataFechasCierre)
 			}
 		}
 		async function getPeri() {
-			console.log('xtre preriodo');
 			try {
 				await getPeriodo();
 				setPeriodo(dataPeriodo[0].rango);
@@ -40,8 +48,7 @@ const Entregas = () => {
 
 		statusDate();
 		getPeri();
-		console.log(PERIODO);
-	}, []);
+	}, [recargar]);
 
 	return (
 		<div>
@@ -97,6 +104,7 @@ const Entregas = () => {
 								<Grid item xs={4}>
 									<Paper className={classes.paper} elevation={0}>
 										<Btn_evaluar
+										setRecargar={setRecargar}
 											primera={entrega1}
 											segunda={entrega2}
 											tercera={entrega3}

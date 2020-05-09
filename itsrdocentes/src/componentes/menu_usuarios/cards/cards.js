@@ -4,6 +4,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 import {useStyles} from './styles';
 import Imgs from '../../img/blob-shape.svg';
 import Imgs1 from '../../img/blob-shape2.svg';
@@ -40,7 +41,7 @@ const classes = useStyles();
         </Typography>
       </CardContent>
       <CardActions>
-    <Button size="small">Semestre: "{semestre}"</Button>
+    <Button size="small">Semestre: "{semestre}"</Button> <Button style={{marginInlineStart:'auto'}} size="small"><Link to="/Docente">Iniciar</Link></Button>
       </CardActions>
     </Card>
 </>

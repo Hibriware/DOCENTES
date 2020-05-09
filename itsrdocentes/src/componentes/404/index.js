@@ -1,7 +1,5 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
-import Errors from '../img/error.png';
-import AuthService from '../servicios/AuthService';
 import './styles.css'
 
  const Noencontrado =({onAuthChange, onGenerar,resetear})=>{

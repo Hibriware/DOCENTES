@@ -4,9 +4,12 @@
 
     .im {
      
-        background-size:460px !important;
+        background-size:544px !important;
         background-repeat: no-repeat ;
     
+    }
+    .btn{
+        margin-top: 27rem !important;
     }
 }
 
@@ -14,9 +17,12 @@
 
     .im {
      
-        background-size:400px !important;
+        background-size:530px !important;
         background-repeat: no-repeat ;
     
+    }
+    .btn{
+        margin-top: 28rem !important;
     }
 }
 
@@ -24,8 +30,36 @@
 
     .im {
      
+        background-size:400px !important;
+        background-repeat: no-repeat ;
+    
+    }
+    .btn{
+        margin-top: 21rem !important;
+    }
+}
+
+@media screen and (max-width:450px){
+
+    .im {
+     
+        background-size:300px !important;
+        background-repeat: no-repeat ;
+    
+    }
+    .btn{
+        margin-top: 16rem !important;
+    }
+}
+@media screen and (max-width:380px){
+
+    .im {
+     
         background-size:200px !important;
         background-repeat: no-repeat ;
     
+    }
+    .btn{
+        margin-top: 11rem !important;
     }
 }

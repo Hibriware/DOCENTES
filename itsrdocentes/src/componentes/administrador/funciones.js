@@ -18,7 +18,8 @@ export const Btn_evaluar = (fechas) => {
             if (fechas.segunda > fechas.primera && fechas.tercera > fechas.segunda && fechas.final > fechas.tercera) {
                 setLoading(true)
                 await crearRegistrosfechas(fechas);
-                await getPeriodo()
+                await getPeriodo();
+                fechas.setRecargar(true)
                 setLoading(false)
             } else {
                 swal("Verifique la cronología de fechas, la segunda entrega no puede ser antes que la primera", {

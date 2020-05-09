@@ -91,7 +91,7 @@ console.log(userType)
           <Typography variant="h6" noWrap>
           </Typography>
           </div>
-          <Chip style={{color:'white'}} label ={userType}  color="primary"  variant="primary" size="small" icon={<FaceIcon />} />
+          <Chip style={{color:'white'}} label ={userType}  color="primary"   size="small" icon={<FaceIcon />} />
           <IconButton title="cerrar la sesión" onClick={this.logout} style={{color:'white'}}>
             <ExitToAppIcon/> 
             </IconButton>

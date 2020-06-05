@@ -9,21 +9,26 @@ export const EnviarCriterios= async (bam ,porcentage, criterio, updates) => {//p
    switch(bam){
        case 1:
         await putCriteriosc1(materia, unidad, grupo, porcentage, criterio)
+        await updates(materia,unidad)
            break;
        case 2:
         await putCriteriosc2(materia, unidad, grupo, porcentage, criterio)
-           break;
+        await updates(materia,unidad)   
+            break;
         case 3:
         await putCriteriosc3(materia, unidad, grupo, porcentage, criterio)
+        await updates(materia,unidad)    
             break;
         case 4:
         await putCriteriosc4(materia, unidad, grupo, porcentage, criterio)
-            break;
+        await updates(materia,unidad)    
+             break;
 
             default:
                 return'Error'
-console.log('fin fin')
    }
-    await updates(materia,unidad)
+   console.log('fin fin y actualizando las materias')
+
+   await updates(materia,unidad)
     return true
   }//fin

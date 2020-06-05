@@ -1,27 +1,36 @@
 import decode from 'jwt-decode';
+import *as toastr from 'toastr';
+
 
 export default class AuthService {
 
     constructor(domain){
         console.log("met constructor")
 
-        this.domain = domain || "http://localhost:4000"
+        this.domain = domain || "http://localhost:4000"//https://app-api-docentes.herokuapp.com
+
         this.requestFetch = this.requestFetch.bind(this);
         this.login = this.login.bind(this);
        this.logout = this.logout.bind(this)
         this.getProfile = this.getProfile.bind(this);
     }
     login(usuario, password){
-        console.log(usuario ,password )
+        console.log(usuario ,password + 'gsssss---')
 
-        return this.requestFetch('/api/login/login',{
+        return this.requestFetch('/api/login/verificar',{
             method:'POST',
             body:JSON.stringify({usuario,password})
         }).then(response => {
             console.log(response)
-            this.setToken(response.token);
-            this.setUser(response.resul);
-            return Promise.resolve(response);
+            if(response.sin === 'null'){
+                console.log("usuarios incorrectos")
+
+            }else{
+                this.setToken(response.token);
+                this.setUser(response.user);
+                return Promise.resolve(response);
+            }
+            toastr.warning("contraseña o usuario", 'Incorrectos')         
         })
     }
 
@@ -48,6 +57,7 @@ export default class AuthService {
 
     getUserAccess(){
         let user = this.getUser();
+        console.log(user)
         if(user){
             return user[0].nombreRol;
         }else{

@@ -62,6 +62,9 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
                 if (oldData) {
                   setcalificaciones(prevState => {
                     const datalistaAlumnos = [...prevState.datalistaAlumnos];//obtenr data
+                    console.log(ccx1)
+                    console.log('ccx1*')
+
                     console.log(newData.calCriterio1 = (newData.calR1 * (ccx1 / 100)))
                     console.log(newData.calCriterio2 = (newData.calR2 * (ccx2 / 100)))
                     console.log(newData.calCriterio3 = (newData.calR3 * (ccx3 / 100)))

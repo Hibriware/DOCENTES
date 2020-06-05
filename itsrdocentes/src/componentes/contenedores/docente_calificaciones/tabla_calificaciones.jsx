@@ -25,7 +25,7 @@ import {ActaFinal} from './reportes/actaFinal/acta'
 export var unidad_Tema;
 //unidadCalificacion, id_criterios
 var ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0;
-export var crt1 = 'Criterio 1', crt2 = 'Criterio 2', crt3 = 'Criterio 3', crt4 = 'Criterio 4';
+ //var crt1 = 'Criterio 1', crt2 = 'Criterio 2', crt3 = 'Criterio 3', crt4 = 'Criterio 4';
 
 
 
@@ -43,10 +43,13 @@ export const MaterialTableDemo = () => {//inicio del componente
   const [cierre, setCierre] = React.useState(false);
   const [minimo, setMinimo] = React.useState(false);
 
-  /*const [c1, setC1] = React.useState('');
-  const [c2, setC2] = React.useState('');
-  const [c3, setC3] = React.useState('');
-  const [c4, setC4] = React.useState('');*/
+  const [ccx41, setCcx4] = React.useState(0);
+  const [ccx31, setCcx3] = React.useState(0);
+  const [ccx21, setCcx2] = React.useState(0);
+  const [ccx11, setCcx1] = React.useState(0);
+
+
+ 
 
   const BC1 = useRef();
   const BC2 = useRef();
@@ -112,6 +115,10 @@ export const MaterialTableDemo = () => {//inicio del componente
     ccx2=0
     ccx3=0
     ccx4=0
+    setCcx4(0)
+    setCcx3(0)
+    setCcx2(0)
+    setCcx1(0)
     BC1.current.value = 0
     BC2.current.value = 0
     BC3.current.value = 0
@@ -135,11 +142,16 @@ export const MaterialTableDemo = () => {//inicio del componente
       ccx2 = dataCriterios[0].porcentageC2,
       ccx3 = dataCriterios[0].porcentageC3,
       ccx4 = dataCriterios[0].porcentageC4,
-      crt1 = dataCriterios[0].criterio1,
-      crt2 = dataCriterios[0].criterio2,
-      crt3 = dataCriterios[0].criterio3,
-      crt4 = dataCriterios[0].criterio4]);
-  
+     // crt1 = dataCriterios[0].criterio1,
+      //crt2 = dataCriterios[0].criterio2,
+      //crt3 = dataCriterios[0].criterio3,
+    //  crt4 = dataCriterios[0].criterio4
+    ]);
+    setCcx4(ccx4)
+    setCcx3(ccx3)
+    setCcx2(ccx2)
+    setCcx1(ccx1)
+
 
     BC1.current.value = ccx1
     BC2.current.value = ccx2
@@ -227,7 +239,7 @@ export const MaterialTableDemo = () => {//inicio del componente
     })
     if (input4.value <= 100) {
       if (input4.value.length === 2) {
-              EnviarCriterios(4, input4.value, 'comentario', updates).then(res => { toastr.success('Guardado', 'Porcentaje 3') })
+              EnviarCriterios(4, input4.value, 'comentario', updates).then(res => { toastr.success('Guardado', 'Porcentaje 4') })
       }
     } else {
       alert("No puede exeder de 100 %")
@@ -318,7 +330,7 @@ export const MaterialTableDemo = () => {//inicio del componente
           <Paper elevation={3} >
             <TablaCapturaCalificaciones
               alumnos={alumnos} setcalificaciones={setcalificaciones} calificaciones={calificaciones}
-              ccx1={ccx1} ccx2={ccx2} ccx3={ccx3} ccx4={ccx4} />
+              ccx1={ccx11} ccx2={ccx21} ccx3={ccx31} ccx4={ccx41} />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>

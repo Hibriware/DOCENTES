@@ -4,7 +4,8 @@ import { ID_USUARIO } from '../../home';
 import AuthServise from './AuthService';
 
 const axios = require('axios')
-const urlApi = 'http://localhost:4000';
+const urlApi = 'http://localhost:4000'; //https://app-api-docentes.herokuapp.com
+
 
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
@@ -55,7 +56,7 @@ export function treeApi(datas) {
   console.log(datas)
   axios({
     method: 'POST',
-    url: `${urlApi}/api/personal/add`,
+    url: `${urlApi}/api/aspirante/registrar`,
     data: datas
   }).then(res => console.log(res))
     .catch(function (error) {
@@ -64,7 +65,7 @@ export function treeApi(datas) {
 }
 
 export async function crearCalificacion(datas, unidad, id_criterios) {//crear calificacion alumno
-  await axios.post(`${urlApi}/api/personal/add/calificacion`, {
+  await axios.post(`${urlApi}/api/aspirante/calificacion`, {
     calR1: datas.calR1,
     calR2: datas.calR2,
     calR3: datas.calR3,
@@ -93,15 +94,16 @@ var config = {};
 export async function getPeriodo() {
   
  config = {headers: { token: `${localStorage.getItem('token_id')}` }}
-
   console.log("periodo")
   console.log(config)
 
-
-  const response = await axios.get(`${urlApi}/api/personal/consultar/periodo`,config)
-    .then(res => dataPeriodo = res.data)
+  const response = await axios.get(`${urlApi}/api/otros/consultar/periodo`,config)
+    .then(res => 
+      dataPeriodo = res.data.datas
+    )
     .catch(function (error) {
       swal(" Sin periodos disponibles!", `${error}`, "warning");
+     return 'error'
     })
   PERIODO_ACTUAL = response[0].periodo;
   EXISTNCIA_ACTA = response[0].existenciaActa;
@@ -109,7 +111,7 @@ export async function getPeriodo() {
 }
 
 export async function getTemas(idMateria, minimo, cierre) {
-  await axios.get(`${urlApi}/api/personal/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
+  await axios.get(`${urlApi}/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
     .then(res => datalista = res.data)
     .catch(function (error) {
       swal("La materia actual no cuenta con temas asignados !", "Puede asignarlos en la pestaña  “CALENDARIO”", "warning");
@@ -117,7 +119,7 @@ export async function getTemas(idMateria, minimo, cierre) {
 }
 
 export async function getStatus_temas(id_usuario, id_materia) { //PERIODO_ACTUAL, ID_USUARIO, materia 
-  await axios.get(`${urlApi}/api/personal/consultar/estado/temas/${PERIODO_ACTUAL}/${id_materia}/${id_usuario}`)
+  await axios.get(`${urlApi}/api/aspirante/consultar/estado/temas/${PERIODO_ACTUAL}/${id_materia}/${id_usuario}`)
     .then(res => dataStatusTemas = res.data)
     .catch(function (error) {
       swal(" ", "Verifique su conexion a internet!", "warning");
@@ -126,7 +128,7 @@ export async function getStatus_temas(id_usuario, id_materia) { //PERIODO_ACTUAL
 
 export async function getAlumnos(idMateria, unidad) {//consultarAlumnos/:idMateria/:periodo/:idDocente/:unidad
   console.log('Actualizando alumnos--------------------------------')
-  await axios.get(`${urlApi}/api/personal/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}`)
+  await axios.get(`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}`)
     .then(res => datalistaAlumnos = res.data)
     .catch(function (error) {
       swal("Error", "Verifique su conexion a internet!", "warning");
@@ -134,7 +136,7 @@ export async function getAlumnos(idMateria, unidad) {//consultarAlumnos/:idMater
 }
 
 export async function getCriterios(idMateria, unidad) {
-  await axios.get(`${urlApi}/api/personal/consultarCriterios/${PERIODO_ACTUAL}/${idMateria}/${unidad}`)
+  await axios.get(`${urlApi}/api/administrador/consultarCriterios/${PERIODO_ACTUAL}/${idMateria}/${unidad}`)
     .then(res => dataCriterios = res.data)
     .catch(function (error) {
       swal("Sin temas disponibles!", " o Verifique su conexion a internet!", "warning");
@@ -142,7 +144,7 @@ export async function getCriterios(idMateria, unidad) {
 }
 
 export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1) {
-  await axios.put(`${urlApi}/api/personal/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
+  await axios.put(`${urlApi}/api/aspirante/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
     criterio1: criterio1,
     porcentageC1: porcentageC1,
   })
@@ -155,7 +157,7 @@ export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, crite
 }
 
 export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, criterio2) {
-  await axios.put(`${urlApi}/api/personal/update/criteriosc2/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
+  await axios.put(`${urlApi}/api/aspirante/update/criteriosc2/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
     criterio2: criterio2,
     porcentageC2: porcentageC2,
   })
@@ -168,7 +170,7 @@ export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, crite
 }
 
 export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, criterio3) {
-  await axios.put(`${urlApi}/api/personal/update/criteriosc3/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
+  await axios.put(`${urlApi}/api/aspirante/update/criteriosc3/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
     criterio3: criterio3,
     porcentageC3: porcentageC3,
   })
@@ -181,7 +183,7 @@ export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, crite
 }
 
 export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4) {
-  await axios.put(`${urlApi}/api/personal/update/criteriosc4/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
+  await axios.put(`${urlApi}/api/aspirante/update/criteriosc4/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
     criterio4: criterio4,
     porcentageC4: porcentageC4,
   })
@@ -194,7 +196,7 @@ export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, crite
 }
 
 export async function updateCalificaion(idCalificacion, data) {// actalizar calificacion
-  await axios.put(`${urlApi}/api/personal/update/calificaciones/${idCalificacion}`, {
+  await axios.put(`${urlApi}/api/aspirante/update/calificaciones/${idCalificacion}`, {
     calCriterio1: data.calCriterio1,
     calCriterio2: data.calCriterio2,
     calCriterio3: data.calCriterio3,
@@ -216,8 +218,8 @@ export async function updateCalificaion(idCalificacion, data) {// actalizar cali
 
 export async function materiasD() {
   try {
-    const resul = await axios.get(`${urlApi}/api/personal/consultar/${ID_USUARIO}/${PERIODO_ACTUAL}`)
-      .then(res => res.data)
+    const resul = await axios.get(`${urlApi}/api/aspirante/consultar/${ID_USUARIO}/${PERIODO_ACTUAL}`)
+      .then(res => res.data.datas)
       .catch(function (res) {
         res = 'error'
         return res;
@@ -229,7 +231,7 @@ export async function materiasD() {
 }
 
 export async function getReporteHorarios(periodo, idMateria, grupo) {
-  await axios.get(`${urlApi}/api/personal/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
+  await axios.get(`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
     .then(res => dataReportHorario = res.data)
     .catch(function (error) {
       swal("error al buscar los horarios!", "Verifique su conexión a internet", "warning");
@@ -238,7 +240,7 @@ export async function getReporteHorarios(periodo, idMateria, grupo) {
 
 
 export async function getReporteLista(periodo, idMateria, grupo) {
-  await axios.get(`${urlApi}/api/personal/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
+  await axios.get(`${urlApi}/api/reporte/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
     .then(res => dataReportLista = res.data)
     .catch(function (error) {
       swal("error al buscar lista!", "Verifique su conexión a internet", "warning");
@@ -281,7 +283,7 @@ export async function getAdmiFechas() {
                 //periodo materia personal grupo
 
 export async function getReporteParcial(materia, grupo) {
-  await axios.get(`${urlApi}/api/reportes/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`)
+  await axios.get(`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`)
     .then(res => dataReporteParciales = res.data)
     .catch(function (error) {
       swal("", "No se encontraron TEMAS finalizados.", "warning");

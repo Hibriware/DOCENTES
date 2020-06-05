@@ -1,7 +1,6 @@
 .centrar{
-    position: absolute;
-    top: 40%; /* Buscamos el centro horizontal (relativo) del navegador */
-    left: 47%;
+	text-align: center;
+    margin-top: 200px;
 }
 .cssload-thecube {
 	width: 73px;

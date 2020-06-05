@@ -1,13 +1,9 @@
 import React, { Component, Suspense } from 'react';
-import {BrowserRouter as Router, Route, Redirect, Link, Switch} from 'react-router-dom';
 import Usuarios from './componentes/menu_usuarios/usuarios';
-import Login from './login/login'
 import PageError from './componentes/404'
 import { materiasD, getPeriodo } from './componentes/servicios/api';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Loader from './login/cargaDedatos';
 import AuthService from './componentes/servicios/AuthService';
-import App from './App'
 export var dataMateria =null, ID_USUARIO = 0;
 export var caches, bandera,perio;
 
@@ -31,24 +27,38 @@ let roles = data.data[0].nombreRol;
 ID_USUARIO = data.data[0].usuarioID;
 //validar la ruta
 if(roles === 'Administrador'){//inicio
+  console.log("Administrador")
   if (!caches) {
-    throw getPeriodo().then(res => {
-       caches = res
-       perio = false
+    throw  getPeriodo().then(res => {
+      console.log(res  + '<<<<<<<<<<<<<<<<<')
+      if(res==='error'){
+        perio = true
+        caches = res
+      }else{
+        caches = res
+        perio = false
+      }
+      
     }).catch(perio = true)
   }
 //fin
 return (
 <>
-{ perio ? <h3>sin informacion disponible</h3> :<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />}
+{ perio ? <PageError onAuthChange={data.onAuthChange} onGenerar={data.logout} resetear={resetear} informacion="Informacion no disponible "/> :<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />}
 </>)
 
 }else if(roles === 'Docente'){//inicio
   console.log('Docente Docente Docente')
   if (!caches) {
     throw  getPeriodo().then(res => {
-       caches = res
-       bandera = caches
+      if(res ==='error'){
+        perio = true
+        caches = res
+      }else{
+        caches = res
+        bandera = caches
+      }
+       
     }).catch(dataMateria = 'error')
   }
 
@@ -65,7 +75,7 @@ return (
 
 return (
   <>
-  { perio ? <h3>sin informacion disponible</h3> : dataMateria ==='error' ? <PageError onAuthChange={data.onAuthChange} onGenerar={data.logout} resetear={resetear}/>: <Usuarios onAuthChange={data.onAuthChange} resetear={resetear}/>}
+  { perio ? <PageError onAuthChange={data.onAuthChange} onGenerar={data.logout} resetear={resetear} informacion="Informacion no disponible "/> : dataMateria ==='error' ? <PageError onAuthChange={data.onAuthChange} onGenerar={data.logout} resetear={resetear} informacion="No cuenta con materias asignadas en el actual periodo "/>: <Usuarios onAuthChange={data.onAuthChange} resetear={resetear}/>}
   </>
 )}//fin
 
@@ -101,8 +111,8 @@ class Home extends Component {
     
       <Suspense fallback={ <Loader />}>
         <CargadeDatos data={n} onAuthChange={this.props.onAuthChange} logout={this.logout} />
-      </Suspense>
-</>    )
+     </Suspense>
+          </>)
   }
   logout(){
     this.AuthService.logout();

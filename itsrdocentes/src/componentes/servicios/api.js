@@ -4,7 +4,7 @@ import { ID_USUARIO } from '../../home';
 import AuthServise from './AuthService';
 
 const axios = require('axios')
-const urlApi = 'http://localhost:4000'; //https://app-api-docentes.herokuapp.com
+const urlApi = 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
 
 
 
@@ -92,22 +92,27 @@ export async function crearCalificacion(datas, unidad, id_criterios) {//crear ca
 var config = {};
 
 export async function getPeriodo() {
+  try {
+    config = {headers: { token: `${localStorage.getItem('token_id')}` }}
+    console.log("periodo")
+    console.log(config)
   
- config = {headers: { token: `${localStorage.getItem('token_id')}` }}
-  console.log("periodo")
-  console.log(config)
-
-  const response = await axios.get(`${urlApi}/api/otros/consultar/periodo`,config)
-    .then(res => 
-      dataPeriodo = res.data.datas
-    )
-    .catch(function (error) {
-      swal(" Sin periodos disponibles!", `${error}`, "warning");
-     return 'error'
-    })
-  PERIODO_ACTUAL = response[0].periodo;
-  EXISTNCIA_ACTA = response[0].existenciaActa;
-  return response;
+    const response = await axios.get(`${urlApi}/api/otros/consultar/periodo`,config)
+      .then(res => 
+        dataPeriodo = res.data.datas
+      )
+      .catch(function (error) {
+        swal(" Sin periodos disponibles!", `${error}`, "warning");
+       return 'error'
+      })
+    PERIODO_ACTUAL = response[0].periodo;
+    EXISTNCIA_ACTA = response[0].existenciaActa;
+    return response;   
+  } catch (error) {
+    console.log(error)
+    
+  }
+ 
 }
 
 export async function getTemas(idMateria, minimo, cierre) {

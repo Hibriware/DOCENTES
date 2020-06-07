@@ -25,6 +25,7 @@
     "sweetalert": "^2.1.2",
     "toastr": "^2.1.4"
   },
+  "homepage":"./",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

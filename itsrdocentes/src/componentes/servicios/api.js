@@ -224,7 +224,15 @@ export async function updateCalificaion(idCalificacion, data) {// actalizar cali
 export async function materiasD() {
   try {
     const resul = await axios.get(`${urlApi}/api/aspirante/consultar/${ID_USUARIO}/${PERIODO_ACTUAL}`)
-      .then(res => res.data.datas)
+      .then(res =>{
+        
+        if(res.data.datas.length){
+         return res.data.datas
+        }else{
+          return 'error'
+        }
+      } 
+        )
       .catch(function (res) {
         res = 'error'
         return res;

@@ -13,80 +13,120 @@ export default class AuthService {
 		this.getProfile = this.getProfile.bind(this);
 	}
 	login(usuario, password) {
-		console.log(usuario, password + 'gsssss---');
+		try {
+			console.log(usuario, password + 'gsssss---');
 
-		return this.requestFetch('/api/login/verificar', {
-			method: 'POST',
-			body: JSON.stringify({ usuario, password })
-		}).then((response) => {
-			console.log(response);
-			if (response.sin === 'null') {
-				console.log('usuarios incorrectos');
-			} else {
-				this.setToken(response.token);
-				this.setUser(response.user);
-				return Promise.resolve(response);
-			}
-			toastr.warning('contraseña o usuario', 'Incorrectos');
-		});
+			return this.requestFetch('/api/login/verificar', {
+				method: 'POST',
+				body: JSON.stringify({ usuario, password })
+			}).then((response) => {
+				console.log(response);
+				if (response.message === 'ocurrio un error' || response.message === 'contraseña incorrecta') {
+					console.log('usuarios incorrectos');
+				} else {
+					this.setToken(response.token);
+					this.setUser(response.user);
+					return Promise.resolve(response);
+				}
+				toastr.warning('contraseña o usuario', 'Incorrectos');
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	isLoggedIn() {
-		console.log('met isLoggedIn');
-		return !!this.getToken();
+		try {
+			console.log('met isLoggedIn');
+			return !!this.getToken();
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	setToken(token) {
-		localStorage.setItem('token_id', token);
+		try {
+			localStorage.setItem('token_id', token);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	getToken() {
-		return localStorage.getItem('token_id');
+		try {
+			return localStorage.getItem('token_id');
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	setUser(userJSON) {
-		localStorage.setItem('resul', JSON.stringify(userJSON));
+		try {
+			localStorage.setItem('resul', JSON.stringify(userJSON));
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	getUser() {
-		return JSON.parse(localStorage.getItem('resul'));
+		try {
+			return JSON.parse(localStorage.getItem('resul'));
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	getUserAccess() {
-		let user = this.getUser();
-		console.log(user);
-		if (user) {
-			return user[0].nombreRol;
-		} else {
-			return false;
+		try {
+			let user = this.getUser();
+			console.log(user);
+			if (user) {
+				return user[0].nombreRol;
+			} else {
+				return false;
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	}
 
 	getProfile() {
-		return decode(this.getToken());
+		try {
+			return decode(this.getToken());
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	logout() {
-		localStorage.removeItem('token_id');
-		localStorage.removeItem('resul');
+		try {
+			localStorage.removeItem('token_id');
+			localStorage.removeItem('resul');
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	requestFetch(urlRelative, opcions) {
 		//inicio
-		console.log('peticion de token');
+		try {
+			console.log('peticion de token');
 
-		const headers = {
-			Accept: 'application/json',
-			'Content-Type': 'application/json'
-		};
-		if (this.isLoggedIn()) {
-			headers['token'] = this.getToken();
+			const headers = {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			};
+			if (this.isLoggedIn()) {
+				headers['token'] = this.getToken();
+			}
+			return fetch(this.domain + urlRelative, {
+				headers,
+				...opcions
+			})
+				.then((response) => response.json())
+				.catch((error) => Promise.reject(error));
+		} catch (error) {
+			console.log(error);
 		}
-		return fetch(this.domain + urlRelative, {
-			headers,
-			...opcions
-		})
-			.then((response) => response.json())
-			.catch((error) => Promise.reject(error));
 	} //fin
 }

@@ -43,14 +43,20 @@ class Login extends React.Component {
   
 	handleSubmit(e) {
    // e.preventDefault(); onAuthSta
-    this.authService.login(this.state.usuario,this.state.password).then(resp => {
+   if(this.state.usuario.length && this.state.password.length){
+	this.authService.login(this.state.usuario,this.state.password).then(resp => {
 		
-      this.props.onAuthChange();
-      this.props.history.replace('/')
-    }).catch(err =>{
-	  console.log(err);
-	  toastr.warning("contraseña o usuario", 'Incorrectos')
-    })
+		this.props.onAuthChange();
+		this.props.history.replace('/')
+	  }).catch(err =>{
+		console.log(err);
+		toastr.warning("contraseña o usuario", 'Incorrectos')
+	  })
+   }else{
+		toastr.warning("contraseña o usuario", 'Incorrectos')
+
+   }
+    
   }
 
 	render() {

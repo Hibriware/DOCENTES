@@ -22,12 +22,10 @@ class App extends Component{
       return(<Home onAuthChange={this.onAuthChange}></Home>)
     }
     return (   
-    <Router>
       <Switch>
         <Route exact  path="/" render={(routerProps) =><Login {...routerProps} onAuthChange={this.onAuthChange}></Login>}/>
         <Redirect from="*" to="/"/>
       </Switch>
-    </Router>
     );
    
   }

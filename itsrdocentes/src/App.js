@@ -7,7 +7,6 @@ import AuthService from './componentes/servicios/AuthService';
 //export let  ID_USUARIO = 251 ;
 //export let PERIODO_ACTUAL=7;
 
-
 class App extends Component{
   constructor(props){
     super(props);
@@ -22,10 +21,12 @@ class App extends Component{
       return(<Home onAuthChange={this.onAuthChange}></Home>)
     }
     return (   
+    
       <Switch>
         <Route exact  path="/" render={(routerProps) =><Login {...routerProps} onAuthChange={this.onAuthChange}></Login>}/>
         <Redirect from="*" to="/"/>
       </Switch>
+    
     );
    
   }

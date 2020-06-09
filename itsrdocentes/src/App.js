@@ -23,11 +23,7 @@ class App extends Component{
     return (   
     
       <Switch>
-<<<<<<< HEAD
-        <Route exact path="/" render={(routerProps) =><Login {...routerProps} onAuthChange={this.onAuthChange}></Login>}/>
-=======
         <Route exact  path="/" render={(routerProps) =><Login {...routerProps} onAuthChange={this.onAuthChange}></Login>}/>
->>>>>>> 9af4290d26e4768e146a9d45f30e06b200811f60
         <Redirect from="*" to="/"/>
       </Switch>
     

@@ -4,7 +4,7 @@ import { ID_USUARIO } from '../../home';
 import AuthServise from './AuthService';
 
 const axios = require('axios')
-const urlApi = 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
+const urlApi = 'http://localhost:4000'; //https://app-api-docentes.herokuapp.com
 
 
 

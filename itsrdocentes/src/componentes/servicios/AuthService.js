@@ -14,8 +14,6 @@ export default class AuthService {
 	}
 	login(usuario, password) {
 		try {
-			console.log(usuario, password + 'gsssss---');
-
 			return this.requestFetch('/api/login/verificar', {
 				method: 'POST',
 				body: JSON.stringify({ usuario, password })
@@ -46,7 +44,8 @@ export default class AuthService {
 
 	setToken(token) {
 		try {
-			localStorage.setItem('token_id', token);
+			
+			sessionStorage.setItem('token_id', token);
 		} catch (error) {
 			console.log(error);
 		}
@@ -54,7 +53,8 @@ export default class AuthService {
 
 	getToken() {
 		try {
-			return localStorage.getItem('token_id');
+			//localStorage
+			return sessionStorage.getItem('token_id');
 		} catch (error) {
 			console.log(error);
 		}
@@ -62,7 +62,7 @@ export default class AuthService {
 
 	setUser(userJSON) {
 		try {
-			localStorage.setItem('resul', JSON.stringify(userJSON));
+			sessionStorage.setItem('resul', JSON.stringify(userJSON));
 		} catch (error) {
 			console.log(error);
 		}
@@ -70,7 +70,7 @@ export default class AuthService {
 
 	getUser() {
 		try {
-			return JSON.parse(localStorage.getItem('resul'));
+			return JSON.parse(sessionStorage.getItem('resul'));
 		} catch (error) {
 			console.log(error);
 		}
@@ -100,8 +100,8 @@ export default class AuthService {
 
 	logout() {
 		try {
-			localStorage.removeItem('token_id');
-			localStorage.removeItem('resul');
+			sessionStorage.removeItem('token_id');
+			sessionStorage.removeItem('resul');
 		} catch (error) {
 			console.log(error);
 		}

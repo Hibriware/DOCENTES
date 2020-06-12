@@ -2,6 +2,7 @@ import 'date-fns';
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import deLocale from "date-fns/locale/es";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -17,7 +18,7 @@ const _guardarState=(e)=>{
 }
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils} >
+    <MuiPickersUtilsProvider locale={deLocale}  utils={DateFnsUtils} >
     <Grid container justify="space-around">
         <KeyboardDatePicker
             disabled={status}

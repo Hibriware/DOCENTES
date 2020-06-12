@@ -9,7 +9,7 @@ import { dataMateria } from '../../../home';
 
 export const SelectMaterias = (data) => {
     const classes = useStyles();
-
+console.log(data)
     const _list_materia = (e) => {
         console.log(e)
         console.log('_list_materia')
@@ -19,7 +19,6 @@ export const SelectMaterias = (data) => {
 
 
     return (
-        <div>
             <FormControl variant="outlined" margin="none" size="small" className={classes.formControl}>
                 <InputLabel id="InputLabel">Materia</InputLabel>
                 <Select
@@ -28,10 +27,9 @@ export const SelectMaterias = (data) => {
                     onChange={_list_materia}
                     label="Materia"
                     value={data.value}
-                    disabled={data.disablesd}>
+                    disabled={data.disabled}>
                     {dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))}
                 </Select>
             </FormControl>
-        </div>
     );
 }

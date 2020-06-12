@@ -18,7 +18,7 @@ export const TablaAsignacionFecha = (data)=>{
               <Table className={classes.table} aria-label="customized table" id="undateTable">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell >Save</StyledTableCell>
+                    <StyledTableCell >Guardar</StyledTableCell>
                     <StyledTableCell align="right"  >Temas</StyledTableCell>
                     <StyledTableCell align="right">Fecha de Evaluacion</StyledTableCell>
                   </TableRow>

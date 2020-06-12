@@ -1,7 +1,6 @@
 import swal from 'sweetalert';
 import moment from 'moment';
 import { ID_USUARIO } from '../../home';
-import AuthServise from './AuthService';
 
 const axios = require('axios')
 const urlApi = 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
@@ -16,6 +15,8 @@ export var dataReportLista = [];
 export var dataPeriodo = [];
 export var dataFechasCierre = [];
 export var dataReporteParciales = [];
+export var FECHA_ACTUAL = [];
+
 
 /*export class token{
 
@@ -48,14 +49,14 @@ async function request(url, metodo, data) {
 	return jsonReponse;
 }
 
-export function treeApi(datas) {
+export async function treeApi(datas) {
 	console.log(datas);
-	axios({
+await axios({
 		method: 'POST',
 		url: `${urlApi}/api/aspirante/registrar`,
 		data: datas
 	})
-		.then((res) => console.log(res))
+		.then((res) => console.log(res.data))
 		.catch(function(error) {
 			swal('error!', 'Verifique su conexion a internet!', 'warning');
 		});
@@ -83,7 +84,7 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 			periodo: datas.idnomenclaturaPeriodo,
 			opcion: datas.opcion
 		})
-		.then((res) => console.log(res))
+		.then((res) => console.log(res.data))
 		.catch(function(error) {
 			console.log(error);
 			swal('error!', 'Verifique su conexion a internet!', 'warning');
@@ -93,19 +94,27 @@ var config = {};
 
 export async function getPeriodo() {
 	try {
-		config = { headers: { token: `${localStorage.getItem('token_id')}` } };
+		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		console.log('periodo');
 		console.log(config);
 
 		const response = await axios
 			.get(`${urlApi}/api/otros/consultar/periodo`, config)
-			.then((res) => (dataPeriodo = res.data.datas))
+			.then((res) => {
+				dataPeriodo = res.data.datas
+				FECHA_ACTUAL =res.data.fechaActual
+			   return dataPeriodo
+			})
 			.catch(function(error) {
 				swal(' Sin periodos disponibles!', `${error}`, 'warning');
 				return 'error';
 			});
+			console.log()
+			console.log("______")
+
 		PERIODO_ACTUAL = response[0].periodo;
 		EXISTNCIA_ACTA = response[0].existenciaActa;
+		
 		return response;
 	} catch (error) {
 		console.log(error);

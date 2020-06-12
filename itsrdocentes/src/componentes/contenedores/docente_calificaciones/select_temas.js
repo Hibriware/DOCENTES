@@ -32,7 +32,7 @@ export const SelectTemas = React.memo((data) => {
 
 
     return (
-        <div>
+        
             <FormControl variant="outlined" className={estilos.formControl}  margin="none" size="small">
                 <InputLabel id="demo-simple-select-outlined-labe">Tema</InputLabel>
                 <Select
@@ -45,6 +45,6 @@ export const SelectTemas = React.memo((data) => {
                     {data.listasTemas.map((tem, i) => (<MenuItem key={i} value={tem.numUnidad}>{tem.tema}</MenuItem>))}
                 </Select>
             </FormControl>
-        </div>
+        
     );
 })

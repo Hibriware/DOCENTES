@@ -2,26 +2,22 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import SaveIcon from '@material-ui/icons/Save';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
-import swal from 'sweetalert';
 import *as toastr from 'toastr';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 import './calificaciones.css';
 import { useStyles } from './dialogos_calificacion';
 import { dataPeriodo, getAdmiFechas } from '../../servicios/api';
 import { datalistaAlumnos, getCriterios, dataCriterios, } from '../../servicios/api';
-import { dataFechasCierre } from '../../servicios/api';
+import { dataFechasCierre,FECHA_ACTUAL } from '../../servicios/api';
 import { SelecMaterias } from './select_materia';
 import { SelectTemas } from './select_temas';
-import { ChipCriterios } from './chip_criterios';
 import { TablaCapturaCalificaciones } from './Tabla_registro';
 import { EnviarCriterios } from './cont_criterios';
 import {ReportParciales} from './reportes/parciales/parciales';
-import {ActaFinal} from './reportes/actaFinal/acta'
+import {ActaFinal} from './reportes/actaFinal/acta';
 export var unidad_Tema;
 //unidadCalificacion, id_criterios
 var ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0;
@@ -57,7 +53,7 @@ export const MaterialTableDemo = () => {//inicio del componente
   const BC4 = useRef();
   //moment(new Date('2020-03-31')).format('YYYY-MM-DD'); fecha para las pruebas de cierre de acta
   //let get_materia_id; 
-  const fecha_actual = moment(new Date()).format('YYYY-MM-DD'); // aca esta la fecha en tiempo real
+  const fecha_actual = moment(new Date(FECHA_ACTUAL)).format('YYYY-MM-DD'); // aca esta la fecha en tiempo real
 
 
   useEffect(() => {

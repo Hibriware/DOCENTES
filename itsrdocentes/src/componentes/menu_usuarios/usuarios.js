@@ -134,15 +134,15 @@ console.log(userType)
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          <Route path='/' exact render={ routeProps=><Cards {...routeProps}/> }></Route>
+          <Route exact path='/'  render={ routeProps=><Cards {...routeProps}/> }></Route>
           { /*  <Route path='/monitoreo' exact render={routeProps=><Monitoreo{...routeProps} propname={'m'}/>}></Route>
                   <Route path='/catalogoPersonal' exact render={routeProps=><CatalogoPersonal{...routeProps} propname={'cp'}/>}></Route>
                   <Route path='/catalogoUsuario' exact render={routeProps=><CatalogoUsuario{...routeProps} propname={'cu'}/>}></Route>
                   <Route path='/guardiasObservaciones' exact render={routeProps=><GuardiasObservaciones{...routeProps} propname={'go'}/>}></Route>
                   <Route path='/reporte_monitoreo' exact render={routeProps=><Reporte_m{...routeProps} propname={'g'}/>}></Route>
                         <Route path='/reporte_personal' exact render={routeProps=><Reporte_p{...routeProps} propname={'o'}/>}></Route>*/}  
-                  <Route path='/inicio' exact render={routeProps=><Acta_entregas{...routeProps} propname={'inicio'}/>}></Route>  
-                  <Route path='/Docente' exact render={routeProps=><Menu_docentes{...routeProps} propname={'o'}/>}></Route>  
+                  <Route exact path='/inicio'  render={routeProps=><Acta_entregas{...routeProps} propname={'inicio'}/>}></Route>  
+                  <Route exact path='/Docente'  render={routeProps=><Menu_docentes{...routeProps} propname={'o'}/>}></Route>  
                   <Redirect from="*" to="/"/>
               </Switch>
       </main>

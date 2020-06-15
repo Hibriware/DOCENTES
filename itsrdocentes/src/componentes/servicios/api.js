@@ -2,7 +2,7 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import { ID_USUARIO } from '../../home';
 
-const axios = require('axios')
+const axios = require('axios');
 const urlApi = 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
@@ -15,8 +15,9 @@ export var dataReportLista = [];
 export var dataPeriodo = [];
 export var dataFechasCierre = [];
 export var dataReporteParciales = [];
-export var FECHA_ACTUAL = [];
+export var dataListaPeriodo = [];
 
+export var FECHA_ACTUAL = [];
 
 /*export class token{
 
@@ -51,7 +52,7 @@ async function request(url, metodo, data) {
 
 export async function treeApi(datas) {
 	console.log(datas);
-await axios({
+	await axios({
 		method: 'POST',
 		url: `${urlApi}/api/aspirante/registrar`,
 		data: datas
@@ -66,10 +67,10 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 	//crear calificacion alumno
 	await axios
 		.post(`${urlApi}/api/aspirante/calificacion`, {
-			calR1: datas.calR1,
-			calR2: datas.calR2,
-			calR3: datas.calR3,
-			calR4: datas.calR4,
+			calR1: datas.calR1 || 0,
+			calR2: datas.calR2 || 0,
+			calR3: datas.calR3 || 0,
+			calR4: datas.calR4 || 0,
 			calCriterio1: datas.calCriterio1,
 			calCriterio2: datas.calCriterio2,
 			calCriterio3: datas.calCriterio3,
@@ -99,23 +100,72 @@ export async function getPeriodo() {
 		console.log(config);
 
 		const response = await axios
-			.get(`${urlApi}/api/otros/consultar/periodo`, config)
+			.get(`${urlApi}/api/administrador/lista/periodo/status`, config)
 			.then((res) => {
-				dataPeriodo = res.data.datas
-				FECHA_ACTUAL =res.data.fechaActual
-			   return dataPeriodo
+				if(res.data.data.length){
+					dataPeriodo = res.data.data;
+					FECHA_ACTUAL = res.data.fechaActual;
+					PERIODO_ACTUAL = res.data.data[0].periodo;
+					return dataPeriodo;
+				}else{
+					return 'not';
+				}
+				
 			})
 			.catch(function(error) {
 				swal(' Sin periodos disponibles!', `${error}`, 'warning');
 				return 'error';
 			});
-			console.log()
-			console.log("______")
+		console.log();
+		console.log('______');
+		//EXISTNCIA_ACTA = response[0].existenciaActa;
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+/*export async function getPeriodo() {
+	try {
+		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		console.log('periodo');
+		console.log(config);
+
+		const response = await axios
+			.get(`${urlApi}/api/otros/consultar/periodo`, config)
+			.then((res) => {
+				dataPeriodo = res.data.datas;
+				FECHA_ACTUAL = res.data.fechaActual;
+				return dataPeriodo;
+			})
+			.catch(function(error) {
+				swal(' Sin periodos disponibles!', `${error}`, 'warning');
+				return 'error';
+			});
+		console.log();
+		console.log('______');
 
 		PERIODO_ACTUAL = response[0].periodo;
 		EXISTNCIA_ACTA = response[0].existenciaActa;
-		
+
 		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}*/
+
+export async function getListaPeriodo() {
+	try {
+		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		let respon = await axios
+			.get(`${urlApi}/api/administrador/lista/periodo`, config)
+			.then((res) => res.data)
+			.catch(function(error) {
+				swal('!', `${error}`, 'warning');
+				return false;
+			});
+
+		return respon;
 	} catch (error) {
 		console.log(error);
 	}
@@ -299,23 +349,84 @@ export async function crearRegistrosfechas(datas) {
 			segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
 			tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
 			entrega_final: moment(datas.final).format('YYYY-MM-DD'),
-			periodo: PERIODO_ACTUAL
+			status: datas.status,
+			periodo: datas.periodo
 		})
-		.then((res) => swal('', `FECHAS REGISTRADAS AL PERIODO ${PERIODO_ACTUAL}`, 'success'))
+		.then((res) => swal('', `FECHAS REGISTRADAS`, 'success'))
 		.catch(function(error) {
 			console.log(error);
 			swal('error!', 'Verifique su conexion a internet!', 'warning');
 		});
 }
 
-export async function getAdmiFechas() {
+//data administrador
+export async function updateRegistrosfechas(datas) {
+	//crear calificacion alumno
 	await axios
-		.get(`${urlApi}/api/administrador/fechas/${PERIODO_ACTUAL}`)
-		.then((res) => (dataFechasCierre = res.data))
+		.put(`${urlApi}/api/administrador/fechas/actualizar/${datas.periodo}`, {
+			primera_entrega: moment(datas.primera).format('YYYY-MM-DD'),
+			segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
+			tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
+			entrega_final: moment(datas.final).format('YYYY-MM-DD'),
+			status: datas.status,
+			periodo: datas.periodo
+		})
+		.then((res) => swal('', `FECHAS REGISTRADAS AL PERIODO ${datas.periodo}`, 'success'))
 		.catch(function(error) {
-			swal('', 'Probablemente el administrador no ha asignado las fechas de cierre ', 'warning');
+			console.log(error);
+			swal('error!', 'Verifique su conexion a internet!', 'warning');
 		});
 }
+
+export async function getAdmiFechas(periodo) {
+	let respon = await axios
+		.get(`${urlApi}/api/administrador/fechas/${periodo || PERIODO_ACTUAL}`)
+		.then((res) => {
+			dataFechasCierre = res.data;
+			console.log(res);
+			return true;
+		})
+		.catch(function(error) {
+			swal('', 'Probablemente el administrador no ha asignado las fechas de cierre ', 'warning');
+			return false;
+		});
+
+	return respon;
+}
+
+export async function restablecerStatus(periodo) {
+	let respon = await axios
+		.get(`${urlApi}/api/administrador/fechas/actualizar/columna`)
+		.then((res) => {
+			return true;
+		})
+		.catch(function(error) {
+			swal('', 'Probablemente el administrador no ha asignado las fechas de cierre ', 'warning');
+			return false;
+		});
+
+	return respon;
+}
+export async function getStatusPeriodo() {
+let respons	= await axios
+		.get(`${urlApi}/api/administrador/lista/periodo/status`)
+		.then((res) => {
+			if(res.data.data.length){
+				console.log(res.data.data)
+				return res.data.data[0];
+			}else{
+				return false
+			}
+		})
+		.catch(function(error) {
+			swal('', 'No se encontraron TEMAS finalizados.', 'warning');
+			console.log(error);
+			return false
+		});
+
+		return respons
+}
+
 //periodo materia personal grupo
 
 export async function getReporteParcial(materia, grupo) {

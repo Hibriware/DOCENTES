@@ -22,13 +22,13 @@ console.log('dataMateria <<<')
 					<Avatar src="/broken-image.jpg" />
 				</div>
 				<Typography variant="button" display="block" gutterBottom>
-					<strong>Nombre:</strong> {dataMateria[0].nameDocente}
+					<strong>Nombre:</strong> {(dataMateria[0].nameDocente) || "No disponible"}
 				</Typography>
 				<Typography variant="button" display="block" gutterBottom>
-					<strong>Clave:</strong> {dataMateria[0].clavePersonal}
+					<strong>Clave:</strong> {(dataMateria[0].clavePersonal) || "No disponible"}
 				</Typography>
 				<Typography variant="button" display="block" gutterBottom>
-					<strong>División:</strong> {dataMateria[0].nombreCorto}
+					<strong>División:</strong> {(dataMateria[0].nombreCorto) || "No disponible"}
 				</Typography>
 				<div className={classes.pdfss}>
 					<ButtonPdf />

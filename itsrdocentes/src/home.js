@@ -28,24 +28,30 @@ ID_USUARIO = data.data[0].usuarioID;
 //validar la ruta
 if(roles === 'Administrador'){//inicio
   console.log("Administrador")
-  if (!caches) {
+ if (!caches) {
     throw  getPeriodo().then(res => {
-      console.log(res  + '<<<<<<<<<<<<<<<<<')
-      if(res==='error'){
+      console.log(res)
+      if(res==='error' ){
         perio = true
         caches = res
+      }else if(res==='not'){
+        perio = false
+        caches = true
       }else{
         caches = res
         perio = false
       }
-      
     }).catch(perio = true)
   }
-//fin
-return (
-<>
-{ perio ? <PageError onAuthChange={data.onAuthChange} onGenerar={data.logout} resetear={resetear} informacion="Informacion no disponible "/> :<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />}
-</>)
+//fint
+
+  return (
+    <React.Fragment>{
+    perio ? <PageError onAuthChange={data.onAuthChange} onGenerar={data.logout} resetear={resetear} informacion="Informacion no disponible "/> :<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />
+  }
+  </React.Fragment>)
+
+
 
 }else if(roles === 'Docente'){//inicio
   console.log('Docente Docente Docente')

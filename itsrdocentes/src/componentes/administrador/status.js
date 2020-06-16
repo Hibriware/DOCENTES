@@ -12,7 +12,7 @@ function Status({isPeriodo,isperiodo=false,isdisabled=true}) {
     return(
         <FormControlLabel
         disabled={isdisabled} control={<Switch checked={isperiodo} onChange={handleChange} name="Activar este periodo" />}
-        label="Activar este periodo"
+        label="Activar este periodo" title="Esta opción asigna el periodo al módulo Docente calificación."
       />
     );
 }

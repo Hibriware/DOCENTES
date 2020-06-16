@@ -1,6 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
+import EditIcon from '@material-ui/icons/Edit';
+import * as toastr from 'toastr';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -9,16 +11,30 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Editar({disabled=true,isDisable}) {
-    const classes = useStyles();
-    
-    const _validar =()=>{
-        console.log('habiliatar dates')
-        isDisable(false)
-    }
+function Editar({ disabled = true, isDisable,periodos ,setIsStatus,handleDisables}) {
+	const classes = useStyles();
+
+	const _validar = () => {
+		console.log('habiliatar dates'+''+periodos);
+		if(periodos){
+			isDisable(false);
+			setIsStatus(false)
+			handleDisables(false)
+		}else{
+			toastr.warning("Seleccione un periodo", 'nota');
+		}
+	};
 
 	return (
-		<Button disabled={disabled} onClick={_validar} variant="contained" color="primary" size="small" className={classes.button} startIcon={<SaveIcon />}>
+		<Button
+			disabled={disabled}
+			onClick={_validar}
+			variant="contained"
+			color="primary"
+			size="small"
+			className={classes.button}
+			startIcon={<EditIcon />}
+		>
 			Editar
 		</Button>
 	);

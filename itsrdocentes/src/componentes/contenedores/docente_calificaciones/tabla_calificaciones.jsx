@@ -77,21 +77,27 @@ export const MaterialTableDemo = () => {//inicio del componente
         var segunda = moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD'); //entrega_final
         var tercera = moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD');
         var entrega_final = moment(dataFechasCierre[0].entrega_final).format('YYYY-MM-DD');
+        var habilitar_todas=dataFechasCierre[0].habilitar_todas;
 
 
-        if (fecha_actual <= primera) {
+        if (fecha_actual <= primera && habilitar_todas===0) {
           let rest = moment(fecha_actual).subtract(2, 'month'); //rango de la fechas de busqueda
           setCierre(primera)
           setMinimo(moment(rest).format('YYYY-MM-DD'))
-        } else if (fecha_actual <= segunda) {
+        } else if (fecha_actual <= segunda  && habilitar_todas===0) {
           setCierre(segunda)
           setMinimo(primera)
-        } else if (fecha_actual <= tercera) {
+        } else if (fecha_actual <= tercera  && habilitar_todas===0) {
           setCierre(tercera)
           setMinimo(segunda)
-        } else if(fecha_actual <= entrega_final){
+        } else if(fecha_actual <= entrega_final  && habilitar_todas===0){
           setCierre(entrega_final)
           setMinimo(tercera)
+        }else if(habilitar_todas===1){
+          console.log("temas disponibles---")
+          let rest = moment(fecha_actual).subtract(2, 'month');
+          setCierre(entrega_final)
+          setMinimo(moment(rest).format('YYYY-MM-DD'))
         }else{
           alert("Sin fechas de cierre definidas por el momento ")
         }

@@ -350,6 +350,7 @@ export async function crearRegistrosfechas(datas) {
 			tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
 			entrega_final: moment(datas.final).format('YYYY-MM-DD'),
 			status: datas.status,
+			habilitar_todas:datas.temas,
 			periodo: datas.periodo
 		})
 		.then((res) => swal('', `FECHAS REGISTRADAS`, 'success'))
@@ -369,9 +370,10 @@ export async function updateRegistrosfechas(datas) {
 			tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
 			entrega_final: moment(datas.final).format('YYYY-MM-DD'),
 			status: datas.status,
+			habilitar_todas:datas.temas,
 			periodo: datas.periodo
 		})
-		.then((res) => swal('', `FECHAS REGISTRADAS AL PERIODO ${datas.periodo}`, 'success'))
+		.then((res) => swal('', `Registros guardados: ${datas.periodo}`, 'success'))
 		.catch(function(error) {
 			console.log(error);
 			swal('error!', 'Verifique su conexion a internet!', 'warning');

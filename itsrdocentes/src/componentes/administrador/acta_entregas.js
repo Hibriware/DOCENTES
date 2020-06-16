@@ -9,6 +9,7 @@ import moment from 'moment';
 import Lista_Periodos from './selectPeriodos';
 import Editar from './btnEditar';
 import Status from './status';
+import ActivarTemas from './activaTemas';
 import { Btn_evaluar } from './funciones';
 import { useStyles } from './styles';
 import {
@@ -30,12 +31,14 @@ const Entregas = () => {
 	const [ entrega3, setEntrega3 ] = React.useState(fecha_Defaul);
 	const [ entregaFinal, setFinal ] = React.useState(fecha_Defaul);
 	const [ periodos, setPeriodos ] = React.useState(false);
+	const [ temas, setActivaTemas ] = React.useState({temas:false,disabled:true});
+
 
 	const [ recargar, setRecargar ] = React.useState(false);
 	const [ status, setStatus ] = React.useState(false);
 	const [ save, setSave ] = React.useState(false);
 	const [ isperiodo, setIsperiodo ] = React.useState(false);
-	//const [ isperiodo, setIsperiodo ] = React.useState(false);
+	const [ isStatus, setIsStatus ] = React.useState(false);
 
 
 	const [ PERIODO, setPeriodo ] = React.useState(false);
@@ -74,7 +77,8 @@ const Entregas = () => {
 			let RANGO_PERIODO = await getStatusPeriodo();
 				setPeriodo(RANGO_PERIODO)
 				if(RANGO_PERIODO.periodo){
-					buscar_cierre_de_acta(RANGO_PERIODO.periodo)
+				await	buscar_cierre_de_acta(RANGO_PERIODO.periodo)
+					setActivaTemas({...temas,disabled:true})
 					console.log("cargar fechas")
 				}else{
 			
@@ -92,21 +96,37 @@ const Entregas = () => {
 		[ recargar ]
 	);
 
+	const handleChange = event => {
+       console.log(event)
+        setActivaTemas({...temas, temas:event})
+	  }
+	  const handleDisables = event => {
+        
+        setActivaTemas({...temas,disabled:event })
+	  }
+	  
 	const buscar_cierre_de_acta = async (evt) => {
 		await getAdmiFechas(evt);
 		setPeriodos(evt);
 		console.log(dataFechasCierre);
-		if (dataFechasCierre.length) {
+		if (dataFechasCierre.length) {//
 			setStatus(true);
 			setSave(false);
+			setIsStatus(true);
 			setEntrega1(dataFechasCierre[0].primera_entrega);
 			setEntrega2(dataFechasCierre[0].segunda_entrega);
 			setEntrega3(dataFechasCierre[0].tercera_entrega);
 			setFinal(dataFechasCierre[0].entrega_final);
-			setIsperiodo(dataFechasCierre[0].status === 0 ? false : true);
+			setIsperiodo(dataFechasCierre[0].status === 0 ? false : true);//0:false,1:true
+			setActivaTemas({
+				...temas, temas:dataFechasCierre[0].habilitar_todas === 0 ? false : true,
+				disabled:true
+			})
 		} else {
 			setStatus(false);
 			setSave(true);
+			setActivaTemas({...temas,disabled:true})
+			setIsStatus(true)
 			console.log('habilitar el mensaje de no hay fechas registre fechas nuevas');
 		}
 
@@ -117,7 +137,7 @@ const Entregas = () => {
 		<div>
 			<h3 style={{ textAlign: 'center' }}>CALENDARIO DE ENTREGA DE CALIFICACIONES</h3>
 			<h4 style={{ textAlign: 'center' }}>PERIODO:{PERIODO ? PERIODO.rango + PERIODO.anio: 'NO DISPONIBLE'}</h4>
-
+					<ActivarTemas disabled={temas.disabled} isTemas={temas.temas} handleChange={handleChange} />
 			<div className={classes.root}>
 				<Card elevation={3}>
 					<CssBaseline />
@@ -174,6 +194,7 @@ const Entregas = () => {
 										final={entregaFinal}
 										periodo={periodos}
 										status={isperiodo ? '1' : '0'}
+										temas={temas.temas ? '1':'0'}
 										isDisable={save}
 										isdisabled={status}
 									/>
@@ -187,8 +208,8 @@ const Entregas = () => {
 							</Grid>
 							<Grid item xs={4}>
 								<Paper className={classes.paper} elevation={0}>
-									<Editar disabled={!status} isDisable={setStatus} />
-									<Status isPeriodo={setIsperiodo} isperiodo={isperiodo} isdisabled={status} />
+									<Editar disabled={!status} isDisable={setStatus} periodos={periodos} setIsStatus={setIsStatus} handleDisables={handleDisables}/>
+									<Status isPeriodo={setIsperiodo} isperiodo={isperiodo} isdisabled={isStatus} />
 								</Paper>
 							</Grid>
 						</Grid>

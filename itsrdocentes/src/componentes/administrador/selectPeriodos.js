@@ -31,8 +31,8 @@ function Lista_Periodo({onBuscar}) {
     }
 
     return(
-        <FormControl style={{width:132}}>
-        <InputLabel  id="demo-customized-select-label">Periodos</InputLabel>
+        <FormControl title="Seleccione un periodo para editarlo." style={{width:132}}>
+        <InputLabel id="demo-customized-select-label">Periodos</InputLabel>
         <Select style={{width:132}}
           labelId="demo-customized-select-label"
           id="demo-customized-select"

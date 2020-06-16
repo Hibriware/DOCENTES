@@ -22,7 +22,7 @@ export const SelecMaterias = React.memo((data) => {
         setMateria(idMateriaActual)
         data.setMATERIA_ID(idMateriaActual);//actualizar al estado
         await getTemas(idMateriaActual, data.minimo, data.cierre);
-
+        console.log(datalista)
         data.setListas(datalista)//actualiza el la lista de materias actual
     };//fi
 

@@ -142,14 +142,14 @@ export default function CustomizedTables() {
 	const Mitema1 = 'Tema 1';
 	const actualizar_fecha_tema1 = async (date) => {
 		//tema1 seleccionar fecha para el tema-----------------------------@#######
-		if (date < fechaFinal) {
+		if (date < fecha1) {
 			removerTema(Mitema1); //eliminar estado
 			setChectema1(false);
 			setDate_fecha1(date);
 		} else {
 			await removerTema(Mitema1);
 			setChectema1(false);
-			toastr.warning(textFecha, 'nota');
+			toastr.warning('El TEMA 1, no puede ser mayor a la primera entrega', 'nota');
 		}
 	}; //fin
 
@@ -174,7 +174,10 @@ export default function CustomizedTables() {
 	const Mitema2 = 'Tema 2';
 	const actualizar_fecha_tema2 = (date) => {
 		//tema1-----------------------------····#####3
-		if (date > date_ficha1 && date < fechaFinal) {
+		if (date > date_ficha1 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+			console.log(date)
+			console.log(date_ficha1)
+
 			removerTema(Mitema2);
 			setChectema2(false); //cambiar checked a false
 			setDate_fecha2(date);
@@ -209,13 +212,13 @@ export default function CustomizedTables() {
 	const Mitema3 = 'Tema 3';
 	const actualizar_fecha_tema3 = (date) => {
 		//tema3-----------------------------########
-		if (date > date_ficha2) {
+		if (date > date_ficha2 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema3);
 			setChectema3(false); //canbiar checked a false
 			setDate_fecha3(date);
 		} else {
 			toastr.warning(textFecha, 'nota');
-			removerTema(Mitema2);
+			removerTema(Mitema3);
 			setDate_fecha3(default_fecha);
 			setChectema3(false);
 		}
@@ -243,7 +246,7 @@ export default function CustomizedTables() {
 	const Mitema4 = 'Tema 4';
 	const actualizar_fecha_tema4 = (date) => {
 		//tema4-----------------------------########
-		if (date > date_ficha3) {
+		if (date > date_ficha3 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema4);
 			setChectema4(false); //canbiar checked a false
 			setDate_fecha4(date);
@@ -276,7 +279,7 @@ export default function CustomizedTables() {
 	const Mitema5 = 'Tema 5';
 	const actualizar_fecha_tema5 = (date) => {
 		//tema5-----------------------------########
-		if (date > date_ficha4) {
+		if (date > date_ficha4 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema5);
 			setChectema5(false); //canbiar checked a false
 			setDate_fecha5(date);
@@ -309,7 +312,7 @@ export default function CustomizedTables() {
 	const Mitema6 = 'Tema 6';
 	const actualizar_fecha_tema6 = (date) => {
 		//tema6-----------------------------########
-		if (date > date_ficha5) {
+		if (date > date_ficha5 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3 ) {
 			removerTema(Mitema6);
 			setChectema6(false); //canbiar checked a false
 			setDate_fecha6(date);
@@ -342,7 +345,7 @@ export default function CustomizedTables() {
 	const Mitema7 = 'Tema 7';
 	const actualizar_fecha_tema7 = (date) => {
 		//tema4-----------------------------########
-		if (date > date_ficha6) {
+		if (date > date_ficha6 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema7);
 			setChectema7(false); //canbiar checked a false
 			setDate_fecha7(date);
@@ -374,7 +377,7 @@ export default function CustomizedTables() {
 	const Mitema8 = 'Tema 8';
 	const actualizar_fecha_tema8 = (date) => {
 		//tema8-----------------------------########
-		if (date > date_ficha7) {
+		if (date > date_ficha7 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema8);
 			setChectema8(false); //canbiar checked a false
 			setDate_fecha8(date);
@@ -407,7 +410,7 @@ export default function CustomizedTables() {
 	const Mitema9 = 'Tema 9';
 	const actualizar_fecha_tema9 = (date) => {
 		//tema9-----------------------------########
-		if (date > date_ficha8) {
+		if (date > date_ficha8 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema9);
 			setChectema9(false); //canbiar checked a false
 			setDate_fecha9(date);
@@ -439,7 +442,7 @@ export default function CustomizedTables() {
 	const Mitema10 = 'Tema 10';
 	const actualizar_fecha_tema10 = (date) => {
 		//tema10-----------------------------########
-		if (date > date_ficha9) {
+		if (date > date_ficha9 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
 			removerTema(Mitema10);
 			setChectema10(false); //canbiar checked a false
 			setDate_fecha10(date);
@@ -691,7 +694,7 @@ export default function CustomizedTables() {
 	];
 
 	return (
-		<div>
+		<React.Fragment>
 			<Backdrop className={classes.backdrop} open={loaddig}>
 				<CircularProgress color="inherit" />
 			</Backdrop>
@@ -725,6 +728,6 @@ export default function CustomizedTables() {
 					</Button>
 				</Grid>
 			</Grid>
-		</div>
+		</React.Fragment>
 	);
 }

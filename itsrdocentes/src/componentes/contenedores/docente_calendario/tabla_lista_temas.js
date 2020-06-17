@@ -13,10 +13,11 @@ import { useStyles } from './dialogos';
 
 
 export const TablaVerTemas = (data) =>{
+  console.log(data)
     const classes = useStyles();
 
     return(
-        <div>
+        <React.Fragment>
  <TableContainer  component={Paper}>
             <Table className={classes.table} size="small" aria-label="a dense table">
               <TableHead>
@@ -44,6 +45,6 @@ export const TablaVerTemas = (data) =>{
             </Table>
             
           </TableContainer>
-        </div>
+        </React.Fragment>
     );
 }  

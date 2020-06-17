@@ -10,6 +10,7 @@ import Lista_Periodos from './selectPeriodos';
 import Editar from './btnEditar';
 import Status from './status';
 import ActivarTemas from './activaTemas';
+import *as toastr from 'toastr';
 import { Btn_evaluar } from './funciones';
 import { useStyles } from './styles';
 import {
@@ -126,7 +127,8 @@ const Entregas = () => {
 			setSave(true);
 			setActivaTemas({...temas,disabled:true})
 			setIsStatus(true)
-			console.log('habilitar el mensaje de no hay fechas registre fechas nuevas');
+			toastr.warning('No se encontraron fechas establecidas', '!')
+
 		}
 
 		console.log('dataFechasCierre..');

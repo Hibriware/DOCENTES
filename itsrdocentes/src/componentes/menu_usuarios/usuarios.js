@@ -158,9 +158,9 @@ handleDrawerClose = () => {
   this.setState({open:false});
 };
 logout(){
+ this.props.resetear();
   this.AuthService.logout();
   this.props.onAuthChange();
- this.props.resetear();
 }
 }
 

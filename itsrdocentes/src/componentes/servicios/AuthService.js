@@ -5,7 +5,7 @@ export default class AuthService {
 	constructor(domain) {
 		console.log('met constructor');
 
-		this.domain = domain || 'http://localhost:4000'; //https://app-api-docentes.herokuapp.com
+		this.domain = domain || 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
 
 		this.requestFetch = this.requestFetch.bind(this);
 		this.login = this.login.bind(this);

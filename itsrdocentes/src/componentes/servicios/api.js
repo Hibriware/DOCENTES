@@ -3,7 +3,7 @@ import moment from 'moment';
 import { ID_USUARIO } from '../../home';
 
 const axios = require('axios');
-const urlApi = 'http://localhost:4000'; //https://app-api-docentes.herokuapp.com
+const urlApi = 'http://212.237.52.166:4000'; //http://212.237.52.166:4000
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
 export var datalista = [];

@@ -95,7 +95,7 @@ export const MaterialTableDemo = () => {//inicio del componente
           setMinimo(tercera)
         }else if(habilitar_todas===1){
           console.log("temas disponibles---")
-          let rest = moment(fecha_actual).subtract(2, 'month');
+          let rest = moment(primera).subtract(2, 'month');
           setCierre(entrega_final)
           setMinimo(moment(rest).format('YYYY-MM-DD'))
         }else{
@@ -297,7 +297,7 @@ export const MaterialTableDemo = () => {//inicio del componente
           <h3 style={{textAlign:'center'}}>INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS</h3>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper elevation={0} className={estilos.paperperiodos}><strong>PERIODO:</strong>{dataPeriodo[0].rango}</Paper>
+          <Paper elevation={0} className={estilos.paperperiodos}><strong>PERIODO:</strong>{dataPeriodo[0].rango+-+dataPeriodo[0].anio}</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.paperperiodos}><strong>CIERRE DE ACTA: </strong>{moment(cierre).format('DD-MM-YYYY')}</Paper>

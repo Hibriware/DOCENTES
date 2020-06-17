@@ -85,12 +85,9 @@ const Entregas = () => {
 				await buscar_cierre_de_acta(periodos)
 				}
 			console.log('RANGO_PERIODO')
-
-			console.log(RANGO_PERIODO)
 			}
 
 			actualizar();
-
 			console.log('actualizar pantalla');
 		},
 		[ recargar ]
@@ -118,10 +115,12 @@ const Entregas = () => {
 			setEntrega3(dataFechasCierre[0].tercera_entrega);
 			setFinal(dataFechasCierre[0].entrega_final);
 			setIsperiodo(dataFechasCierre[0].status === 0 ? false : true);//0:false,1:true
+			let _temas = dataFechasCierre[0].habilitar_todas === 0 ? false : true
 			setActivaTemas({
-				...temas, temas:dataFechasCierre[0].habilitar_todas === 0 ? false : true,
+				...temas, temas:temas.temas=_temas,
 				disabled:true
 			})
+
 		} else {
 			setStatus(false);
 			setSave(true);
@@ -136,7 +135,7 @@ const Entregas = () => {
 	return (
 		<div>
 			<h3 style={{ textAlign: 'center' }}>CALENDARIO DE ENTREGA DE CALIFICACIONES</h3>
-			<h4 style={{ textAlign: 'center' }}>PERIODO:{PERIODO ? PERIODO.rango + PERIODO.anio: 'NO DISPONIBLE'}</h4>
+			<h4 style={{ textAlign: 'center' }}>PERIODO ACTIVO:{PERIODO ? PERIODO.rango + PERIODO.anio: 'NO DISPONIBLE'}</h4>
 					<ActivarTemas disabled={temas.disabled} isTemas={temas.temas} handleChange={handleChange} />
 			<div className={classes.root}>
 				<Card elevation={3}>

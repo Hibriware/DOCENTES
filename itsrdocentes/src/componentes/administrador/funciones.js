@@ -40,7 +40,7 @@ export const Btn_evaluar = (fechas) => {
 					console.log('BORRAR__STATUS__Y__ASIGNAR_NEW');
 					await restablecerStatus();
 				}
-				console.log('actualizando fechas NORMAL');
+				//	ACTUALIZACION DE FECHAS	console.log('actualizando fechas NORMAL');
 
 				await updateRegistrosfechas(fechas);
 			}

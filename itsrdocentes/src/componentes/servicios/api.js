@@ -420,7 +420,7 @@ export async function updateRegistrosfechas(datas) {
 				habilitar_todas: datas.temas,
 				periodo: datas.periodo
 			})
-			.then((res) => swal('', `Registros guardados: ${datas.periodo}`, 'success'))
+			.then((res) => swal('', `Registros actualizados: (${datas.periodo})`, 'success'))
 			.catch(function(error) {
 				console.log(error);
 				swal('error!', 'Verifique su conexion a internet!', 'warning');

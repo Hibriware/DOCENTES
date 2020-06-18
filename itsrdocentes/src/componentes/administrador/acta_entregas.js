@@ -128,7 +128,6 @@ const Entregas = () => {
 			setActivaTemas({...temas,disabled:true})
 			setIsStatus(true)
 			toastr.warning('No se encontraron fechas establecidas', '!')
-
 		}
 
 		console.log('dataFechasCierre..');

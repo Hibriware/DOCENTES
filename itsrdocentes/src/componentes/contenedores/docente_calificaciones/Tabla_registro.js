@@ -1,5 +1,6 @@
 import React from 'react';
 import MaterialTable from 'material-table';
+import MenuCreterios from './establecerCriterios';
 import { crearCalificacion, updateCalificaion, getAlumnos, datalistaAlumnos } from '../../servicios/api';
 import './calificaciones.css';
 import { id_criterios, unidadCalificacion } from './select_temas';
@@ -7,13 +8,12 @@ import { id_criterios, unidadCalificacion } from './select_temas';
 
 
 export const TablaCapturaCalificaciones = React.memo((data) => {
+  const [open, setOpen] = React.useState(false);
+
   console.log('memo Tabla registro ')
   const { alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4 } = data;
 
   const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
-
-    console.log('hook guardarPromedio >> ' + datos.idMateria)
-    console.log(datos)
 
     let bandera = datos.materiaDocente_id;
     let idcalificacion = datos.idcalificaciones;
@@ -46,9 +46,18 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
     }
   }//fin
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   return (
     <div style={{maxWidth:'100%'}}>
+      <MenuCreterios handleClose={handleClose} open={open} />
     <MaterialTable  margin="none" size="small"
       title="Captura de calificaciones"
       columns={alumnos.columns}//columnas
@@ -89,7 +98,16 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
         rowStyle: {
           white: 'pre',
         },
-      }} />
+      }} 
+      /*actions={[
+        {
+          icon: 'add',
+          tooltip: 'Add User',
+          isFreeAction: true,
+          onClick: (event) => handleClickOpen()
+        }
+      ]}*/
+      />
       </div>
   );
 })

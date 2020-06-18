@@ -3,6 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import {dataPeriodo} from '../../servicios/api';
 import { dataMateria } from '../../../home';
 import { useStyles } from './dialogos_principal';
 import 'jspdf-autotable';
@@ -15,8 +16,11 @@ console.log(dataMateria)
 console.log('dataMateria <<<')
 
 	return (
-		<React.Fragment>
+		<div>
 			<CssBaseline />
+			<h3 style={{display:'flex', justifyContent:'center'}}>INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS</h3>
+			<h3 style={{display:'flex', justifyContent:'center'}}>PERIODO:{dataPeriodo[0].rango+dataPeriodo[0].anio}</h3>
+
 			<Container maxWidth="sm">
 				<div className={classes.avatar}>
 					<Avatar src="/broken-image.jpg" />
@@ -34,6 +38,6 @@ console.log('dataMateria <<<')
 					<ButtonPdf />
 				</div>
 			</Container>
-		</React.Fragment>
+		</div>
 	);
 }

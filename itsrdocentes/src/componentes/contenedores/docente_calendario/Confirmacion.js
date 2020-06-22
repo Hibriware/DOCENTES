@@ -9,15 +9,19 @@ import Button from '@material-ui/core/Button';
 
 
 export const Confirmacion = (data) => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState({open:false,isDisable:false});
 
     useEffect(() => {
-        setOpen(data.open)
-    })
+        console.log("useEffect")
+        setOpen({...open, open:data.open})
+    },[data.open])
 
-    const _GuardarTemas = (e) => {
+    const _GuardarTemas = async (e) => {
         e.preventDefault()
-        data.onGuardar()
+        setOpen({...open, isDisable:true})
+       await data.onGuardar()
+        setOpen({...open, isDisable:false,open:false})
+
     }
 
     const _handleClose = () => {
@@ -26,7 +30,7 @@ export const Confirmacion = (data) => {
 
     return (
         <div>
-            <Dialog open={open} onClose={_handleClose} aria-labelledby="form-dialog-title">
+            <Dialog open={open.open} onClose={_handleClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Nota...</DialogTitle>
                 <DialogContent>
                  <DialogContentText>
@@ -39,7 +43,7 @@ export const Confirmacion = (data) => {
                   <Button onClick={_handleClose} color="primary">
                      Cancelar
                   </Button>
-                    <Button onClick={_GuardarTemas} color="primary">
+                    <Button disabled={open.isDisable} onClick={_GuardarTemas} color="primary">
                        Confirmar
                     </Button>
                 </DialogActions>

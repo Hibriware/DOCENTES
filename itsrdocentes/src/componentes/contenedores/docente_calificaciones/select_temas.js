@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -10,15 +10,20 @@ export var unidadCalificacion, id_criterios;
 export const SelectTemas = React.memo((data) => {
     console.log('memo sect temas')
 
-    const [unidad, setUnidad] = React.useState('');
+    //const [unidad, setUnidad] = React.useState('');
     const estilos = useStyles();
     console.log('selctMterias')
+
+    useEffect(() => {
+    console.log('limpiar lista de temas anteriores')
+    data.setUnidad('')
+    }, [data.MATERIA_ID])
 
 
     const _obtenerTema = async (tem) => {//inico
         data.setOpen(true)
         let numTemas = tem.target.value;
-        setUnidad(numTemas);
+        data.setUnidad(numTemas);
         await getAlumnos(data.MATERIA_ID, numTemas);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
         await data.setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
 
@@ -40,7 +45,7 @@ export const SelectTemas = React.memo((data) => {
                     labelId="demo-simple-select-outlined-labe"
                     id="Tema"
                     label="Tema"
-                    value={unidad}
+                    value={data.unidad}
                     onChange={_obtenerTema}>
                     {data.listasTemas.map((tem, i) => (<MenuItem key={i} value={tem.numUnidad}>{tem.tema}</MenuItem>))}
                 </Select>

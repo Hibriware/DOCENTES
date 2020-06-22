@@ -159,7 +159,7 @@ export default function CustomizedTables() {
 		const valor_chek = teman.target.checked;
 
 		setChectema1(valor_chek);
-		if (valor_chek === true && date_ficha1 !== default_fecha && date_ficha1 < fecha1 && date_ficha1 < fechaFinal) {
+		if (valor_chek === true &&  date_ficha1 < fecha1 && date_ficha1 < fechaFinal) {
 			validar_fecha(date_ficha1, Mitema1, date_ficha1, numUnidad);
 			setDisablesdCheck(false);
 		} else {
@@ -174,7 +174,7 @@ export default function CustomizedTables() {
 	const Mitema2 = 'Tema 2';
 	const actualizar_fecha_tema2 = (date) => {
 		//tema1-----------------------------····#####3
-		if (date >= date_ficha1 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (date >= date_ficha1 && date < fechaFinal && date !== fecha2 && date !== fecha3) {
 			console.log(date)
 			console.log(date_ficha1)
 
@@ -196,12 +196,14 @@ export default function CustomizedTables() {
 		setChectema2(valor_chek);
 		if (
 			valor_chek === true &&
-			date_ficha2 !== default_fecha &&
+			//date_ficha2 !== default_fecha &&
 			date_ficha2 >= date_ficha1 &&
 			date_ficha2 < fechaFinal
 		) {
 			validar_fecha(date_ficha2, Mitema2, date_ficha2, numUnidad);
+			setBtn(false);
 		} else {
+			setBtn(true);
 			setChectema2(false);
 			await removerTema(Mitema2);
 			toastr.warning(descri, 'nota');
@@ -230,12 +232,12 @@ export default function CustomizedTables() {
 		setChectema3(valor_chek);
 		if (
 			valor_chek === true &&
-			date_ficha3 !== default_fecha &&
+			//date_ficha3 !== default_fecha &&
 			date_ficha3 >= date_ficha2 &&
 			date_ficha3 < fechaFinal
 		) {
 			validar_fecha(date_ficha3, Mitema3, date_ficha3, numUnidad);
-			setBtn(false);
+			
 		} else {
 			setChectema3(false);
 			await removerTema(Mitema3);
@@ -264,7 +266,7 @@ export default function CustomizedTables() {
 
 		if (
 			valor_chek === true &&
-			date_ficha4 !== default_fecha &&
+		//	date_ficha4 !== default_fecha &&
 			date_ficha4 >= date_ficha3 &&
 			date_ficha4 < fechaFinal
 		) {
@@ -297,7 +299,7 @@ export default function CustomizedTables() {
 
 		if (
 			valor_chek === true &&
-			date_ficha5 !== default_fecha &&
+			//date_ficha5 !== default_fecha &&
 			date_ficha5 >= date_ficha4 &&
 			date_ficha5 < fechaFinal
 		) {
@@ -330,7 +332,7 @@ export default function CustomizedTables() {
 
 		if (
 			valor_chek === true &&
-			date_ficha6 !== default_fecha &&
+			//date_ficha6 !== default_fecha &&
 			date_ficha6 >= date_ficha5 &&
 			date_ficha6 < fechaFinal
 		) {
@@ -362,7 +364,7 @@ export default function CustomizedTables() {
 		setChectema7(valor_chek);
 		if (
 			valor_chek === true &&
-			date_ficha7 !== default_fecha &&
+			//date_ficha7 !== default_fecha &&
 			date_ficha7 >= date_ficha6 &&
 			date_ficha7 < fechaFinal
 		) {
@@ -395,7 +397,7 @@ export default function CustomizedTables() {
 
 		if (
 			valor_chek === true &&
-			date_ficha8 !== default_fecha &&
+			//date_ficha8 !== default_fecha &&
 			date_ficha8 >= date_ficha7 &&
 			date_ficha8 < fechaFinal
 		) {
@@ -427,7 +429,7 @@ export default function CustomizedTables() {
 		setChectema9(valor_chek);
 		if (
 			valor_chek === true &&
-			date_ficha9 !== default_fecha &&
+			//date_ficha9 !== default_fecha &&
 			date_ficha9 >= date_ficha8 &&
 			date_ficha9 < fechaFinal
 		) {
@@ -459,7 +461,7 @@ export default function CustomizedTables() {
 		setChectema10(valor_chek);
 		if (
 			valor_chek === true &&
-			date_ficha10 !== default_fecha &&
+			//date_ficha10 !== default_fecha &&
 			date_ficha10 >= date_ficha9 &&
 			date_ficha10 < fechaFinal
 		) {
@@ -480,7 +482,7 @@ export default function CustomizedTables() {
 		for (let index = 0; index < eleccion_temas.data.length; index++) {
 			const element = eleccion_temas.data[index];
 			await treeApi(element); //enviar datos al api
-			setChectema1(false);
+			//setChectema1(false);
 		}
 
 		await dataMaterias(); //actualizar db

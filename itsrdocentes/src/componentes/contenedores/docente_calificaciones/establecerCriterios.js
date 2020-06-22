@@ -7,6 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import ValidarCriterios from './validarCriterios';
+import LoaderCriterios from './reportes/cargando';
+import {EnviarCriterios} from './cont_criterios';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -17,15 +19,45 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 
-function MenuCriterios({open,handleClose }){
+function MenuCriterios({open,handleClose,updates }){
+
+  const[isBtn,setIsBtn]=React.useState(true);
+  const [openLoad, setOpenLoad] = React.useState(false);
+
+  const[isComfirmar,setIsComfirmar]=React.useState(false);
+
+  const [TODOS_LOS_CRITERIOS,setTodo_los_criterios] =React.useState({
+    c1:'',
+    c2:'',
+    c3:'',
+    c4:''
+  })
 
     function _handleClose(){
         handleClose()
     }
 
+  async  function buttonAceptar() {
+  handleClose()
+    setOpenLoad(true)
+  await gurardarcriterios();
 
+    }
+
+async function gurardarcriterios() {
+  console.log("GUARDANDO TODOS LOS CRITERIOS")
+  console.log(TODOS_LOS_CRITERIOS.c1)
+  console.log(TODOS_LOS_CRITERIOS.c2)
+  await EnviarCriterios(1, TODOS_LOS_CRITERIOS.c1, "sin descripcion" );
+  await EnviarCriterios(2, TODOS_LOS_CRITERIOS.c2, "sin descripcion" );
+  await EnviarCriterios(3, TODOS_LOS_CRITERIOS.c3, "sin descripcion" );
+  await EnviarCriterios(4, TODOS_LOS_CRITERIOS.c4, "sin descripcion", updates);
+  setIsComfirmar(!isComfirmar)
+  setOpenLoad(false)
+}
 return(
     <div>
+      <LoaderCriterios openLoad={openLoad} />
     <Dialog
       open={open}
       TransitionComponent={Transition}
@@ -41,15 +73,15 @@ return(
         De preferencia no utilice, 
         Ejemplo: C1=25 C2=35 C3=10 C4=40
 
-          <ValidarCriterios/>
+          <ValidarCriterios setIsBtn={setIsBtn} isBtn={isBtn} setTodo_los_criterios ={setTodo_los_criterios} TODOS_LOS_CRITERIOS={TODOS_LOS_CRITERIOS} isComfirmar={isComfirmar}/>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={_handleClose} color="primary">
-          Disagree
+          Cancelar
         </Button>
-        <Button onClick={_handleClose} color="primary">
-          Agree
+        <Button disabled={isBtn} onClick={buttonAceptar}   color="primary">
+          Guardar
         </Button>
       </DialogActions>
     </Dialog>

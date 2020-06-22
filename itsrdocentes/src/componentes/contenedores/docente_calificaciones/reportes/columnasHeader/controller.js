@@ -26,10 +26,6 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
             const nombreCarrera = dataMateria[index].nombreCorto;
             const claveCarrera = dataMateria[index].clave;
 
-
-
-
-
             //periodo materia personal grupo
             await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO), getReporteParcial(ID_MATERIA, GRUPO)])
             await lista(pamrs)
@@ -42,7 +38,8 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
             //limpiar
             newListaParciales = []
             arrayAprobacion = []
-            dataReporteParciales = []
+            console.log(dataReporteParciales)
+            //dataReporteParciales = []
         }
 
     } catch (error) {
@@ -88,6 +85,9 @@ const lista = async (pamrs) => {// paso 2
         });
 
         let TOTAL = parseInt((tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) / promediar.length)
+        console.log("Total")
+        console.log(TOTAL)
+
         //nueva lista de alumnos con resultado promedio
         newListaParciales[index2] = { // amacen de todos los resultados de unidades por tema general y  el de temas total 
             nm: nm,

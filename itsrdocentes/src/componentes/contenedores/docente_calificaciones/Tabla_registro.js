@@ -1,17 +1,18 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import MenuCreterios from './establecerCriterios';
+import *as toastr from 'toastr';
 import { crearCalificacion, updateCalificaion, getAlumnos, datalistaAlumnos } from '../../servicios/api';
 import './calificaciones.css';
 import { id_criterios, unidadCalificacion } from './select_temas';
 
 
 
-export const TablaCapturaCalificaciones = React.memo((data) => {
+export const TablaCapturaCalificaciones = React.memo((datas) => {
   const [open, setOpen] = React.useState(false);
 
   console.log('memo Tabla registro ')
-  const { alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4 } = data;
+  const { alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4 } = datas;
 
   const guardarPromedio = async (datos) => {//inicio  enviar el promedio asignado en la tabla captura_calificacion
 
@@ -47,7 +48,12 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
   }//fin
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if(datas.unidad){
+      setOpen(true);
+
+    }else{
+      toastr.info('Seleccione una Materia y un Tema', 'Nota');
+    }
   };
 
   const handleClose = () => {
@@ -57,7 +63,7 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
 
   return (
     <div style={{maxWidth:'100%'}}>
-      <MenuCreterios handleClose={handleClose} open={open} />
+      <MenuCreterios handleClose={handleClose} open={open} updates={datas.updates} />
     <MaterialTable  margin="none" size="small"
       title="Captura de calificaciones"
       columns={alumnos.columns}//columnas
@@ -74,10 +80,10 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
                     console.log(ccx1)
                     console.log('ccx1*')
 
-                    console.log(newData.calCriterio1 = (newData.calR1 * (ccx1 / 100)))
-                    console.log(newData.calCriterio2 = (newData.calR2 * (ccx2 / 100)))
-                    console.log(newData.calCriterio3 = (newData.calR3 * (ccx3 / 100)))
-                    console.log(newData.calCriterio4 = (newData.calR4 * (ccx4 / 100)))
+                    console.log(newData.calCriterio1 = (Math.round(parseInt(newData.calR1) * (ccx1 / 100))))
+                    console.log(newData.calCriterio2 = (Math.round(parseInt(newData.calR2) * (ccx2 / 100))))
+                    console.log(newData.calCriterio3 = (Math.round(parseInt(newData.calR3) * (ccx3 / 100))))
+                    console.log(newData.calCriterio4 = (Math.round(parseInt(newData.calR4) * (ccx4 / 100))))
                     console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3) + parseInt(newData.calCriterio4)))
                     console.log(newData)//estado fila modificado
                     datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
@@ -99,14 +105,14 @@ export const TablaCapturaCalificaciones = React.memo((data) => {
           white: 'pre',
         },
       }} 
-      /*actions={[
+      actions={[
         {
-          icon: 'add',
-          tooltip: 'Add User',
+          icon: 'edit',
+          tooltip: 'Editat criterios',
           isFreeAction: true,
           onClick: (event) => handleClickOpen()
         }
-      ]}*/
+      ]}
       />
       </div>
   );

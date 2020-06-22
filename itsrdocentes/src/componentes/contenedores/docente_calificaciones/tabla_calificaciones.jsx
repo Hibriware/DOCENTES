@@ -36,6 +36,8 @@ export const MaterialTableDemo = () => {//inicio del componente
   const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
   const [listasTemas, setListas] = React.useState([]);
   const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
+  const [unidad, setUnidad] = React.useState('');
+
   const [cierre, setCierre] = React.useState(false);
   const [minimo, setMinimo] = React.useState(false);
 
@@ -137,7 +139,7 @@ export const MaterialTableDemo = () => {//inicio del componente
 
 
   const updates = useCallback(async (m, u) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
-    console.log('hook update')
+    console.log('INICIANDO LA ACTUALIZACION')
     await getCriterios(m, u);// LISTA DE CRITERIO getTem
     await Promise.all([
       ccx1 = dataCriterios[0].porcentageC1,
@@ -169,12 +171,12 @@ export const MaterialTableDemo = () => {//inicio del componente
     setC2(crt2)
     setC3(crt3)
     setC4(crt4)*/
-    console.log('finnn-......')
+    console.log('ACTUALIZACION TERMINADA')
     return true
   }, [])
 
 
-  const guardarPorcentaje_c1 = useCallback(async () => {//inicio
+  /*const guardarPorcentaje_c1 = useCallback(async () => {//inicio
 
     var input = document.getElementById('porcentajeC1');
     input.addEventListener('input', function () {
@@ -190,10 +192,10 @@ export const MaterialTableDemo = () => {//inicio del componente
     } else {
       toastr.warning('No puede exeder de 100 %', 'Porcentaje 1')
     }
-  }, [])//fin
+  }, [])//fin*/
 
 
-  const guardarPorcentaje_c2 = useCallback((e) => {//inicio
+  /*const guardarPorcentaje_c2 = useCallback((e) => {//inicio
     console.log('hook porcentaje 2')
 
     var input2 = document.getElementById('porcentajeC2');//inicio 1
@@ -209,11 +211,11 @@ export const MaterialTableDemo = () => {//inicio del componente
     } else {
       alert("No puede exeder de 100 %")
     }
-  }, [])//fin
+  }, [])//fin*/
 
 
 
-  const guardarPorcentaje_c3 = useCallback((e) => {//inicio
+  /*const guardarPorcentaje_c3 = useCallback((e) => {//inicio
     console.log('hook porcentaje 3')
 
     var input3 = document.getElementById('porcentajeC3');//inicio 1
@@ -228,10 +230,10 @@ export const MaterialTableDemo = () => {//inicio del componente
     } else {
       alert("No puede exeder de 100 %")
     }
-  }, [])//fin
+  }, [])//fin*/
 
 
-  const guardarPorcentaje_c4 = useCallback((e) => {//inicio
+  /*const guardarPorcentaje_c4 = useCallback((e) => {//inicio
     console.log('hook porcentaje 4')
 
     var input4 = document.getElementById('porcentajeC4');//inicio 1
@@ -246,14 +248,14 @@ export const MaterialTableDemo = () => {//inicio del componente
     } else {
       alert("No puede exeder de 100 %")
     }
-  }, [])//fin
+  }, [])//fin*/
 
   funtions.add(updates)
 
-  funtions.add(guardarPorcentaje_c1)
-  funtions.add(guardarPorcentaje_c2)
-  funtions.add(guardarPorcentaje_c3)
-  funtions.add(guardarPorcentaje_c4)
+  //funtions.add(guardarPorcentaje_c1)
+  //funtions.add(guardarPorcentaje_c2)
+  //funtions.add(guardarPorcentaje_c3)
+  //funtions.add(guardarPorcentaje_c4)
   console.log(funtions)
 
 
@@ -272,15 +274,49 @@ export const MaterialTableDemo = () => {//inicio del componente
       { title: 'Nombre', field: 'nameAlumno', editable: 'never', disablePadding: true,sorting:false },
       { title: 'Curso', field: 'curso', editable: 'never', disablePadding: true, minWidth: 10,sorting:false },
       { title: 'Opcion', field: 'opcion', disablePadding: true, minWidth: 10, lookup: { 1:'1RA', 2: '2DA' },sorting:false },
-      { title: 'C1  ', field: 'calR1', sorting:false },
-      { title: 'C2', field: 'calR2', sorting:false },
-      { title: 'C3', field: 'calR3', sorting:false },
-      { title: 'C4', field: 'calR4', sorting:false },
+      { title: 'C1', field: 'calR1', editComponent: props => (
+        <input
+        className="size_input"
+          type="number"
+          value={props.value}
+          onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
+          min='0'
+        />), sorting:false },
+
+      { title: 'C2', field: 'calR2', editComponent: props => (
+        <input
+        className="size_input"
+          type="number"
+          value={props.value}
+          onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
+          min='0'
+        />),sorting:false },
+
+      { title: 'C3', field: 'calR3',
+      editComponent: props => (
+        <input
+        className="size_input"
+          type="number"
+          value={props.value}
+          onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
+          min='0'
+        />
+      ), sorting:false },
+
+      { title: 'C4', field: 'calR4',editComponent: props => (
+        <input
+        className="size_input"
+          type="number"
+          value={props.value}
+          onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
+          min='0'
+        />), sorting:false },
+
       { title: '#', field: '#', editable: 'never', size: 'small', disablePadding: true,sorting:false },
-      { title: <input className="inputTemas" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} ref={BC1} onChange={guardarPorcentaje_c1} ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10, disablePadding: true,sorting:false },
-      { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} ref={BC2} onChange={guardarPorcentaje_c2} ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10, disablePadding: true,sorting:false },
-      { title: <input className="inputTemas" id="porcentajeC3" placeholder="C3" style={{ width: '4ch' }} ref={BC3} onChange={guardarPorcentaje_c3}  ></input>, field: 'calCriterio3', editable: 'never', disablePadding: true,sorting:false },
-      { title: <input className="inputTemas" id="porcentajeC4" placeholder="C4" style={{ width: '4ch' }} ref={BC4} onChange={guardarPorcentaje_c4}  ></input>, field: 'calCriterio4', editable: 'never', disablePadding: true,sorting:false },
+      { title: <input className="inputTemas" id="porcentajeC1" placeholder="C1" style={{ width: '4ch' }} ref={BC1} disabled ></input>, field: 'calCriterio1', editable: 'never', minWidth: 10, disablePadding: true,sorting:false },
+      { title: <input className="inputTemas" id="porcentajeC2" placeholder="C2" style={{ width: '4ch' }} ref={BC2} disabled ></input>, field: 'calCriterio2', editable: 'never', minWidth: 10, disablePadding: true,sorting:false },
+      { title: <input className="inputTemas" id="porcentajeC3" placeholder="C3" style={{ width: '4ch' }} ref={BC3} disabled ></input>, field: 'calCriterio3', editable: 'never', disablePadding: true,sorting:false },
+      { title: <input className="inputTemas" id="porcentajeC4" placeholder="C4" style={{ width: '4ch' }} ref={BC4} disabled ></input>, field: 'calCriterio4', editable: 'never', disablePadding: true,sorting:false },
       { title: 'Total', field: 'calificaciontotal', editable: 'never', disablePadding: true, sorting:false }
     ]
   })
@@ -320,7 +356,8 @@ export const MaterialTableDemo = () => {//inicio del componente
 
             <SelectTemas setcalificaciones={setcalificaciones}
               updates={updates} listasTemas={listasTemas}
-
+              setUnidad={setUnidad}
+              unidad={unidad}
               setOpen={setOpen}
               MATERIA_ID={MATERIA_ID} />
             {/*<SelectTemas unidad={unidad} lisTemas={obtenerTema}  listasTemas={listasTemas}/>*/}
@@ -332,7 +369,7 @@ export const MaterialTableDemo = () => {//inicio del componente
           <Paper elevation={3} >
             <TablaCapturaCalificaciones
               alumnos={alumnos} setcalificaciones={setcalificaciones} calificaciones={calificaciones}
-              ccx1={ccx11} ccx2={ccx21} ccx3={ccx31} ccx4={ccx41} />
+              ccx1={ccx11} ccx2={ccx21} ccx3={ccx31} ccx4={ccx41} updates={updates} unidad={unidad}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>

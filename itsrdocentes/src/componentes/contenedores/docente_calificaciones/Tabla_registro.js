@@ -80,10 +80,10 @@ export const TablaCapturaCalificaciones = React.memo((datas) => {
                     console.log(ccx1)
                     console.log('ccx1*')
 
-                    console.log(newData.calCriterio1 = (Math.round(parseInt(newData.calR1) * (ccx1 / 100))))
-                    console.log(newData.calCriterio2 = (Math.round(parseInt(newData.calR2) * (ccx2 / 100))))
-                    console.log(newData.calCriterio3 = (Math.round(parseInt(newData.calR3) * (ccx3 / 100))))
-                    console.log(newData.calCriterio4 = (Math.round(parseInt(newData.calR4) * (ccx4 / 100))))
+                    console.log(newData.calCriterio1 = (Math.round(parseInt(newData.calR1 || 0) * (ccx1 / 100))))
+                    console.log(newData.calCriterio2 = (Math.round(parseInt(newData.calR2 || 0) * (ccx2 / 100))))
+                    console.log(newData.calCriterio3 = (Math.round(parseInt(newData.calR3 || 0) * (ccx3 / 100))))
+                    console.log(newData.calCriterio4 = (Math.round(parseInt(newData.calR4 || 0) * (ccx4 / 100))))
                     console.log(newData.calificaciontotal = (parseInt(newData.calCriterio1) + parseInt(newData.calCriterio2) + parseInt(newData.calCriterio3) + parseInt(newData.calCriterio4)))
                     console.log(newData)//estado fila modificado
                     datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
@@ -107,7 +107,7 @@ export const TablaCapturaCalificaciones = React.memo((datas) => {
       }} 
       actions={[
         {
-          icon: 'edit',
+          icon: 'library_books',
           tooltip: 'Editat criterios',
           isFreeAction: true,
           onClick: (event) => handleClickOpen()

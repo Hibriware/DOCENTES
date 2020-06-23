@@ -97,7 +97,7 @@ export const MaterialTableDemo = () => {//inicio del componente
           setMinimo(tercera)
         }else if(habilitar_todas===1){
           console.log("temas disponibles---")
-          let rest = moment(primera).subtract(2, 'month');
+          let rest = moment(primera).subtract(3, 'month');
           setCierre(entrega_final)
           setMinimo(moment(rest).format('YYYY-MM-DD'))
         }else{

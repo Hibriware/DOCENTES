@@ -47,7 +47,7 @@ export const SelectTemas = React.memo((data) => {
                     label="Tema"
                     value={data.unidad}
                     onChange={_obtenerTema}>
-                    {data.listasTemas.map((tem, i) => (<MenuItem key={i} value={tem.numUnidad}>{tem.tema}</MenuItem>))}
+                    {data.listasTemas.map((tem,i) => (<MenuItem key={i} value={tem.numUnidad}>{tem.tema}</MenuItem>))}
                 </Select>
             </FormControl>
         

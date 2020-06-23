@@ -499,7 +499,7 @@ export async function getReporteParcial(materia, grupo) {
 			.get(`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`)
 			.then((res) => (dataReporteParciales = res.data))
 			.catch(function(error) {
-				swal('', 'No se encontraron TEMAS finalizados.', 'warning');
+				swal('', 'sin conexión', 'warning');
 				console.log(error);
 			});
 	} catch (error) {

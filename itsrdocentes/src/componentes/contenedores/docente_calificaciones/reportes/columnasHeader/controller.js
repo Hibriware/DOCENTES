@@ -1,6 +1,7 @@
 import moment from 'moment';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import sweetAlert from 'sweetalert';
 import Itsr from '../../../../img/Logo-Tec.png';
 import { dataMateria } from '../../../../../home';
 import { getReporteHorarios, getReporteParcial, dataReportHorario, dataPeriodo, dataReporteParciales } from '../../../../servicios/api';
@@ -16,6 +17,7 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
     try {
         const DOCENTE_ACTUAL = dataMateria[0].nameDocente;
         for (let index = 0; index < dataMateria.length; index++) {
+            console.log("1")
             const ID_MATERIA = dataMateria[index].idMateria;
             const PERIODO = dataMateria[index].idnomenclaturaPeriodo;
             const GRUPO = dataMateria[index].idGrupos;
@@ -28,9 +30,17 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
 
             //periodo materia personal grupo
             await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO), getReporteParcial(ID_MATERIA, GRUPO)])
+            console.log("2")
+
             await lista(pamrs)
+            console.log("3")
+
             if (pamrs === 'parcial') {
+            console.log("4")
+
                 await pdfParcial(Materia, DOCENTE_ACTUAL,ClaveMateria,ClavePersonal,ClavePlan, nombreCarrera, claveCarrera)
+            console.log("5")
+
             } else {
                 await pdActaFinal(Materia, DOCENTE_ACTUAL,ClaveMateria, ClavePersonal,ClavePlan, nombreCarrera, claveCarrera)
             }
@@ -43,6 +53,7 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
         }
 
     } catch (error) {
+        sweetAlert("No se encontraron TEMAS finalizados")
         console.log(error)
     }
 }//fin paso 1
@@ -50,8 +61,7 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
 
 const lista = async (pamrs) => {// paso 2
 
-    console.log('data parciales')
-    console.log(dataReporteParciales)
+   
 
     var nm = 1
     for (let index2 = 0; index2 < dataReporteParciales.length; index2++) {// repite segun el numro de alumnos terminados
@@ -78,6 +88,7 @@ const lista = async (pamrs) => {// paso 2
             opcion9 = dataReporteParciales[index2].opcion9,
             opcion10 = dataReporteParciales[index2].opcion10;
 
+
         var eliminar = [{ n: tema1 }, { n: tema2 }, { n: tema3 }, { n: tema4 }, { n: tema5 }, { n: tema6 }, { n: tema7 }, { n: tema8 }, { n: tema9 }, { n: tema10 }]
         var promediar = eliminar.filter(function (n) {// numero divicion sin 0
 
@@ -85,8 +96,6 @@ const lista = async (pamrs) => {// paso 2
         });
 
         let TOTAL = parseInt((tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) / promediar.length)
-        console.log("Total")
-        console.log(TOTAL)
 
         //nueva lista de alumnos con resultado promedio
         newListaParciales[index2] = { // amacen de todos los resultados de unidades por tema general y  el de temas total 
@@ -190,44 +199,37 @@ if(pamrs==='acta'){
 
 
 const aprobacion = async (calcularTemas) => {//inicio paso 3
-    console.log('=><<<<<<<<<<<<<<<<<<<<' + calcularTemas)
     //var etiqueta
     let aprobacionTema1 = 0, aprobacionTema2 = 0, aprobacionTema3 = 0, aprobacionTema4 = 0, aprobacionTema5 = 0, aprobacionTema6 = 0, aprobacionTema7 = 0, aprobacionTema8 = 0, aprobacionTema9 = 0, aprobacionTema10 = 0;
     let reprobacionTema1 = 0, reprobacionTema2 = 0, reprobacionTema3 = 0, reprobacionTema4 = 0, reprobacionTema5 = 0, reprobacionTema6 = 0, reprobacionTema7 = 0, reprobacionTema8 = 0, reprobacionTema9 = 0, reprobacionTema10 = 0;
 
     let cont = 1;
-    for (let index = 0; index <= calcularTemas; index++) {
-        console.log('entrendo al for === ' + index)
-
+    for (let index = 0; index < calcularTemas; index++) {
         var sumaTema = 0;
 
-        console.log(sumaTema)
         //pasar al array
         switch (cont) {
             case 1:
-                console.log("1")
                 var temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema1;
                     return tem.tema1 !== 0;
                 });
+
                 aprobacionTema1 = Math.round(sumaTema / temaTotal.length)
                 reprobacionTema1 = Math.round(((sumaTema) / temaTotal.length) - 100)
 
                 break;
             case 2:
-                console.log("2")
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema2;
                     return tem.tema2 !== 0;
                 });
-
 
                 aprobacionTema2 = Math.round(sumaTema / temaTotal.length)
                 reprobacionTema2 = Math.round(((sumaTema) / temaTotal.length) - 100)
 
                 break
             case 3:
-                console.log("3")
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema3;
                     return tem.tema3 !== 0;
@@ -238,7 +240,6 @@ const aprobacion = async (calcularTemas) => {//inicio paso 3
 
                 break
             case 4:
-                console.log("4")
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema4;
                     return tem.tema4 !== 0;
@@ -350,10 +351,7 @@ const aprobacion = async (calcularTemas) => {//inicio paso 3
 
     }
     // arrayAprobacionOrdenado=[{aprobacionTema1:arrayAprobacion[0]}]
-    console.log('fin de for aprobacion5')
-    console.log(arrayAprobacion)
-    console.log('VER LISTA DE APROVACION')
-    console.log(newListaParciales)
+ 
 }//fin paso 3
 
 

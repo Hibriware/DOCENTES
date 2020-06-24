@@ -64,7 +64,6 @@ function CargadeDatos(data) {
 		if (!caches) {
 			throw getPeriodo()
 				.then((res) => {
-					console.log(res);
 					if (res === 'error') {
 						perio = true;
 						caches = res;

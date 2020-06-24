@@ -3,7 +3,6 @@ import * as toastr from 'toastr';
 
 export default class AuthService {
 	constructor(domain) {
-		console.log('met constructor');
 
 		this.domain = domain || 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
 
@@ -18,7 +17,6 @@ export default class AuthService {
 				method: 'POST',
 				body: JSON.stringify({ usuario, password })
 			}).then((response) => {
-				console.log(response);
 				if (response.message === 'ocurrio un error' || response.message === 'contraseña incorrecta') {
 					console.log('usuarios incorrectos');
 				} else {
@@ -79,7 +77,6 @@ export default class AuthService {
 	getUserAccess() {
 		try {
 			let user = this.getUser();
-			console.log(user);
 			if (user) {
 				return user[0].nombreRol;
 			} else {
@@ -110,7 +107,6 @@ export default class AuthService {
 	requestFetch(urlRelative, opcions) {
 		//inicio
 		try {
-			console.log('peticion de token');
 
 			const headers = {
 				Accept: 'application/json',

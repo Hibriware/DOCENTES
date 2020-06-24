@@ -12,8 +12,8 @@ import Paper from '@material-ui/core/Paper';
 import { useStyles } from './dialogos';
 
 
-export const TablaVerTemas = (data) =>{
-  console.log(data)
+export const TablaVerTemas =React.memo((data) =>{
+  console.log('Lista temas')
     const classes = useStyles();
 
     return(
@@ -26,7 +26,6 @@ export const TablaVerTemas = (data) =>{
                   <TableCell align="left"><p style={{fontSize:'12px'}}>Segunda entrega:</p><p  style={{fontFamily:'fantasy'}}>{moment(data.fecha2).format('DD-MM-YYYY')}</p></TableCell>
                   <TableCell align="left"><p style={{fontSize:'12px'}}>Tercera entrega:</p><p  style={{fontFamily:'fantasy'}}>{moment(data.fecha3).format('DD-MM-YYYY')}</p></TableCell>
                   <TableCell align="left"><p style={{fontSize:'12px'}}>Entrega final:</p><p  style={{fontFamily:'fantasy'}}>{moment(data.fechaFinal).format('DD-MM-YYYY')}</p></TableCell>
-
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -47,4 +46,4 @@ export const TablaVerTemas = (data) =>{
           </TableContainer>
         </React.Fragment>
     );
-}  
+}); 

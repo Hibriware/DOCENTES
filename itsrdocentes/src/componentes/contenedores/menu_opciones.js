@@ -18,8 +18,9 @@ function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Typography
-      component="div"
+
+    <Typography 
+    component="div"
       role="tabpanel"
       hidden={value !== index}
       id={`wrapped-tabpanel-${index}`}

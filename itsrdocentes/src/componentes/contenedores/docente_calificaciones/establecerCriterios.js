@@ -70,11 +70,10 @@ return(
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
         Ejemplo: C1=20 C2=30 C3=10 C4=40
-        De preferencia no utilice, 
+        De preferencia no utilice,
         Ejemplo: C1=25 C2=35 C3=10 C4=40
-
-          <ValidarCriterios setIsBtn={setIsBtn} isBtn={isBtn} setTodo_los_criterios ={setTodo_los_criterios} TODOS_LOS_CRITERIOS={TODOS_LOS_CRITERIOS} isComfirmar={isComfirmar}/>
         </DialogContentText>
+        <ValidarCriterios setIsBtn={setIsBtn} isBtn={isBtn} setTodo_los_criterios ={setTodo_los_criterios} TODOS_LOS_CRITERIOS={TODOS_LOS_CRITERIOS} isComfirmar={isComfirmar}/>
       </DialogContent>
       <DialogActions>
         <Button onClick={_handleClose} color="primary">

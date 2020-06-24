@@ -28,6 +28,7 @@ function createDatatemas(save, tema, fecha) {
 }
 
 export default function CustomizedTables() {
+	console.log('Docente calendario')
 	//constante tablas
 	//estado de la table tema
 	const [ eleccion_temas, setEleccion_temas ] = React.useState({ data: [] });
@@ -73,11 +74,10 @@ export default function CustomizedTables() {
 
 	useEffect(
 		() => {
-			console.log(dataFechasCierre);
+			console.log('useEffect docente');
 			async function fechas() {
 				try {
 					if (dataFechasCierre.length === 0) {
-						console.log('actualizar fechas de cierre');
 						await getAdmiFechas(); //moment().format('DD-MM-YYYY')
 					}
 					setFecha1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD'));
@@ -98,7 +98,6 @@ export default function CustomizedTables() {
 	);
 
 	const handleClickOpen = () => {
-		console.log('pasar tru');
 		setOpen(true);
 	};
 
@@ -107,7 +106,6 @@ export default function CustomizedTables() {
 	};
 
 	const GuardarTemas = async () => {
-		console.log('guar.....');
 		setOpen(false);
 		await guardar();
 	};
@@ -118,7 +116,6 @@ export default function CustomizedTables() {
 		var materia = materiaid.target.value.idMateria;
 		var grupo = materiaid.target.value.idGrupos;
 		setMateria(id);
-		console.log(materiaid);
 		//var materia_grupo = id.split(" "); // separa los datos del arry
 		resultado = await dataMateria.filter(
 			(idMateria) => idMateria.idMateria === materia && idMateria.idGrupos === grupo
@@ -175,9 +172,6 @@ export default function CustomizedTables() {
 	const actualizar_fecha_tema2 = (date) => {
 		//tema1-----------------------------····#####3
 		if (date >= date_ficha1 && date < fechaFinal && date !== fecha2 && date !== fecha3) {
-			console.log(date)
-			console.log(date_ficha1)
-
 			removerTema(Mitema2);
 			setChectema2(false); //cambiar checked a false
 			setDate_fecha2(date);

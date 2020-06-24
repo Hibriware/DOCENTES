@@ -7,12 +7,11 @@ import { useStyles } from './dialogos';
 import { dataMateria } from '../../../home';
 
 
-export const SelectMaterias = (data) => {
+export const SelectMaterias = React.memo((data) => {
+    console.log("Selec mataria")
     const classes = useStyles();
-console.log(data)
+
     const _list_materia = (e) => {
-        console.log(e)
-        console.log('_list_materia')
         e.preventDefault()
         data.mos_Materias(e)
     }
@@ -32,4 +31,4 @@ console.log(data)
                 </Select>
             </FormControl>
     );
-}
+});

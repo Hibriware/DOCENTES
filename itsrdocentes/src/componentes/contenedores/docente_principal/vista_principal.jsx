@@ -10,9 +10,8 @@ import 'jspdf-autotable';
 import { ButtonPdf } from './btn_Pdf';
 
 
-export default function ComposedTextField() {
+ function ComposedTextField() {
 	const classes = useStyles();
-console.log(dataMateria)
 console.log('dataMateria <<<')
 
 	return (
@@ -41,3 +40,6 @@ console.log('dataMateria <<<')
 		</div>
 	);
 }
+
+
+export default React.memo(ComposedTextField)

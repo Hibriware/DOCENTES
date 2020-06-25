@@ -1,4 +1,4 @@
-import 'date-fns';
+//import 'date-fns/locale/en-US';
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -12,7 +12,8 @@ export const FechaDate = (data) => {
 
 	const _guardarState = (e) => {
 		console.log(setValue);
-		onGuardar(moment(e).format('YYYY-MM-DD'));
+		onGuardar(moment(e).format('YYYY-MM-DD, h:mm:ss a'));
+		//onGuardar(e);
 	};
 
 	return (

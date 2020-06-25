@@ -33,6 +33,7 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
             console.log("2")
 
             await lista(pamrs)
+            console.log(pamrs)
             console.log("3")
 
             if (pamrs === 'parcial') {
@@ -95,7 +96,11 @@ const lista = async (pamrs) => {// paso 2
             return n.n !== 0;
         });
 
-        let TOTAL = parseInt((tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) / promediar.length)
+        let TOTAL = parseInt(((tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) / promediar.length ) || 0)
+        console.log('TOTAL')
+        console.log(TOTAL)
+        console.log('promediar')
+        console.log(promediar.length)
 
         //nueva lista de alumnos con resultado promedio
         newListaParciales[index2] = { // amacen de todos los resultados de unidades por tema general y  el de temas total 
@@ -127,7 +132,7 @@ const lista = async (pamrs) => {// paso 2
         nm++
     }//fin for
 
-if(pamrs==='acta'){
+if(pamrs==='acta'){//SOLO ACTA DE CALIFICACION FINAL
     var nmx =1;
     for (let nx = 0; nx < newListaParciales.length; nx++) {//forr
 
@@ -172,13 +177,16 @@ if(pamrs==='acta'){
         }
         nmx++;
     }// fin for
-}
+}//FIN ACTA DE CALIFICACION FINAL
 
     
 
 
 
     var calcularTemas = promediar.length;
+    console.log("numero de interaciones")
+    console.log(calcularTemas)
+
     // aprobacion y reprobacion
     await aprobacion(calcularTemas) // inicar paso 3
     /*
@@ -199,14 +207,16 @@ if(pamrs==='acta'){
 
 
 const aprobacion = async (calcularTemas) => {//inicio paso 3
+    console.log('iniciando aprobacion y reprovacion')
+
     //var etiqueta
     let aprobacionTema1 = 0, aprobacionTema2 = 0, aprobacionTema3 = 0, aprobacionTema4 = 0, aprobacionTema5 = 0, aprobacionTema6 = 0, aprobacionTema7 = 0, aprobacionTema8 = 0, aprobacionTema9 = 0, aprobacionTema10 = 0;
     let reprobacionTema1 = 0, reprobacionTema2 = 0, reprobacionTema3 = 0, reprobacionTema4 = 0, reprobacionTema5 = 0, reprobacionTema6 = 0, reprobacionTema7 = 0, reprobacionTema8 = 0, reprobacionTema9 = 0, reprobacionTema10 = 0;
 
-    let cont = 1;
-    for (let index = 0; index < calcularTemas; index++) {
+    var cont = 1;
+    for (let index = 0; index <= calcularTemas; index++) {
         var sumaTema = 0;
-
+console.log("en aporobacion")
         //pasar al array
         switch (cont) {
             case 1:
@@ -217,6 +227,14 @@ const aprobacion = async (calcularTemas) => {//inicio paso 3
 
                 aprobacionTema1 = Math.round(sumaTema / temaTotal.length)
                 reprobacionTema1 = Math.round(((sumaTema) / temaTotal.length) - 100)
+console.log('-------------------')
+console.log(temaTotal)
+console.log(aprobacionTema1)
+console.log(reprobacionTema1)
+
+
+
+console.log('-------------')
 
                 break;
             case 2:
@@ -227,6 +245,15 @@ const aprobacion = async (calcularTemas) => {//inicio paso 3
 
                 aprobacionTema2 = Math.round(sumaTema / temaTotal.length)
                 reprobacionTema2 = Math.round(((sumaTema) / temaTotal.length) - 100)
+
+                console.log('-------------------')
+console.log(temaTotal)
+console.log(aprobacionTema2)
+console.log(reprobacionTema2)
+
+
+
+console.log('-------------')
 
                 break
             case 3:
@@ -320,6 +347,19 @@ const aprobacion = async (calcularTemas) => {//inicio paso 3
 
     aprobacionTotal = Math.round(sumaTemas / temaTotals.length)
     reprobacionTotal = Math.round(((sumaTemas) / temaTotals.length) - 100)
+
+    console.log('*********')
+
+    console.log(aprobacionTotal)
+    console.log(reprobacionTotal)
+    console.log(reprobacionTema1)
+    console.log(reprobacionTema2)
+    console.log(reprobacionTema3)
+
+
+    console.log('*********')
+
+
 
     arrayAprobacion[0] = { // lista con la aprobacion y reprobacion
         aprobacionTema1: aprobacionTema1,

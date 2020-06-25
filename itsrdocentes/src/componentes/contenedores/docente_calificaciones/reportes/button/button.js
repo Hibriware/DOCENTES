@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 
 
 export const Buttons = ({ texto = "btn", color = "secondary", onGenerar, ids="enviando id" }) => {
-    const [activo, setActio] = React.useState(false)
+    const [activo, setActio] = React.useState(true)
 
     const ejecu = async (e) => {
         e.preventDefault()

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import 'date-fns';
+//import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import swal from 'sweetalert';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { dataMaterias, dataMateria } from '../../../home';
+
 import { useStyles } from './dialogos';
 import { dataStatusTemas, getAdmiFechas, dataFechasCierre, treeApi, getStatus_temas,FECHA_ACTUAL } from '../../servicios/api';
 import { ID_USUARIO } from '../../../home';
@@ -38,7 +39,8 @@ export default function CustomizedTables() {
 	const [ resul_state, setResul ] = React.useState();
 	const [ btn, setBtn ] = React.useState(true);
 	//fecha
-	var default_fecha = moment(new Date()).format('YYYY-MM-DD');
+	//var default_fecha = moment(new Date(FECHA_ACTUAL)).format('YYYY-MM-DD');//pasar data server
+	const default_fecha = moment(new Date()).format('YYYY-MM-DD, h:mm:ss a');
 	const [ date_ficha1, setDate_fecha1 ] = React.useState(default_fecha);
 	const [ date_ficha2, setDate_fecha2 ] = React.useState(default_fecha);
 	const [ date_ficha3, setDate_fecha3 ] = React.useState(default_fecha);

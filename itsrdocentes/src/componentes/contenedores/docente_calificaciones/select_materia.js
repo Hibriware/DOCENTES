@@ -27,7 +27,7 @@ export const SelecMaterias = React.memo((data) => {
     };//fi
 
     return (
-        <div>
+        
             <FormControl variant="outlined" margin="none" size="small" className={estilos.formControl}>
                 <InputLabel id="InputLabel">Materia</InputLabel>
                 <Select
@@ -39,6 +39,6 @@ export const SelecMaterias = React.memo((data) => {
                     {dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))}
                 </Select>
             </FormControl>
-        </div>
+      
     );
 })

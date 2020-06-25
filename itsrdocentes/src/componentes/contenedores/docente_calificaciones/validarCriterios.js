@@ -49,6 +49,7 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 
 	useEffect(
 		() => {
+		
 			if (!isBtn) {
 				console.log('pasar los criterios');
 				setTodo_los_criterios({

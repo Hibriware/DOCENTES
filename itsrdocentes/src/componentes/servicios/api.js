@@ -57,7 +57,7 @@ export async function treeApi(datas) {
 			url: `${urlApi}/api/aspirante/registrar`,
 			data: datas
 		})
-			.then((res) => console.log(res.data))
+			.then((res) => console.log("correcto"))
 			.catch(function(error) {
 				swal('error!', 'Verifique su conexion a internet!', 'warning');
 			});
@@ -87,7 +87,7 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 				criterios_idcat_Unidad: id_criterios,
 				aspirante_Folio: datas.folioAspirante,
 				periodo: datas.idnomenclaturaPeriodo,
-				opcion: datas.opcion
+				opcion: datas.opcion  || 1
 			})
 			.then((res) => console.log(res.data))
 			.catch(function(error) {
@@ -212,7 +212,7 @@ export async function getAlumnos(idMateria, unidad) {
 				swal('Error', 'Verifique su conexion a internet!', 'warning');
 			});
 	} catch (error) {
-		console.log(error);
+		swal('Error', 'Verifique su conexion a internet!', 'warning');
 	}
 }
 
@@ -473,7 +473,7 @@ export async function getStatusPeriodo() {
 			.get(`${urlApi}/api/administrador/lista/periodo/status`)
 			.then((res) => {
 				if (res.data.data.length) {
-					console.log(res.data.data);
+					
 					return res.data.data[0];
 				} else {
 					return false;

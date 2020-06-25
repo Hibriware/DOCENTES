@@ -9,6 +9,7 @@ import moment from 'moment';
 import Lista_Periodos from './selectPeriodos';
 import Editar from './btnEditar';
 import Status from './status';
+import {FECHA_ACTUAL} from '../../componentes/servicios/api'
 import ActivarTemas from './activaTemas';
 import *as toastr from 'toastr';
 import { Btn_evaluar } from './funciones';
@@ -26,7 +27,7 @@ import { FechaDate } from './dates';
 
 const Entregas = () => {
 	const classes = useStyles();
-	const fecha_Defaul = moment(new Date()).format('YYYY-MM-DD, h:mm:ss a');
+	const fecha_Defaul = moment(new Date(FECHA_ACTUAL)).format('YYYY-MM-DD, h:mm:ss a');
 	const [ entrega1, setEntrega1 ] = React.useState(fecha_Defaul);
 	const [ entrega2, setEntrega2 ] = React.useState(fecha_Defaul);
 	const [ entrega3, setEntrega3 ] = React.useState(fecha_Defaul);
@@ -111,10 +112,10 @@ const Entregas = () => {
 			setStatus(true);
 			setSave(false);
 			setIsStatus(true);
-			setEntrega1(dataFechasCierre[0].primera_entrega);
-			setEntrega2(dataFechasCierre[0].segunda_entrega);
-			setEntrega3(dataFechasCierre[0].tercera_entrega);
-			setFinal(dataFechasCierre[0].entrega_final);
+			setEntrega1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD, h:mm:ss a'))
+			setEntrega2(moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD, h:mm:ss a'));
+			setEntrega3(moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD, h:mm:ss a'));
+			setFinal(moment(dataFechasCierre[0].entrega_final).format('YYYY-MM-DD, h:mm:ss a'));
 			setIsperiodo(dataFechasCierre[0].status === 0 ? false : true);//0:false,1:true
 			let _temas = dataFechasCierre[0].habilitar_todas === 0 ? false : true
 			setActivaTemas({

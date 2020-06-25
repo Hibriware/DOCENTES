@@ -110,10 +110,12 @@ export async function getPeriodo() {
 				if (res.data.data.length) {
 					//asignar fechas y periodods
 					dataPeriodo = res.data.data;
-					FECHA_ACTUAL = res.data.fechaActual;
+					console.log(FECHA_ACTUAL = res.data.fechaActual);
 					PERIODO_ACTUAL = res.data.data[0].periodo;
 					return dataPeriodo;
 				} else {
+					console.log(FECHA_ACTUAL = res.data.fechaActual);
+					
 					return 'not'; // sin periodos activos
 				}
 			})

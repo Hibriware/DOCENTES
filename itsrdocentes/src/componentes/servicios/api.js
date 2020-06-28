@@ -3,7 +3,7 @@ import moment from 'moment';
 import { ID_USUARIO } from '../../home';
 
 const axios = require('axios');
-const urlApi = 'http://212.237.52.166:4000'; //http://212.237.52.166:4000
+const urlApi = 'http://212.237.52.166:4001'; //http://212.237.52.166:4001
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
 export var datalista = [];
@@ -187,6 +187,18 @@ export async function getTemas(idMateria, minimo, cierre) {
 				'warning'
 			);
 		});
+}
+
+export async function getTemasReportes(idMateria) {
+let datos =	await axios
+		.get(`${urlApi}/api/reporte/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}`)
+		.then((res) => (res.data))
+		.catch(function(error) {
+			console.log(error)
+			return false
+		});
+
+		return datos
 }
 
 export async function getStatus_temas(id_usuario, id_materia) {
@@ -499,7 +511,10 @@ export async function getReporteParcial(materia, grupo) {
 	try {
 		await axios
 			.get(`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`)
-			.then((res) => (dataReporteParciales = res.data))
+			.then((res) => {
+				dataReporteParciales = res.data
+				console.log(res)
+			})
 			.catch(function(error) {
 				swal('', 'sin conexión', 'warning');
 				console.log(error);

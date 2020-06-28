@@ -4,13 +4,14 @@ import 'jspdf-autotable';
 import sweetAlert from 'sweetalert';
 import Itsr from '../../../../img/Logo-Tec.png';
 import { dataMateria } from '../../../../../home';
-import { getReporteHorarios, getReporteParcial, dataReportHorario, dataPeriodo, dataReporteParciales } from '../../../../servicios/api';
+import { getReporteHorarios, getReporteParcial, dataReportHorario, dataPeriodo, dataReporteParciales,getTemasReportes } from '../../../../servicios/api';
 import { columns, columnsAprobacion, columnsReprobacion, Actacolumns, ActacolumnsAprobacion, ActacolumnsReprobacion } from '../columnasHeader/heders'
 
 
 var newListaParciales = [];
 var arrayAprobacion = [];
 var listaActa = [];
+var LISTA_DE_TEMAS_POR_MATERIAS = [];
 
 export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
     console.log("imprimiendo.... . " + pamrs)
@@ -27,6 +28,14 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
             const ClavePlan = dataMateria[index].plan;
             const nombreCarrera = dataMateria[index].nombreCorto;
             const claveCarrera = dataMateria[index].clave;
+
+            LISTA_DE_TEMAS_POR_MATERIAS    = await getTemasReportes(ID_MATERIA)
+
+if(LISTA_DE_TEMAS_POR_MATERIAS.length){
+
+    console.log("wwwwwwwwww")
+console.log(LISTA_DE_TEMAS_POR_MATERIAS.length)
+console.log("wwwwwwwwww")
 
             //periodo materia personal grupo
             await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO), getReporteParcial(ID_MATERIA, GRUPO)])
@@ -49,8 +58,13 @@ export const infPdf = async (pamrs) => {// paso 1 PAMRS: PARCIAL O ACTA
             //limpiar
             newListaParciales = []
             arrayAprobacion = []
+            console.log('dataReporteParciales >>>>>')
             console.log(dataReporteParciales)
             //dataReporteParciales = []
+        }else{
+            sweetAlert("No se encontraron TEMAS finalizados")
+        }
+        
         }
 
     } catch (error) {
@@ -96,7 +110,7 @@ const lista = async (pamrs) => {// paso 2
             return n.n !== 0;
         });
 
-        let TOTAL = parseInt(((tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) / promediar.length ) || 0)
+        let TOTAL = parseInt(((tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) / LISTA_DE_TEMAS_POR_MATERIAS.length ) || 0)
         console.log('TOTAL')
         console.log(TOTAL)
         console.log('promediar')
@@ -214,123 +228,106 @@ const aprobacion = async (calcularTemas) => {//inicio paso 3
     let reprobacionTema1 = 0, reprobacionTema2 = 0, reprobacionTema3 = 0, reprobacionTema4 = 0, reprobacionTema5 = 0, reprobacionTema6 = 0, reprobacionTema7 = 0, reprobacionTema8 = 0, reprobacionTema9 = 0, reprobacionTema10 = 0;
 
     var cont = 1;
-    for (let index = 0; index <= calcularTemas; index++) {
+    for (let index = 0; index < 10; index++) {
         var sumaTema = 0;
 console.log("en aporobacion")
         //pasar al array
         switch (cont) {
             case 1:
-                var temaTotal = newListaParciales.filter(function (tem) {
+                console.log("TEMA 1")
+                var temaTotal = newListaParciales.filter(function (tem) { //<<<<<<<<<<<<<<<<<<<<<<<<<
                     sumaTema = sumaTema + tem.tema1;
-                    return tem.tema1 !== 0;
+                    return tem.tema1 > 70;
                 });
+                aprobacionTema1 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema1=(100 - aprobacionTema1)
 
-                aprobacionTema1 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema1 = Math.round(((sumaTema) / temaTotal.length) - 100)
-console.log('-------------------')
-console.log(temaTotal)
-console.log(aprobacionTema1)
-console.log(reprobacionTema1)
-
-
-
-console.log('-------------')
-
+               // reprobacionTema1 = Math.round(((sumaTema) / temaTotal.length) - 100)
                 break;
             case 2:
+                console.log("TEMA 2")
+
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema2;
-                    return tem.tema2 !== 0;
+                    return tem.tema2  > 70;
                 });
-
-                aprobacionTema2 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema2 = Math.round(((sumaTema) / temaTotal.length) - 100)
-
-                console.log('-------------------')
-console.log(temaTotal)
-console.log(aprobacionTema2)
-console.log(reprobacionTema2)
-
-
-
-console.log('-------------')
+                aprobacionTema2 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema2 =(100 - aprobacionTema2)
 
                 break
             case 3:
+                console.log("TEMA 3")
+
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema3;
-                    return tem.tema3 !== 0;
+                    return tem.tema3 > 70;
                 });
 
-                aprobacionTema3 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema3 = Math.round(((sumaTema) / temaTotal.length) - 100)
+                aprobacionTema3 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema3 =(100 - aprobacionTema3)
 
                 break
             case 4:
+                console.log("TEMA 4")
+
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema4;
                     return tem.tema4 !== 0;
                 });
-
-
-                aprobacionTema4 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema4 = Math.round(((sumaTema) / temaTotal.length) - 100)
-
+                aprobacionTema4 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema4 =(100 - aprobacionTema4)
                 break
             case 5:
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema5;
-                    return tem.tema5 !== 0;
+                    return tem.tema5 > 70;
                 });
 
-                aprobacionTema5 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema5 = Math.round(((sumaTema) / temaTotal.length) - 100)
-
+                aprobacionTema5 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema5 = (100 - aprobacionTema5)
                 break
             case 6:
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema6;
-                    return tem.tema6 !== 0;
+                    return tem.tema6 > 70;
                 });
-                aprobacionTema6 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema6 = Math.round(((sumaTema) / temaTotal.length) - 100)
+                aprobacionTema6 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema6 =  (100 - aprobacionTema6)
 
                 break
             case 7:
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema7;
-                    return tem.tema7 !== 0;
+                    return tem.tema7 > 70;
                 });
-                aprobacionTema7 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema7 = Math.round(((sumaTema) / temaTotal.length) - 100)
+                aprobacionTema7 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema7 = (100 - aprobacionTema7)
 
                 break
             case 8:
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema8;
-                    return tem.tema8 !== 0;
+                    return tem.tema8 > 70;
                 });
-                aprobacionTema8 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema8 = Math.round(((sumaTema) / temaTotal.length) - 100)
+                aprobacionTema8 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema8 = (100 - aprobacionTema8)
 
                 break
             case 9:
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema9;
-                    return tem.tema9 !== 0;
+                    return tem.tema9 > 70;
                 });
-                aprobacionTema9 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema9 = Math.round(((sumaTema) / temaTotal.length) - 100)
-
+                aprobacionTema9 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema9 =  (100 - aprobacionTema9)
                 break
             case 10:
                 temaTotal = newListaParciales.filter(function (tem) {
                     sumaTema = sumaTema + tem.tema10;
-                    return tem.tema10 !== 0;
+                    return tem.tema10 > 70;
                 });
-                aprobacionTema10 = Math.round(sumaTema / temaTotal.length)
-                reprobacionTema10 = Math.round(((sumaTema) / temaTotal.length) - 100)
-
+                aprobacionTema10 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
+                reprobacionTema10 = (100 - aprobacionTema10)
                 break
             default:
                 break;
@@ -338,15 +335,19 @@ console.log('-------------')
         }
         cont++
     }
-    //calcular aprobacion
+    //calcular aprobacion LISTA_DE_TEMAS_POR_MATERIAS.length
     var aprobacionTotal=0,reprobacionTotal=0, sumaTemas=0;
      var temaTotals = await newListaParciales.filter(function (tem) {
         sumaTemas = sumaTemas + tem.Total;
-        return tem.Total !== 0;
+        return tem.Total > 70;
     });
 
-    aprobacionTotal = Math.round(sumaTemas / temaTotals.length)
-    reprobacionTotal = Math.round(((sumaTemas) / temaTotals.length) - 100)
+    aprobacionTotal = Math.round((temaTotals.length / dataReporteParciales.length)*100)
+    reprobacionTotal = (100 - aprobacionTotal)
+
+    console.log('*********')
+    console.log(temaTotals)
+    console.log(newListaParciales)
 
     console.log('*********')
 

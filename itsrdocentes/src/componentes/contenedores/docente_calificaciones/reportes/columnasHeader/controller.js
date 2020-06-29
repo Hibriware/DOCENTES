@@ -277,7 +277,6 @@ const aprobacion = async (calcularTemas) => {
 		//pasar al array
 		switch (cont) {
 			case 1:
-				console.log('TEMA 1');
 				var temaTotal = newListaParciales.filter(function(tem) {
 					//<<<<<<<<<<<<<<<<<<<<<<<<<
 					sumaTema = sumaTema + tem.tema1;
@@ -290,8 +289,6 @@ const aprobacion = async (calcularTemas) => {
 				// reprobacionTema1 = Math.round(((sumaTema) / temaTotal.length) - 100)
 				break;
 			case 2:
-				console.log('TEMA 2');
-
 				temaTotal = newListaParciales.filter(function(tem) {
 					sumaTema = sumaTema + tem.tema2;
 					return tem.tema2 >= 70;
@@ -302,8 +299,6 @@ const aprobacion = async (calcularTemas) => {
 
 				break;
 			case 3:
-				console.log('TEMA 3');
-
 				temaTotal = newListaParciales.filter(function(tem) {
 					sumaTema = sumaTema + tem.tema3;
 					return tem.tema3 >= 70;
@@ -314,8 +309,6 @@ const aprobacion = async (calcularTemas) => {
 
 				break;
 			case 4:
-				console.log('TEMA 4');
-
 				temaTotal = newListaParciales.filter(function(tem) {
 					sumaTema = sumaTema + tem.tema4;
 					return tem.tema4 >= 70;
@@ -456,11 +449,11 @@ const pdfParcial = (
 		arrayAprobacion,
 		{
 			margin: { top: 0, left: 310 },
-			styles: { halign: 'center', cellPadding: 0.5, fontSize: 7,columnWidth:'wrap' },
+			styles: { halign: 'center', cellPadding: 0.5, fontSize: 7,columnWidth:15 },
 			theme: 'plain',
 			tableWidth: 230,
-			columnStyles: {0: { columnWidth: 50 ,halign: 'center'}, 1: { columnWidth: 15, halign: 'center' },2: { columnWidth: 15,halign: 'center' },3: { columnWidth: 15 },4: { columnWidth: 15 },5: { columnWidth: 15 },
-			6: { columnWidth: 15 },7: { columnWidth: 15 },8: { columnWidth: 15 },9: { columnWidth: 15 },10: { columnWidth: 15 },10: { columnWidth: 15 }  },
+			columnStyles: {0: { columnWidth: 70 ,halign: 'center'}},//, 1: { columnWidth: 15, halign: 'center' },2: { columnWidth: 15,halign: 'center' },3: { columnWidth: 15 },4: { columnWidth: 15 },5: { columnWidth: 15 },
+			//6: { columnWidth: 15 },7: { columnWidth: 15 },8: { columnWidth: 15 },9: { columnWidth: 15 },10: { columnWidth: 15 },10: { columnWidth: 15 }  },
 			startY: pdf.autoTable.previous.finalY + 7
 		
 		}
@@ -470,11 +463,12 @@ const pdfParcial = (
 	let repro = pdf.autoTable.previous; // aprobacion ··3#############
 	pdf.autoTable(columnsReprobacion, arrayAprobacion, {
 		margin: { top: 0, left: 310 },
-		styles: { halign: 'center', cellPadding: 0.5, fontSize: 7,columnWidth:'wrap' },
+		styles: { halign: 'center', cellPadding: 0.5, fontSize: 7,columnWidth:15 },
 		theme: 'plain',
 		tableWidth: 230,
-		columnStyles: { 0: { columnWidth: 50,halign: 'center' },1: { columnWidth: 15,halign: 'center' },2: { columnWidth: 15,halign: 'center' },3: { columnWidth: 15 },4: { columnWidth: 15 },5: { columnWidth: 15 },
-			6: { columnWidth: 15 },7: { columnWidth: 15 },8: { columnWidth: 15 },9: { columnWidth: 15 },10: { columnWidth: 15 } ,10: { columnWidth: 15 } },
+		columnStyles: {0: { columnWidth: 70 ,halign: 'center'}},
+		//columnStyles: { 0: { columnWidth: 50,halign: 'center' },1: { columnWidth: 15,halign: 'center' },2: { columnWidth: 15,halign: 'center' },3: { columnWidth: 15 },4: { columnWidth: 15 },5: { columnWidth: 15 },
+			//6: { columnWidth: 15 },7: { columnWidth: 15 },8: { columnWidth: 15 },9: { columnWidth: 15 },10: { columnWidth: 15 } ,10: { columnWidth: 15 } },
 		startY: pdf.autoTable.previous.finalY + 2
 	});
 

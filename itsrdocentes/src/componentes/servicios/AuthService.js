@@ -4,7 +4,7 @@ import * as toastr from 'toastr';
 export default class AuthService {
 	constructor(domain) {
 
-		this.domain = domain || 'http://212.237.52.166:4000'; //https://app-api-docentes.herokuapp.com
+		this.domain = domain || 'http://212.237.52.166:4001'; //https://app-api-docentes.herokuapp.com
 
 		this.requestFetch = this.requestFetch.bind(this);
 		this.login = this.login.bind(this);
@@ -17,14 +17,14 @@ export default class AuthService {
 				method: 'POST',
 				body: JSON.stringify({ usuario, password })
 			}).then((response) => {
-				if (response.message === 'ocurrio un error' || response.message === 'contraseña incorrecta') {
-					console.log('usuarios incorrectos');
+				if (response.message === 'ocurrio un error' || response.message === 'contraseña incorrecta' || response.message === 'usuario incorrecto') {
+					toastr.warning(response.message, 'Incorrectos');
 				} else {
 					this.setToken(response.token);
 					this.setUser(response.user);
 					return Promise.resolve(response);
 				}
-				toastr.warning('contraseña o usuario', 'Incorrectos');
+				//toastr.warning('contraseña o usuario', 'Incorrectos');
 			});
 		} catch (error) {
 			console.log(error);

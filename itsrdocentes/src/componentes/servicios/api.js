@@ -57,7 +57,7 @@ export async function treeApi(datas) {
 			url: `${urlApi}/api/aspirante/registrar`,
 			data: datas
 		})
-			.then((res) => console.log("correcto"))
+			.then((res) => console.log('correcto'))
 			.catch(function(error) {
 				swal('error!', 'Verifique su conexion a internet!', 'warning');
 			});
@@ -67,10 +67,12 @@ export async function treeApi(datas) {
 }
 
 export async function crearCalificacion(datas, unidad, id_criterios) {
-	try {
-		//crear calificacion alumno
-		await axios
-			.post(`${urlApi}/api/aspirante/calificacion`, {
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+	//crear calificacion alumno
+	await axios
+		.post(
+			`${urlApi}/api/aspirante/calificacion`,
+			{
 				calR1: datas.calR1 || 0,
 				calR2: datas.calR2 || 0,
 				calR3: datas.calR3 || 0,
@@ -87,35 +89,35 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 				criterios_idcat_Unidad: id_criterios,
 				aspirante_Folio: datas.folioAspirante,
 				periodo: datas.idnomenclaturaPeriodo,
-				opcion: datas.opcion  || 1
-			})
-			.then((res) => console.log(res.data))
-			.catch(function(error) {
-				console.log(error);
-				swal('error!', 'Verifique su conexion a internet!', 'warning');
-			});
-	} catch (error) {
-		console.log(error);
-	}
+				opcion: datas.opcion || 1
+			},
+			TOKEN_USUARIO
+		)
+		.then((res) => console.log(res.data))
+		.catch(function(error) {
+			console.log(error);
+			swal('error!', 'Verifique su conexion a internet!', 'warning');
+		});
 }
 
-var config = {};
+//var config = {};
 
 export async function getPeriodo() {
 	try {
-		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		const response = await axios
-			.get(`${urlApi}/api/administrador/lista/periodo/status`, config)
+			.get(`${urlApi}/api/administrador/lista/periodo/status`, TOKEN_USUARIO)
 			.then((res) => {
 				if (res.data.data.length) {
 					//asignar fechas y periodods
 					dataPeriodo = res.data.data;
-					console.log(FECHA_ACTUAL = res.data.fechaActual);
+					console.log((FECHA_ACTUAL = res.data.fechaActual));
 					PERIODO_ACTUAL = res.data.data[0].periodo;
 					return dataPeriodo;
 				} else {
-					console.log(FECHA_ACTUAL = res.data.fechaActual);
-					
+					console.log((FECHA_ACTUAL = res.data.fechaActual));
+
 					return 'not'; // sin periodos activos
 				}
 			})
@@ -161,9 +163,10 @@ export async function getPeriodo() {
 
 export async function getListaPeriodo() {
 	try {
-		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		let respon = await axios
-			.get(`${urlApi}/api/administrador/lista/periodo`, config)
+			.get(`${urlApi}/api/administrador/lista/periodo`, TOKEN_USUARIO)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
@@ -177,8 +180,13 @@ export async function getListaPeriodo() {
 }
 
 export async function getTemas(idMateria, minimo, cierre) {
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 	await axios
-		.get(`${urlApi}/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`)
+		.get(
+			`${urlApi}/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`,
+			TOKEN_USUARIO
+		)
 		.then((res) => (datalista = res.data))
 		.catch(function(error) {
 			swal(
@@ -190,22 +198,29 @@ export async function getTemas(idMateria, minimo, cierre) {
 }
 
 export async function getTemasReportes(idMateria) {
-let datos =	await axios
-		.get(`${urlApi}/api/reporte/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}`)
-		.then((res) => (res.data))
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+	let datos = await axios
+		.get(`${urlApi}/api/reporte/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}`, TOKEN_USUARIO)
+		.then((res) => res.data)
 		.catch(function(error) {
-			console.log(error)
-			return false
+			console.log(error);
+			return false;
 		});
 
-		return datos
+	return datos;
 }
 
 export async function getStatus_temas(id_usuario, id_materia) {
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 	try {
 		//PERIODO_ACTUAL, ID_USUARIO, materia
 		await axios
-			.get(`${urlApi}/api/aspirante/consultar/estado/temas/${PERIODO_ACTUAL}/${id_materia}/${id_usuario}`)
+			.get(
+				`${urlApi}/api/aspirante/consultar/estado/temas/${PERIODO_ACTUAL}/${id_materia}/${id_usuario}`,
+				TOKEN_USUARIO
+			)
 			.then((res) => (dataStatusTemas = res.data))
 			.catch(function(error) {
 				swal(' ', 'Verifique su conexion a internet!', 'warning');
@@ -216,24 +231,28 @@ export async function getStatus_temas(id_usuario, id_materia) {
 }
 
 export async function getAlumnos(idMateria, unidad) {
-	try {
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		//consultarAlumnos/:idMateria/:periodo/:idDocente/:unidad
-		console.log('Actualizando alumnos--------------------------------');
-		await axios
-			.get(`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}`)
+			await axios
+			.get(
+				`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}`,
+				TOKEN_USUARIO
+			)
 			.then((res) => (datalistaAlumnos = res.data))
 			.catch(function(error) {
 				swal('Error', 'Verifique su conexion a internet!', 'warning');
 			});
-	} catch (error) {
-		swal('Error', 'Verifique su conexion a internet!', 'warning');
 	}
-}
 
 export async function getCriterios(idMateria, unidad) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.get(`${urlApi}/api/administrador/consultarCriterios/${PERIODO_ACTUAL}/${idMateria}/${unidad}`)
+			.get(
+				`${urlApi}/api/administrador/consultarCriterios/${PERIODO_ACTUAL}/${idMateria}/${unidad}`,
+				TOKEN_USUARIO
+			)
 			.then((res) => (dataCriterios = res.data))
 			.catch(function(error) {
 				swal('Sin temas disponibles!', ' o Verifique su conexion a internet!', 'warning');
@@ -245,11 +264,17 @@ export async function getCriterios(idMateria, unidad) {
 
 export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.put(`${urlApi}/api/aspirante/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
-				criterio1: criterio1,
-				porcentageC1: porcentageC1
-			})
+			.put(
+				`${urlApi}/api/aspirante/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				{
+					criterio1: criterio1,
+					porcentageC1: porcentageC1
+				},
+				TOKEN_USUARIO
+			)
 			.then(function(response) {
 				console.log(response.data);
 			})
@@ -263,11 +288,17 @@ export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, crite
 
 export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, criterio2) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.put(`${urlApi}/api/aspirante/update/criteriosc2/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
-				criterio2: criterio2,
-				porcentageC2: porcentageC2
-			})
+			.put(
+				`${urlApi}/api/aspirante/update/criteriosc2/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				{
+					criterio2: criterio2,
+					porcentageC2: porcentageC2
+				},
+				TOKEN_USUARIO
+			)
 			.then(function(response) {
 				console.log(response.data);
 			})
@@ -281,11 +312,17 @@ export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, crite
 
 export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, criterio3) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.put(`${urlApi}/api/aspirante/update/criteriosc3/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
-				criterio3: criterio3,
-				porcentageC3: porcentageC3
-			})
+			.put(
+				`${urlApi}/api/aspirante/update/criteriosc3/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				{
+					criterio3: criterio3,
+					porcentageC3: porcentageC3
+				},
+				TOKEN_USUARIO
+			)
 			.then(function(response) {
 				console.log(response.data);
 			})
@@ -299,11 +336,17 @@ export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, crite
 
 export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.put(`${urlApi}/api/aspirante/update/criteriosc4/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`, {
-				criterio4: criterio4,
-				porcentageC4: porcentageC4 || 0
-			})
+			.put(
+				`${urlApi}/api/aspirante/update/criteriosc4/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				{
+					criterio4: criterio4,
+					porcentageC4: porcentageC4 || 0
+				},
+				TOKEN_USUARIO
+			)
 			.then(function(response) {
 				console.log(response.data);
 			})
@@ -316,10 +359,13 @@ export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, crite
 }
 
 export async function updateCalificaion(idCalificacion, data) {
-	try {
-		// actalizar calificacion
-		await axios
-			.put(`${urlApi}/api/aspirante/update/calificaciones/${idCalificacion}`, {
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+	// actalizar calificacion
+	await axios
+		.put(
+			`${urlApi}/api/aspirante/update/calificaciones/${idCalificacion}`,
+			{
 				calCriterio1: data.calCriterio1 || 0,
 				calCriterio2: data.calCriterio2 || 0,
 				calCriterio3: data.calCriterio3 || 0,
@@ -330,22 +376,23 @@ export async function updateCalificaion(idCalificacion, data) {
 				calR3: data.calR3 || 0,
 				calR4: data.calR4 || 0,
 				opcion: data.opcion
-			})
-			.then(function(response) {
-				console.log(response.data);
-			})
-			.catch(function(error) {
-				console.log(error);
-			});
-	} catch (error) {
-		console.log(error);
-	}
+			},
+			TOKEN_USUARIO
+		)
+		.then(function(response) {
+			console.log(response.data);
+		})
+		.catch(function(error) {
+			console.log(error);
+		});
 }
 
 export async function materiasD() {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		const resul = await axios
-			.get(`${urlApi}/api/aspirante/consultar/${ID_USUARIO}/${PERIODO_ACTUAL}`)
+			.get(`${urlApi}/api/aspirante/consultar/${ID_USUARIO}/${PERIODO_ACTUAL}`, TOKEN_USUARIO)
 			.then((res) => {
 				if (res.data.datas.length) {
 					return res.data.datas;
@@ -365,8 +412,13 @@ export async function materiasD() {
 
 export async function getReporteHorarios(periodo, idMateria, grupo) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.get(`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
+			.get(
+				`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`,
+				TOKEN_USUARIO
+			)
 			.then((res) => (dataReportHorario = res.data))
 			.catch(function(error) {
 				swal('error al buscar los horarios!', 'Verifique su conexión a internet', 'warning');
@@ -378,8 +430,13 @@ export async function getReporteHorarios(periodo, idMateria, grupo) {
 
 export async function getReporteLista(periodo, idMateria, grupo) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.get(`${urlApi}/api/reporte/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`)
+			.get(
+				`${urlApi}/api/reporte/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`,
+				TOKEN_USUARIO
+			)
 			.then((res) => (dataReportLista = res.data))
 			.catch(function(error) {
 				swal('error al buscar lista!', 'Verifique su conexión a internet', 'warning');
@@ -400,16 +457,22 @@ export function borrer(id) {
 //data administrador
 export async function crearRegistrosfechas(datas) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.post(`${urlApi}/api/administrador/fechas/registrar`, {
-				primera_entrega: moment(datas.primera).format('YYYY-MM-DD'),
-				segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
-				tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
-				entrega_final: moment(datas.final).format('YYYY-MM-DD'),
-				status: datas.status,
-				habilitar_todas: datas.temas,
-				periodo: datas.periodo
-			})
+			.post(
+				`${urlApi}/api/administrador/fechas/registrar`,
+				{
+					primera_entrega: moment(datas.primera).format('YYYY-MM-DD'),
+					segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
+					tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
+					entrega_final: moment(datas.final).format('YYYY-MM-DD'),
+					status: datas.status,
+					habilitar_todas: datas.temas,
+					periodo: datas.periodo
+				},
+				TOKEN_USUARIO
+			)
 			.then((res) => swal('', `FECHAS REGISTRADAS`, 'success'))
 			.catch(function(error) {
 				console.log(error);
@@ -424,16 +487,22 @@ export async function crearRegistrosfechas(datas) {
 //data administrador
 export async function updateRegistrosfechas(datas) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.put(`${urlApi}/api/administrador/fechas/actualizar/${datas.periodo}`, {
-				primera_entrega: moment(datas.primera).format('YYYY-MM-DD'),
-				segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
-				tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
-				entrega_final: moment(datas.final).format('YYYY-MM-DD'),
-				status: datas.status,
-				habilitar_todas: datas.temas,
-				periodo: datas.periodo
-			})
+			.put(
+				`${urlApi}/api/administrador/fechas/actualizar/${datas.periodo}`,
+				{
+					primera_entrega: moment(datas.primera).format('YYYY-MM-DD'),
+					segunda_entrega: moment(datas.segunda).format('YYYY-MM-DD'),
+					tercera_entrega: moment(datas.tercera).format('YYYY-MM-DD'),
+					entrega_final: moment(datas.final).format('YYYY-MM-DD'),
+					status: datas.status,
+					habilitar_todas: datas.temas,
+					periodo: datas.periodo
+				},
+				TOKEN_USUARIO
+			)
 			.then((res) => swal('', `Registros actualizados: (${datas.periodo})`, 'success'))
 			.catch(function(error) {
 				console.log(error);
@@ -446,11 +515,13 @@ export async function updateRegistrosfechas(datas) {
 
 export async function getAdmiFechas(periodo) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		let respon = await axios
-			.get(`${urlApi}/api/administrador/fechas/${periodo || PERIODO_ACTUAL}`)
+			.get(`${urlApi}/api/administrador/fechas/${periodo || PERIODO_ACTUAL}`, TOKEN_USUARIO)
 			.then((res) => {
 				dataFechasCierre = res.data;
-				console.log("Guardado");
+				console.log('Guardado');
 				return true;
 			})
 			.catch(function(error) {
@@ -465,8 +536,10 @@ export async function getAdmiFechas(periodo) {
 
 export async function restablecerStatus(periodo) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		let respon = await axios
-			.get(`${urlApi}/api/administrador/fechas/actualizar/columna`)
+			.get(`${urlApi}/api/administrador/fechas/actualizar/columna`, TOKEN_USUARIO)
 			.then((res) => {
 				return true;
 			})
@@ -483,11 +556,12 @@ export async function restablecerStatus(periodo) {
 
 export async function getStatusPeriodo() {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		let respons = await axios
-			.get(`${urlApi}/api/administrador/lista/periodo/status`)
+			.get(`${urlApi}/api/administrador/lista/periodo/status`, TOKEN_USUARIO)
 			.then((res) => {
 				if (res.data.data.length) {
-					
 					return res.data.data[0];
 				} else {
 					return false;
@@ -509,11 +583,16 @@ export async function getStatusPeriodo() {
 
 export async function getReporteParcial(materia, grupo) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		await axios
-			.get(`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`)
+			.get(
+				`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`,
+				TOKEN_USUARIO
+			)
 			.then((res) => {
-				dataReporteParciales = res.data
-				console.log(res)
+				dataReporteParciales = res.data;
+				console.log(res);
 			})
 			.catch(function(error) {
 				swal('', 'sin conexión', 'warning');

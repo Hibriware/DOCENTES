@@ -24,10 +24,12 @@ import FaceIcon from '@material-ui/icons/Face';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import ChromeReaderModeIcon from '@material-ui/icons/ChromeReaderMode';
 import {useStyles} from './styles';
 import Menu_docentes from '../contenedores/menu_opciones';
 import Acta_entregas from '../administrador/acta_entregas';
 import Cards from './cards'
+import Boletas from '../boletasCalificacion/boletas';
 import AuthService from '../servicios/AuthService';
 
 
@@ -43,7 +45,8 @@ class Menus extends Component {
    
     this.menuItems=[
       {icon:<HomeIcon></HomeIcon>,link:'/'},
-      {icon:<DescriptionIcon></DescriptionIcon>,link:'/inicio'},    
+      {icon:<DescriptionIcon></DescriptionIcon>,link:'/inicio'},
+      {icon:<ChromeReaderModeIcon></ChromeReaderModeIcon>,link:'/boletas'},     
       {icon:<DescriptionIcon></DescriptionIcon>,link:'/Docente'}    
     ];
   }
@@ -58,10 +61,10 @@ class Menus extends Component {
 console.log(userType)
   // const sections=(userType==='Administrador')?['Inicio','Monitoreo','Catalogo Personal','Reportes','Accesos']:
   //                 (userType==='Guardia')?['Inicio','Reporte observaciones']:['Inicio','Reportes','Monitoreo'];
-  const sections=(userType==='Administrador')?['Inicio','Admin']:
+  const sections=(userType==='Administrador')?['Inicio','Admin','Boletas']:
   (userType==='administradorse')?['Inicio','Admin']:
   (userType==='Gestión Escolar')?['Inicio','Admin']:
-  (userType==='Docente')?['Inicio',,'Docente']:['Inicio'];
+  (userType==='Docente')?['Inicio',,,'Docente']:['Inicio'];
 
 
 
@@ -141,7 +144,8 @@ console.log(userType)
                   <Route path='/guardiasObservaciones' exact render={routeProps=><GuardiasObservaciones{...routeProps} propname={'go'}/>}></Route>
                   <Route path='/reporte_monitoreo' exact render={routeProps=><Reporte_m{...routeProps} propname={'g'}/>}></Route>
                         <Route path='/reporte_personal' exact render={routeProps=><Reporte_p{...routeProps} propname={'o'}/>}></Route>*/}  
-                  <Route exact path='/inicio'  render={routeProps=><Acta_entregas{...routeProps} propname={'inicio'}/>}></Route>  
+                  <Route exact path='/inicio'  render={routeProps=><Acta_entregas{...routeProps} propname={'inicio'}/>}></Route>
+                  <Route exact path='/boletas'  render={routeProps=><Boletas{...routeProps} propname={'boletas'}/>}></Route>  
                   <Route exact path='/Docente'  render={routeProps=><Menu_docentes{...routeProps} propname={'o'}/>}></Route>  
                   <Redirect from="*" to="/"/>
               </Switch>

@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Materia from './selectMateria';
 import Periodos from './selectPeriodo';
+import Button from './buttonCarrera';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -23,13 +24,18 @@ function Carrera() {
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				<Grid item xs={6}>
-					<Paper className={classes.paper}>
+					<Paper elevation={0} className={classes.paper}>
 						<Materia />
 					</Paper>
 				</Grid>
 				<Grid item xs={6}>
-					<Paper className={classes.paper}>
+					<Paper elevation={0} className={classes.paper}>
 						<Periodos />
+					</Paper>
+				</Grid>
+				<Grid item xs={6}>
+					<Paper elevation={0} className={classes.paper}>
+						<Button />
 					</Paper>
 				</Grid>
 			</Grid>

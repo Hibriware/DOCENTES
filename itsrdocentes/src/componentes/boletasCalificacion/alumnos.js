@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Periodo from './selectPeriodo';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -21,10 +23,15 @@ function Alumno() {
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				<Grid item xs={6}>
-					<Paper className={classes.paper}>xs=6</Paper>
+					<Paper className={classes.paper}>
+					<TextField size="small" id="outlined-basic" label="NºControl" variant="outlined" />
+						</Paper>
 				</Grid>
 				<Grid item xs={6}>
-					<Paper className={classes.paper}>xs=6</Paper>
+					<Paper className={classes.paper}>
+					<Periodo/>
+
+					</Paper>
 				</Grid>
 			</Grid>
 		</div>

@@ -489,7 +489,7 @@ const pdfParcial = (
 		pdf.setFontSize(8);
 		pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
 		pdf.setFontSize(8);
-		pdf.text(500, 40, `FECHA: ${moment(FECHA_ACTUAL).format('DD/MM/YYYY')}`);
+		pdf.text(500, 40, `FECHA: ${moment(new Date()).format('DD/MM/YYYY')}`);
 		pdf.setFontSize(7);
 		pdf.text(122, 54, Horas_clases);
 		pdf.setFontSize(8);
@@ -584,7 +584,7 @@ const pdActaFinal = (
 		pdf.setFontSize(8);
 		pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
 		pdf.setFontSize(8);
-		pdf.text(500, 40, `FECHA: ${moment(FECHA_ACTUAL).format('DD/MM/YYYY')}`);
+		pdf.text(500, 40, `FECHA: ${moment(new Date()).format('DD/MM/YYYY')}`);
 		pdf.setFontSize(7);
 		pdf.text(122, 54, Horas_clases);
 		pdf.setFontSize(8);

@@ -132,6 +132,22 @@ export async function getPeriodo() {
 	}
 }
 
+
+export async function getListaCarreras() {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		const response = await axios
+			.get(`${urlApi}/api/reporte/consultar/carreras`, TOKEN_USUARIO)
+			.then((res) => res.data)
+			.catch(function(error) {
+				swal('!', `${error}`, 'warning');
+				return false;
+			});
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}
 /*export async function getPeriodo() {
 	try {
 		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };

@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function VerticalTabs() {
+function VerticalTabs({setLoader}) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -75,7 +75,7 @@ function VerticalTabs() {
         <Tab label="Carreras" {...a11yProps(1)} />
       </Tabs>
       <TabPanel value={value} index={0}>
-       <Alumnos/>
+       <Alumnos setLoader={setLoader}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
        <Carreras/>

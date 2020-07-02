@@ -17,7 +17,7 @@ import { getListaCarreras} from '../servicios/api'
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
+    height: 50,
     minWidth: 290,
   },
   input: {
@@ -320,9 +320,16 @@ function SelectMateria() {
 
 useEffect(() => {
   async function cargarCarreras(params) {
-  let datos = await  getListaCarreras()
+    try {
+      let datos = await  getListaCarreras()
   console.log(datos)
-  setCarreras(datos)
+  if(datos){
+    setCarreras(datos)
+  }
+    } catch (error) {
+      
+    }
+  
   }
   cargarCarreras()
 }, [])
@@ -352,7 +359,7 @@ useEffect(() => {
           styles={selectStyles}
           inputId="react-select-single"
           TextFieldProps={{
-            label: 'Country',
+            label: 'Carrera',
             InputLabelProps: {
               htmlFor: 'react-select-single',
               shrink: true,

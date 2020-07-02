@@ -30,7 +30,7 @@ function Carrera() {
 				</Grid>
 				<Grid item xs={6}>
 					<Paper elevation={0} className={classes.paper}>
-						<Periodos />
+						{/*<Periodos />*/}<h4>periodo</h4>
 					</Paper>
 				</Grid>
 				<Grid item xs={6}>

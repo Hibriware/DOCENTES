@@ -78,7 +78,7 @@ function VerticalTabs({setLoader}) {
        <Alumnos setLoader={setLoader}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-       <Carreras/>
+       <Carreras setLoader={setLoader}/>
       </TabPanel>
     </div>
   );

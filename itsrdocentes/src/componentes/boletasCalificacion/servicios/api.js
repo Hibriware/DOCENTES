@@ -1,5 +1,6 @@
 import {urlApi} from '../../servicios/api';
 import swal from 'sweetalert';
+import SelectPeriodo from '../selectPeriodo';
 const axios = require('axios');
 
 
@@ -53,6 +54,23 @@ export async function getCatalogoCarrera(semestre, folio,periodo,idcarrera) {
 		console.log(error);
 	}
 }
+
+export async function getListaControlesCarrera(periodo, semestre,idcarrera) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		const response = await axios
+			.get(`${urlApi}/api/reporte/consultar/lista/carreras/${periodo}/${semestre}/${idcarrera}`, TOKEN_USUARIO)
+			.then((res) => res.data)
+			.catch(function(error) {
+				swal('!', `${error}`, 'warning');
+				return false;
+			});
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 
 
 export async function getCatalogoSemestre() {

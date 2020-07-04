@@ -309,17 +309,17 @@ const components = {
   ValueContainer,
 };
 
-function SelectMateria() {
+function SelectMateria({setIdCarrera, idDcarreras}) {
   const classes = useStyles();
   const theme = useTheme();
-  const [mataeriaElegida, setCarreraEligida] = React.useState(null);
+ // const [mataeriaElegida, setCarreraEligida] = React.useState(null);
   //const [multi, setMulti] = React.useState(null);
   const [carreras, setCarreras] = React.useState([]);
 
 
 
 useEffect(() => {
-  async function cargarCarreras(params) {
+  async function cargarCarreras() {
     try {
       let datos = await  getListaCarreras()
   console.log(datos)
@@ -336,7 +336,7 @@ useEffect(() => {
 
 
   function handleChangeSingle(value) {
-    setCarreraEligida(value);
+    setIdCarrera(value)
   }
 
   
@@ -365,7 +365,7 @@ useEffect(() => {
               shrink: true,
             },
           }}
-          placeholder="buscar materia ..."
+          placeholder="buscar carrera ..."
           options={
             carreras.map(data => ({
             value: data.idCarrera,
@@ -373,7 +373,7 @@ useEffect(() => {
           }))
         }//carreras //suggestions
           components={components}
-          value={mataeriaElegida}
+          value={idDcarreras}
           onChange={handleChangeSingle}
         />
          </NoSsr>

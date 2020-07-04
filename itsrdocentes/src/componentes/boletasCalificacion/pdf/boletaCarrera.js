@@ -1,22 +1,23 @@
-import {getListaCarreras,getCalificaciones,getCatalogoCarrera} from '../servicios/api';
-import {boletaAlumno} from './pdfAlumno';
+import {getListaCarreras,getCalificaciones,getCatalogoCarrera, getListaControlesCarrera} from '../servicios/api';
+import {boletacarrera} from './pdfCarreras';
 import swal from 'sweetalert';
 
 var calificacions = [];
 
-//BUSCAR ASPIRANTE, CAREERA, PERIODO
- export async function main(PERIODO, NUMERO_CONTROL,SEMESTRE) {
-
-    try {
-        
-  
-
+//BUSCAR ID_CARRERA, PERIODO, SEMESTRE
+ export async function main(PERIODO, ID_CARRERA,SEMESTRE) {
+     try {
     //variables
-    var DATOSCARRERA_ASPIRENTES = [];
-    var DATOS_CALIFICACIONES = [];
-    var DATOS_CARRERAS = [];
-    var DATOS_BOLETA_FINAL =[];
-    
+    let TODOS_LOS_PDF = []
+    let TODOS_LOS_PDF_INFORMACION = []
+    //variables
+   let LISTA_SEMESTRES_POR_CARRERA = await getListaControlesCarrera(PERIODO, SEMESTRE,ID_CARRERA.value)//LISTA DE SEMESTRES POR CARRERA
+  // console.log(LISTA_SEMESTRES_POR_CARRERA)
+
+   if(LISTA_SEMESTRES_POR_CARRERA.length > 0){
+
+   for (let index_lista = 0; index_lista < LISTA_SEMESTRES_POR_CARRERA.length; index_lista++) {
+
     let PDF = [
         {
         calificacion: '',
@@ -78,10 +79,27 @@ var calificacions = [];
         opcion: ''
     }
     ];
+    let INFORMACIONASPIRANTE = [{
+        nomeroControl:'',
+        numeroPeriodo:'',
+        rangoPeriodo:'',
+        nombreCarrera:'',
+        nombreAspirante:'',
+        promedio:'',
+        materiasReprobadas:'',
+        totalCreditos:'',
+        creditosAprobados:''
+
+    }]
+
+    var DATOSCARRERA_ASPIRENTES = [];
+    var DATOS_CALIFICACIONES = [];
+    var DATOS_CARRERAS = [];
+    var DATOS_BOLETA_FINAL =[];
+
+    let CARRERA_NUMERO_CONTROL = LISTA_SEMESTRES_POR_CARRERA[index_lista].numeroControl;
     
-    //variables
-    
-    DATOSCARRERA_ASPIRENTES = await getListaCarreras(PERIODO,NUMERO_CONTROL,SEMESTRE)
+    DATOSCARRERA_ASPIRENTES = await getListaCarreras(PERIODO,CARRERA_NUMERO_CONTROL,SEMESTRE)
 
     if(DATOSCARRERA_ASPIRENTES.length > 0){
         let BOLETA_ID_CARRERA =  DATOSCARRERA_ASPIRENTES[0].idCarrera;
@@ -103,7 +121,7 @@ var calificacions = [];
 
       //catalogo/carrera/1/137/7/19 SEMESTRE - FOLIO - PERIODO - IDCARRERA (semestre, folio,periodo,idcarrera)
             DATOS_CARRERAS=  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
-          //  console.log(DATOS_CARRERAS)
+            //console.log(DATOS_CARRERAS)
 
             for (let index = 0; index < DATOS_CARRERAS.length; index++) {
                  let CARRERA_PERIODO = DATOS_CARRERAS[index].idnomenclaturaPeriodo;
@@ -112,7 +130,7 @@ var calificacions = [];
 
                      DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
                      //console.log(DATOS_CARRERAS[index].nombre)
-                   //  console.log(DATOS_CALIFICACIONES)
+                     //console.log(DATOS_CALIFICACIONES)
                      //CLAVE - MATERIA/DOCENTE - CREDITOS - CALIFICACION_FINAL - OPCION
                         let CLAVE = DATOS_CARRERAS[index].claveMateria;
                         let MATERIA = DATOS_CARRERAS[index].nomcorto;
@@ -170,10 +188,10 @@ var calificacions = [];
   //  }// fin 
 
     let PROMEDIO_SUMA = 0;
-    let CREDITOS_SUMA = 0;
+    var CREDITOS_SUMA = 0;
     var CREDITOS_REPROBADOS = 0;
     let MATERIAS_REPROBADAS_CONTADOR = 0;
-    let MATERIAS_REPROBADAS = 0;
+    var MATERIAS_REPROBADAS = 0;
 
 
             for (let i = 0; i < DATOS_BOLETA_FINAL.length; i++) {
@@ -183,11 +201,11 @@ var calificacions = [];
                 if(DATOS_BOLETA_FINAL[i].calificacion >= 70){
                     MATERIAS_REPROBADAS_CONTADOR++;
                     CREDITOS_REPROBADOS=CREDITOS_REPROBADOS + DATOS_BOLETA_FINAL[i].creditos
-                    //console.log(CREDITOS_REPROBADOS)
+                   // console.log(CREDITOS_REPROBADOS)
                 }
             }
             
-            let PROMEDIO = Math.round(PROMEDIO_SUMA/DATOS_BOLETA_FINAL.length)
+            var PROMEDIO = Math.round(PROMEDIO_SUMA/DATOS_BOLETA_FINAL.length)
             MATERIAS_REPROBADAS = (DATOS_BOLETA_FINAL.length - MATERIAS_REPROBADAS_CONTADOR)
             //console.log('DATOS_BOLETA_FINAL')
             //console.log(DATOS_BOLETA_FINAL)
@@ -204,25 +222,63 @@ var calificacions = [];
                 PDF[x].materia = DATOS_BOLETA_FINAL[x].materia
                 PDF[x].opcion = DATOS_BOLETA_FINAL[x].opcion
             }
+//boletaAlumno(TODOS_LOS_PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS)
 
-           
+            INFORMACIONASPIRANTE[0].creditosAprobados = CREDITOS_REPROBADOS
+            INFORMACIONASPIRANTE[0].materiasReprobadas = MATERIAS_REPROBADAS
+            INFORMACIONASPIRANTE[0].nombreAspirante = ASPIRANTE_NOMBRE + ' '+ASPIRANTE_PATERNO + ' ' + ASPIRANTE_MATERNO
+            INFORMACIONASPIRANTE[0].nombreCarrera=ASPIRANTE_CARRERA
+            INFORMACIONASPIRANTE[0].nomeroControl= ASPIRANTE_CONTROL
+            INFORMACIONASPIRANTE[0].numeroPeriodo= ASPIRANTE_NUMERO_PERIODO
+            INFORMACIONASPIRANTE[0].rangoPeriodo=ASPIRANTE_RANGO_PERIODO
+            INFORMACIONASPIRANTE[0].totalCreditos=CREDITOS_SUMA
+            INFORMACIONASPIRANTE[0].promedio = PROMEDIO
+
+            TODOS_LOS_PDF.push({"alumno":PDF})//guardar boletas
+            TODOS_LOS_PDF_INFORMACION.push({"alumno":INFORMACIONASPIRANTE})
+            //GUARDAR PROMEDIOS
+                         /* let INFORMACIONASPIRANTE = [{
+                             nomeroControl:'',
+                             numeroPeriodo:'',
+                             rangoPeriodo:'',
+                              nombrecCarrera:'',
+                              nombreAspirante:'',
+                               promedio:'',
+                               materiasReprobadas:'',
+                               totelCreditos:'',
+                                   creditosAprobados:''
+        
+                                 }]*/
+        
 
             
-            //console.log(PDF)
+           // console.log(TODOS_LOS_PDF)
+            //console.log(TODOS_LOS_PDF_INFORMACION)
+
             
 
 
 //PASAR DATOS AL PDF BOLETAS FINAL
-boletaAlumno(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS)
+//boletaAlumno(TODOS_LOS_PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS)
 
  }// fin 
  else{
-    swal('', `El número de control: ${NUMERO_CONTROL}  , no se encontró en el semestre: ${SEMESTRE}`, 'warning');
+    swal('', `Error`, 'warning');
  }
+}//fin for carrera
+
+boletacarrera(TODOS_LOS_PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS,TODOS_LOS_PDF_INFORMACION)
+
+
+} else{
+    swal('', `No se encontró ${ID_CARRERA.label} en el semestre: ${SEMESTRE}`, 'warning');
+}//fin else carrera
+
 
 } catch (error) {
-    swal('', ` ${error}`, 'warning');
+    swal('!', ` ${error}`, 'warning');     
 }
+
 }
 
 

@@ -2,7 +2,6 @@ import {getListaCarreras,getCalificaciones,getCatalogoCarrera, getListaControles
 import {boletacarrera} from './pdfCarreras';
 import swal from 'sweetalert';
 
-var calificacions = [];
 
 //BUSCAR ID_CARRERA, PERIODO, SEMESTRE
  export async function main(PERIODO, ID_CARRERA,SEMESTRE) {
@@ -11,7 +10,9 @@ var calificacions = [];
     let TODOS_LOS_PDF = []
     let TODOS_LOS_PDF_INFORMACION = []
     //variables
+    console.time("LISTA_SEMESTRES_POR_CARRERA")
    let LISTA_SEMESTRES_POR_CARRERA = await getListaControlesCarrera(PERIODO, SEMESTRE,ID_CARRERA.value)//LISTA DE SEMESTRES POR CARRERA
+   console.timeEnd("LISTA_SEMESTRES_POR_CARRERA")
   // console.log(LISTA_SEMESTRES_POR_CARRERA)
 
    if(LISTA_SEMESTRES_POR_CARRERA.length > 0){
@@ -98,11 +99,12 @@ var calificacions = [];
     var DATOS_BOLETA_FINAL =[];
 
     let CARRERA_NUMERO_CONTROL = LISTA_SEMESTRES_POR_CARRERA[index_lista].numeroControl;
-    
+    console.time("DATOSCARRERA_ASPIRENTES2")
     DATOSCARRERA_ASPIRENTES = await getListaCarreras(PERIODO,CARRERA_NUMERO_CONTROL,SEMESTRE)
+    console.timeEnd("DATOSCARRERA_ASPIRENTES2")
 
     if(DATOSCARRERA_ASPIRENTES.length > 0){
-        let BOLETA_ID_CARRERA =  DATOSCARRERA_ASPIRENTES[0].idCarrera;
+        let BOLETA_ID_CARRERA =  DATOSCARRERA_ASPIRENTES[0].idCarrera;//quitar
         let BOLETA_SEMESTRE = SEMESTRE
         let BOLETA_FOLIO = DATOSCARRERA_ASPIRENTES[0].Folio;
         let BOLETA_PERIODO = DATOSCARRERA_ASPIRENTES[0].idcat_RanPer;
@@ -115,20 +117,24 @@ var calificacions = [];
 
         var ASPIRANTE_CARRERA =  DATOSCARRERA_ASPIRENTES[0].nombreCarrera;
         var ASPIRANTE_RANGO_PERIODO =  DATOSCARRERA_ASPIRENTES[0].rangoPeriodo;
-        var ASPIRANTE_NUMERO_PERIODO = DATOSCARRERA_ASPIRENTES[0].idcat_RanPer;
+        var ASPIRANTE_NUMERO_PERIODO = DATOSCARRERA_ASPIRENTES[0].semestre;
 
 // ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO
 
       //catalogo/carrera/1/137/7/19 SEMESTRE - FOLIO - PERIODO - IDCARRERA (semestre, folio,periodo,idcarrera)
+      console.time("DATOS_CARRERAS3")
             DATOS_CARRERAS=  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
+      console.timeEnd("DATOS_CARRERAS3")
+
             //console.log(DATOS_CARRERAS)
 
             for (let index = 0; index < DATOS_CARRERAS.length; index++) {
                  let CARRERA_PERIODO = DATOS_CARRERAS[index].idnomenclaturaPeriodo;
                  let CARRERA_FOLIO =  DATOS_CARRERAS[index].aspirante_Folio;
                  let CARRERA_IDMATERIA = DATOS_CARRERAS[index].idmaterias
-
+console.time("DATOS_CALIFICACIONES4")
                      DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
+                     console.timeEnd("DATOS_CALIFICACIONES4")
                      //console.log(DATOS_CARRERAS[index].nombre)
                      //console.log(DATOS_CALIFICACIONES)
                      //CLAVE - MATERIA/DOCENTE - CREDITOS - CALIFICACION_FINAL - OPCION
@@ -150,7 +156,6 @@ var calificacions = [];
                                     let calificaciontotal = parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal || 0)
                                    // OPCION = parseInt(DATOS_CALIFICACIONES[index2].opcion || 0)
                                     PROMEDIOS_SUMAS = PROMEDIOS_SUMAS+calificaciontotal;
-                                   
                                 }
                                 PROMEDIOFINAL =  Math.round(PROMEDIOS_SUMAS/DATOS_CALIFICACIONES.length)
 
@@ -161,12 +166,12 @@ var calificacions = [];
                                 if(OPCION.length > 0 && PROMEDIOFINAL >= 70){
                                     message="2RA. OPORT."
                                 }else if ((OPCION.length > 0 && PROMEDIOFINAL < 70) || (OPCION.length === 0 && PROMEDIOFINAL < 70) ){
-                                    message = "HO HA CURSADO"
+                                    message = "NO ACREDITADA"
                                 }
 
                             }else{
                                 PROMEDIOFINAL = 0
-                                message = "HO HA CURSADO"
+                                message = "NO ACREDITADA"
                             }
                                 // 1opcion = 0 , 2 opcion > 0 , nocursado ===11
                                 //console.log("promedio")
@@ -215,6 +220,7 @@ var calificacions = [];
           //  console.log(CREDITOS_SUMA)
              
             for (let x = 0; x < DATOS_BOLETA_FINAL.length; x++) {
+                //PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:DATOS_BOLETA_FINAL[x].calificacion
                 PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:"NA"
                 PDF[x].clave = DATOS_BOLETA_FINAL[x].clave
                 PDF[x].creditos = DATOS_BOLETA_FINAL[x].creditos

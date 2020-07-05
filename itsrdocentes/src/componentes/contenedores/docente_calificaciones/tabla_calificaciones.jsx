@@ -46,9 +46,6 @@ export const MaterialTableDemo = () => {//inicio del componente
   const [ccx21, setCcx2] = React.useState(0);
   const [ccx11, setCcx1] = React.useState(0);
 
-
- 
-
   const BC1 = useRef();
   const BC2 = useRef();
   const BC3 = useRef();
@@ -108,7 +105,6 @@ export const MaterialTableDemo = () => {//inicio del componente
       }
     }
 
-
     fechasGet()
 
   }, []);
@@ -136,7 +132,17 @@ export const MaterialTableDemo = () => {//inicio del componente
 */
   },[MATERIA_ID])
 
+  /*useEffect(() => {
 
+      setInputCalificaciones({
+        ...inputCalificacion,
+        inputCalificaion1:(ccx41 > 0) ? 'onUpdate':'never',
+        inputCalificaion2:(ccx31 > 0) ? false:true,
+        inputCalificaion3:(ccx21 > 0) ? false:true,
+        inputCalificaion4:(ccx11 > 0) ? false:true
+      })
+
+  }, [ccx41])*/
 
   const updates = useCallback(async (m, u) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
     console.log('INICIANDO LA ACTUALIZACION')
@@ -155,7 +161,6 @@ export const MaterialTableDemo = () => {//inicio del componente
     setCcx3(ccx3)
     setCcx2(ccx2)
     setCcx1(ccx1)
-
 
     BC1.current.value = ccx1
     BC2.current.value = ccx2
@@ -259,10 +264,6 @@ export const MaterialTableDemo = () => {//inicio del componente
   console.log(funtions)
 
 
-
-
-
-
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
     columns: [
       { title: 'Nª', field: 'nm', editable: 'never', defaultSort: 'asc' },
@@ -274,9 +275,10 @@ export const MaterialTableDemo = () => {//inicio del componente
       { title: 'Nombre', field: 'nameAlumno', editable: 'never', disablePadding: true,sorting:false },
       { title: 'Curso', field: 'curso', editable: 'never', disablePadding: true, minWidth: 10,sorting:false },
       { title: 'Opcion', field: 'opcion', disablePadding: true, minWidth: 10, lookup: { 1:'1RA', 2: '2DA' },sorting:false },
-      { title: 'C1', field: 'calR1', editComponent: props => (
+      { title: 'C1', field: 'calR1' , editComponent: props => (
         <input
         className="size_input"
+        disabled={BC1.current.value > 0 ? false:true}
           type="number"
           value={props.value}
           onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
@@ -286,6 +288,7 @@ export const MaterialTableDemo = () => {//inicio del componente
       { title: 'C2', field: 'calR2', editComponent: props => (
         <input
         className="size_input"
+        disabled={BC2.current.value > 0 ? false:true}
           type="number"
           value={props.value}
           onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
@@ -296,6 +299,7 @@ export const MaterialTableDemo = () => {//inicio del componente
       editComponent: props => (
         <input
         className="size_input"
+        disabled={BC3.current.value > 0 ? false:true}
           type="number"
           value={props.value}
           onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}
@@ -306,6 +310,7 @@ export const MaterialTableDemo = () => {//inicio del componente
       { title: 'C4', field: 'calR4',editComponent: props => (
         <input
         className="size_input"
+        disabled={BC4.current.value > 0 ? false:true}
           type="number"
           value={props.value}
           onChange={e => props.onChange(e.target.value = Math.max(0, Math.min(parseInt(e.target.value || 0),100)).toString().slice(0, 3))}

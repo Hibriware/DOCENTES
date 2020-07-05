@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Materia from './selectMateria';
 import Periodos from './selectPeriodo';
 import Button from './buttonCarrera';
+import Semestre from './selectSemestre';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -17,25 +18,35 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Carrera() {
+function Carrera({setLoader}) {
 	const classes = useStyles();
+	const [periodo, setPeriodo] = React.useState();
+	const [idDcarreras, setIdCarrera] = React.useState();
+	const [semestres, setSemestres] = React.useState();
+
+
 
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={3}>
-				<Grid item xs={6}>
+				<Grid item xs={12} sm={4}>
 					<Paper elevation={0} className={classes.paper}>
-						<Materia />
+						<Materia setIdCarrera={setIdCarrera}  idDcarreras={idDcarreras}/>
+					</Paper>
+				</Grid>
+				<Grid item xs={12} sm={4}>
+					<Paper elevation={0} className={classes.paper}>
+						<Periodos setPeriodo={setPeriodo} idPeriodo={periodo} />
+					</Paper>
+				</Grid>
+				<Grid item xs={12} sm={4}>
+					<Paper elevation={0} className={classes.paper}>
+						<Semestre setSemestres={setSemestres} semestres={semestres} />
 					</Paper>
 				</Grid>
 				<Grid item xs={6}>
 					<Paper elevation={0} className={classes.paper}>
-						<Periodos />
-					</Paper>
-				</Grid>
-				<Grid item xs={6}>
-					<Paper elevation={0} className={classes.paper}>
-						<Button />
+						<Button periodo={periodo} idDcarreras={idDcarreras} semestres={semestres} setLoader={setLoader}/>
 					</Paper>
 				</Grid>
 			</Grid>

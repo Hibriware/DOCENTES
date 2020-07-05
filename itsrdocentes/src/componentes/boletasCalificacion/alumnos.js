@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Periodo from './selectPeriodo';
 import TextField from '@material-ui/core/TextField';
+import ButtonPdf from './buttonAlumno';
+import Semestre from './selectSemestre';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -16,20 +18,43 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Alumno() {
+function Alumno({setLoader}) {
 	const classes = useStyles();
+	const [periodo, setPeriodo] = React.useState();
+	const [control, setControl] = React.useState({control:''});
+	const [semestres, setSemestres] = React.useState();
+
+
+		const hanledChange = (evt) =>{
+			setControl({
+				...control, 
+				control:evt.target.value
+			})
+
+			console.log(control)
+		}
 
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={3}>
-				<Grid item xs={6}>
-					<Paper className={classes.paper}>
-					<TextField size="small" id="outlined-basic" label="NºControl" variant="outlined" />
+				<Grid item xs={12} sm={4}>
+					<Paper className={classes.paper} elevation={0} >
+					<TextField size="small" id="outlined-basic" onChange={hanledChange} label="NºControl" variant="outlined" />
 						</Paper>
 				</Grid>
-				<Grid item xs={6}>
-					<Paper className={classes.paper}>
-					<Periodo/>
+				<Grid item xs={12} sm={4}>
+					<Paper className={classes.paper} elevation={0}>
+					<Periodo setPeriodo={setPeriodo} idPeriodo={periodo}/>
+					</Paper>
+				</Grid>
+				<Grid item xs={12} sm={4}>
+					<Paper className={classes.paper} elevation={0}>
+					<Semestre semestres={semestres} setSemestres={setSemestres}/>
+					</Paper>
+				</Grid>
+				<Grid item xs={6} >
+					<Paper className={classes.paper} elevation={0}>
+					<ButtonPdf setLoader={setLoader} idPeriodo={periodo} idControl={control.control} semestres={semestres} />
 
 					</Paper>
 				</Grid>

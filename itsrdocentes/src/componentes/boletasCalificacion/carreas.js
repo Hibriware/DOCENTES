@@ -19,18 +19,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Carrera({setLoader}) {
+
 	const classes = useStyles();
-	const [periodo, setPeriodo] = React.useState();
-	const [idDcarreras, setIdCarrera] = React.useState();
-	const [semestres, setSemestres] = React.useState();
-
-
+	const [periodo, setPeriodo] = React.useState('');
+	const [idDcarreras, setIdCarrera] = React.useState('');
+	const [semestres, setSemestres] = React.useState('');
 
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={3}>
 				<Grid item xs={12} sm={4}>
-					<Paper elevation={0} className={classes.paper}>
+					<Paper  component={'div'} elevation={0} className={classes.paper}>
 						<Materia setIdCarrera={setIdCarrera}  idDcarreras={idDcarreras}/>
 					</Paper>
 				</Grid>

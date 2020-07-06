@@ -31,7 +31,7 @@ function BttonCarrereas({ semestres, periodo, idDcarreras , setLoader}) {
 	return (
 		<Button
 			size="small"
-			disebled={activo}
+			disabled={activo}
 			variant="contained"
 			color="secondary"
 			className={classes.button}

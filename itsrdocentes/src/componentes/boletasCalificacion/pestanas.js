@@ -21,7 +21,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography componet="div">{children}</Typography>
+          <Typography component={'div'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -65,6 +65,7 @@ function VerticalTabs({setLoader}) {
     <div className={classes.root}>
       <Tabs
         orientation="vertical"
+        component={'div'}
         variant="scrollable"
         value={value}
         onChange={handleChange}

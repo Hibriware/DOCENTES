@@ -309,7 +309,7 @@ const components = {
   ValueContainer,
 };
 
-function SelectMateria({setIdCarrera, idDcarreras}) {
+function SelectMateria({setIdCarrera, idDcarreras=''}) {
   const classes = useStyles();
   const theme = useTheme();
  // const [mataeriaElegida, setCarreraEligida] = React.useState(null);
@@ -368,12 +368,12 @@ useEffect(() => {
           placeholder="buscar carrera ..."
           options={
             carreras.map(data => ({
-            value: data.idCarrera,
-            label: data.nombreCorto,
+            value: data.idCarrera || '',
+            label: data.nombreCorto || '',
           }))
         }//carreras //suggestions
           components={components}
-          value={idDcarreras}
+          value={idDcarreras || ''}
           onChange={handleChangeSingle}
         />
          </NoSsr>

@@ -97,7 +97,8 @@ var calificacions = [];
 
         var ASPIRANTE_CARRERA =  DATOSCARRERA_ASPIRENTES[0].nombreCarrera;
         var ASPIRANTE_RANGO_PERIODO =  DATOSCARRERA_ASPIRENTES[0].rangoPeriodo;
-        var ASPIRANTE_NUMERO_PERIODO = DATOSCARRERA_ASPIRENTES[0].idcat_RanPer;
+        var ASPIRANTE_NUMERO_PERIODO = DATOSCARRERA_ASPIRENTES[0].semestre;
+        console.log(DATOSCARRERA_ASPIRENTES)
 
 // ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO
 
@@ -143,12 +144,12 @@ var calificacions = [];
                                 if(OPCION.length > 0 && PROMEDIOFINAL >= 70){
                                     message="2RA. OPORT."
                                 }else if ((OPCION.length > 0 && PROMEDIOFINAL < 70) || (OPCION.length === 0 && PROMEDIOFINAL < 70) ){
-                                    message = "HO HA CURSADO"
+                                    message = "NO ACREDITADA"
                                 }
 
                             }else{
                                 PROMEDIOFINAL = 0
-                                message = "HO HA CURSADO"
+                                message = "NO ACREDITADA"
                             }
                                 // 1opcion = 0 , 2 opcion > 0 , nocursado ===11
                                 //console.log("promedio")
@@ -177,7 +178,7 @@ var calificacions = [];
 
 
             for (let i = 0; i < DATOS_BOLETA_FINAL.length; i++) {
-                PROMEDIO_SUMA = PROMEDIO_SUMA + DATOS_BOLETA_FINAL[i].calificacion
+                PROMEDIO_SUMA = PROMEDIO_SUMA + ((DATOS_BOLETA_FINAL[i].calificacion >= 70) ? DATOS_BOLETA_FINAL[i].calificacion:0)
                 CREDITOS_SUMA = CREDITOS_SUMA + DATOS_BOLETA_FINAL[i].creditos
 
                 if(DATOS_BOLETA_FINAL[i].calificacion >= 70){
@@ -197,6 +198,7 @@ var calificacions = [];
           //  console.log(CREDITOS_SUMA)
              
             for (let x = 0; x < DATOS_BOLETA_FINAL.length; x++) {
+               // PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:DATOS_BOLETA_FINAL[x].calificacion
                 PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:"NA"
                 PDF[x].clave = DATOS_BOLETA_FINAL[x].clave
                 PDF[x].creditos = DATOS_BOLETA_FINAL[x].creditos

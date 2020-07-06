@@ -178,7 +178,7 @@ var calificacions = [];
 
 
             for (let i = 0; i < DATOS_BOLETA_FINAL.length; i++) {
-                PROMEDIO_SUMA = PROMEDIO_SUMA + DATOS_BOLETA_FINAL[i].calificacion
+                PROMEDIO_SUMA = PROMEDIO_SUMA + ((DATOS_BOLETA_FINAL[i].calificacion >= 70) ? DATOS_BOLETA_FINAL[i].calificacion:0)
                 CREDITOS_SUMA = CREDITOS_SUMA + DATOS_BOLETA_FINAL[i].creditos
 
                 if(DATOS_BOLETA_FINAL[i].calificacion >= 70){
@@ -198,7 +198,7 @@ var calificacions = [];
           //  console.log(CREDITOS_SUMA)
              
             for (let x = 0; x < DATOS_BOLETA_FINAL.length; x++) {
-                //PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:DATOS_BOLETA_FINAL[x].calificacion
+               // PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:DATOS_BOLETA_FINAL[x].calificacion
                 PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:"NA"
                 PDF[x].clave = DATOS_BOLETA_FINAL[x].clave
                 PDF[x].creditos = DATOS_BOLETA_FINAL[x].creditos

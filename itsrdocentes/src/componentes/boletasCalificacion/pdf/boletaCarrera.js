@@ -200,7 +200,7 @@ console.time("DATOS_CALIFICACIONES4")
 
 
             for (let i = 0; i < DATOS_BOLETA_FINAL.length; i++) {
-                PROMEDIO_SUMA = PROMEDIO_SUMA + DATOS_BOLETA_FINAL[i].calificacion
+                PROMEDIO_SUMA = PROMEDIO_SUMA + ((DATOS_BOLETA_FINAL[i].calificacion >= 70 )? DATOS_BOLETA_FINAL[i].calificacion : 0)
                 CREDITOS_SUMA = CREDITOS_SUMA + DATOS_BOLETA_FINAL[i].creditos
 
                 if(DATOS_BOLETA_FINAL[i].calificacion >= 70){

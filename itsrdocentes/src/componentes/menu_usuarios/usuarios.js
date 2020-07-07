@@ -62,8 +62,8 @@ console.log(userType)
   // const sections=(userType==='Administrador')?['Inicio','Monitoreo','Catalogo Personal','Reportes','Accesos']:
   //                 (userType==='Guardia')?['Inicio','Reporte observaciones']:['Inicio','Reportes','Monitoreo'];
   const sections=(userType==='Administrador')?['Inicio','Admin','Boletas']:
-  (userType==='administradorse')?['Inicio','Admin']:
-  (userType==='Gestión Escolar')?['Inicio','Admin']:
+  (userType==='administradorse')?['Inicio','Admin','Boletas']:
+  (userType==='Gestión Escolar')?['Inicio','Admin','Boletas']:
   (userType==='Docente')?['Inicio',,,'Docente']:['Inicio'];
 
 

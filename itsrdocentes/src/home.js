@@ -23,7 +23,7 @@ function CargadeDatos(data) {
 	let roles = data.data[0].nombreRol;
 	ID_USUARIO = data.data[0].usuarioID;
 	//validar la ruta
-	if (roles === 'Administrador') {
+	if (roles === 'Administrador' || roles === 'Gestión Escolar') {
 		//inicio
 		console.log('Administrador');
 		if (!caches) {
@@ -108,7 +108,16 @@ function CargadeDatos(data) {
 				)}
 			</React.Fragment>
 		);
-	} //fin
+	} else{
+		return (
+			<PageError
+						onAuthChange={data.onAuthChange}
+						onGenerar={data.logout}
+						resetear={resetear}
+						informacion="No está asignado a ningun modulo"
+					/>
+		  );
+	}
 
 	/*return (
     <div>

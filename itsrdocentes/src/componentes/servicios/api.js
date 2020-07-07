@@ -3,7 +3,7 @@ import moment from 'moment';
 import { ID_USUARIO } from '../../home';
 
 const axios = require('axios');
-export const urlApi = 'http://212.237.52.166:4000'; //http://212.237.52.166:4001
+export const urlApi = 'http://212.237.52.166:4001'; //http://212.237.52.166:4001
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
 export var datalista = [];

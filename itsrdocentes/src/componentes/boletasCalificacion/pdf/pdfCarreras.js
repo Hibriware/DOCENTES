@@ -129,9 +129,9 @@ let PDF462 = [{
 
 
 
-export function boletacarrera(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS,TODOS_LOS_PDF_INFORMACION) {
+export function boletacarrera(PDF,TODOS_LOS_PDF_INFORMACION,NOMBRE_CARRERA_ASPIRANTES) {
 
-    console.log(PDF)
+    //console.log(PDF)
  
     var doc = new jsPDF('p', 'pt', 'letter');
     var img = new Image();
@@ -562,5 +562,5 @@ export function boletacarrera(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIR
     doc.setFontSize(14); //encabezado
   doc.text(130, 15, 'F I N ');
 
-    doc.save(`Acta final.pdf`);
+    doc.save(`${NOMBRE_CARRERA_ASPIRANTES || 'boletas'}.pdf`);
 }

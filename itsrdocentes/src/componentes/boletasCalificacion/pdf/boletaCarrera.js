@@ -10,10 +10,10 @@ import swal from 'sweetalert';
     let TODOS_LOS_PDF = []
     let TODOS_LOS_PDF_INFORMACION = []
     //variables
-    console.time("LISTA_SEMESTRES_POR_CARRERA")
+    console.time("LISTA_SEMESTRES_POR_CARRERA_PRIMERA_CONSULTA")
    let LISTA_SEMESTRES_POR_CARRERA = await getListaControlesCarrera(PERIODO, SEMESTRE,ID_CARRERA.value)//LISTA DE SEMESTRES POR CARRERA
-   console.timeEnd("LISTA_SEMESTRES_POR_CARRERA")
-  // console.log(LISTA_SEMESTRES_POR_CARRERA)
+   console.timeEnd("LISTA_SEMESTRES_POR_CARRERA_PRIMERA_CONSULTA")
+  console.log(LISTA_SEMESTRES_POR_CARRERA)
 
    if(LISTA_SEMESTRES_POR_CARRERA.length > 0){
 
@@ -99,9 +99,9 @@ import swal from 'sweetalert';
     var DATOS_BOLETA_FINAL =[];
 
     let CARRERA_NUMERO_CONTROL = LISTA_SEMESTRES_POR_CARRERA[index_lista].numeroControl;
-    console.time("DATOSCARRERA_ASPIRENTES2")
+    console.time("DATOSCARRERA_ASPIRENTES_2")
     DATOSCARRERA_ASPIRENTES = await getListaCarreras(PERIODO,CARRERA_NUMERO_CONTROL,SEMESTRE)
-    console.timeEnd("DATOSCARRERA_ASPIRENTES2")
+    console.timeEnd("DATOSCARRERA_ASPIRENTES_2")
 
     if(DATOSCARRERA_ASPIRENTES.length > 0){
         let BOLETA_ID_CARRERA =  DATOSCARRERA_ASPIRENTES[0].idCarrera;//quitar
@@ -122,9 +122,9 @@ import swal from 'sweetalert';
 // ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO
 
       //catalogo/carrera/1/137/7/19 SEMESTRE - FOLIO - PERIODO - IDCARRERA (semestre, folio,periodo,idcarrera)
-      console.time("DATOS_CARRERAS3")
+      console.time("DATOS_CARRERAS_3")
             DATOS_CARRERAS=  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
-      console.timeEnd("DATOS_CARRERAS3")
+      console.timeEnd("DATOS_CARRERAS_3")
 
             //console.log(DATOS_CARRERAS)
 
@@ -132,9 +132,11 @@ import swal from 'sweetalert';
                  let CARRERA_PERIODO = DATOS_CARRERAS[index].idnomenclaturaPeriodo;
                  let CARRERA_FOLIO =  DATOS_CARRERAS[index].aspirante_Folio;
                  let CARRERA_IDMATERIA = DATOS_CARRERAS[index].idmaterias
-console.time("DATOS_CALIFICACIONES4")
-                     DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
-                     console.timeEnd("DATOS_CALIFICACIONES4")
+console.time("DATOS_CALIFICACIONES_4")
+                DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
+                     
+                    console.log(DATOS_CALIFICACIONES)
+                     console.timeEnd("DATOS_CALIFICACIONES_4")
                      //console.log(DATOS_CARRERAS[index].nombre)
                      //console.log(DATOS_CALIFICACIONES)
                      //CLAVE - MATERIA/DOCENTE - CREDITOS - CALIFICACION_FINAL - OPCION

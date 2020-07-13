@@ -1,6 +1,5 @@
 import {urlApi} from '../../servicios/api';
 import swal from 'sweetalert';
-import SelectPeriodo from '../selectPeriodo';
 const axios = require('axios');
 
 

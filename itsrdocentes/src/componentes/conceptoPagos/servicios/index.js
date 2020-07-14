@@ -7,8 +7,12 @@ const axios = require("axios");
 export async function crearRegistroConcepto(datas) {
     let TOKEN_USUARIO = {
       headers: { token: `${sessionStorage.getItem("token_id")}` },
-    };
-console.log(datas)
+	};
+	let cadenaCeros = '00';
+	let resultados = cadenaCeros + datas.clave;
+	resultados = resultados.substring(resultados.length - cadenaCeros.length);
+
+console.log(resultados)
     await axios
       .post(
         `${urlApi}/api/pagos/registrar/concepto`,
@@ -16,7 +20,7 @@ console.log(datas)
           nombreconcepto: datas.concepto,
           costo: parseFloat(datas.costo),
           constante: "A",
-          clave: datas.clave,
+          clave: resultados,
         },
         TOKEN_USUARIO
       )
@@ -44,4 +48,25 @@ export async function getListaConcepto() {
 	} catch (error) {
 		console.log(error);
 	}
+}
+
+
+export async function putConcepto(id, costo) {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+  console.log(id)
+		await axios
+			.put(
+				`${urlApi}/api/pagos/actualizar/concepto/${id}`,
+				{
+					costo:parseFloat(costo)
+				},
+				TOKEN_USUARIO
+			)
+			.then(function(response) {
+				console.log(response.data);
+			})
+			.catch(function(error) {
+				console.log(error);
+			});
+
 }

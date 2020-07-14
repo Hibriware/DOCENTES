@@ -1,44 +1,44 @@
-import React,{useEffect} from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import Select from 'react-select';
-import { emphasize, makeStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import NoSsr from '@material-ui/core/NoSsr';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { getListaConcepto} from '../servicios'
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import Select from "react-select";
+import { emphasize, makeStyles, useTheme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import NoSsr from "@material-ui/core/NoSsr";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Chip from "@material-ui/core/Chip";
+import MenuItem from "@material-ui/core/MenuItem";
+import CancelIcon from "@material-ui/icons/Cancel";
+//import { getListaConcepto } from "../servicios";
 
-
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    height: 50,
-    minWidth: 290,
+    height: 57,
+    minWidth: 243,
   },
   input: {
-    display: 'flex',
+    display: "flex",
     padding: 0,
-    height: 'auto',
+    height: "auto",
   },
   valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    overflow: "hidden",
   },
   chip: {
     margin: theme.spacing(0.5, 0.25),
   },
   chipFocused: {
     backgroundColor: emphasize(
-      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
-      0.08,
+      theme.palette.type === "light"
+        ? theme.palette.grey[300]
+        : theme.palette.grey[700],
+      0.08
     ),
   },
   noOptionsMessage: {
@@ -48,13 +48,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: 16,
   },
   placeholder: {
-    position: 'absolute',
+    position: "absolute",
     left: 2,
     bottom: 6,
     fontSize: 16,
   },
   paper: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing(1),
     left: 0,
@@ -203,7 +203,11 @@ Option.propTypes = {
 function Placeholder(props) {
   const { selectProps, innerProps = {}, children } = props;
   return (
-    <Typography color="textSecondary" className={selectProps.classes.placeholder} {...innerProps}>
+    <Typography
+      color="textSecondary"
+      className={selectProps.classes.placeholder}
+      {...innerProps}
+    >
       {children}
     </Typography>
   );
@@ -223,7 +227,10 @@ Placeholder.propTypes = {
 
 function SingleValue(props) {
   return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+    <Typography
+      className={props.selectProps.classes.singleValue}
+      {...props.innerProps}
+    >
       {props.children}
     </Typography>
   );
@@ -242,7 +249,11 @@ SingleValue.propTypes = {
 };
 
 function ValueContainer(props) {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+  return (
+    <div className={props.selectProps.classes.valueContainer}>
+      {props.children}
+    </div>
+  );
 }
 
 ValueContainer.propTypes = {
@@ -280,7 +291,11 @@ MultiValue.propTypes = {
 
 function Menu(props) {
   return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper
+      square
+      className={props.selectProps.classes.paper}
+      {...props.innerProps}
+    >
       {props.children}
     </Paper>
   );
@@ -309,78 +324,67 @@ const components = {
   ValueContainer,
 };
 
-function SelectConceptos({setIdCarrera, idDcarreras=''}) {
+function SelectConceptos({ setState, state, concepto }) {
   const classes = useStyles();
   const theme = useTheme();
- // const [mataeriaElegida, setCarreraEligida] = React.useState(null);
+  // const [mataeriaElegida, setCarreraEligida] = React.useState(null);
   //const [multi, setMulti] = React.useState(null);
-  const [carreras, setCarreras] = React.useState([]);
+  //const [concepto, setConcepto] = React.useState([]);
 
-
-
-useEffect(() => {
- // async function cargarCarreras() {
-  //  try {
-      //let datos = await  getListaCarreras()
-  //console.log(datos)
-  //if(datos){
-    //setCarreras(datos)
-  //}
-    //} catch (error) {
-      
-    //}
-  
-  //}
- // cargarCarreras()
- console.log("e")
-}, [])
-
+  /*useEffect(() => {
+    async function cargarConcepto() {
+      try {
+        let datos = await getListaConcepto();
+        console.log(datos);
+        if (datos) {
+          setConcepto(datos);
+        }
+      } catch (error) {}
+    }
+    cargarConcepto();
+    console.log("e");
+  }, []);*/
 
   function handleChangeSingle(value) {
-    setIdCarrera(value)
+    setState(value);
   }
 
-  
   const selectStyles = {
-    input: base => ({
+    input: (base) => ({
       ...base,
       color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
+      "& input": {
+        font: "inherit",
       },
     }),
   };
-  
 
-    return(
-      <div className={classes.root}>
+  return (
+    <div className={classes.root}>
       <NoSsr>
         <Select
           classes={classes}
           styles={selectStyles}
           inputId="react-select-single"
           TextFieldProps={{
-            label: 'Concepto',
+            label: "Concepto",
             InputLabelProps: {
-              htmlFor: 'react-select-single',
+              htmlFor: "react-select-single",
               shrink: true,
             },
           }}
           placeholder="buscar concepto ..."
-          options={
-            carreras.map(data => ({
-            value: data.idCarrera || '',
-            label: data.nombreCorto || '',
-          }))
-        }//carreras //suggestions
+          options={concepto.map((data) => ({
+            value: data.idcat_concepto || "",
+            label: data.nombreconcepto || "",
+          }))} //carreras //suggestions
           components={components}
-          value={idDcarreras || ''}
+          value={state || ""}
           onChange={handleChangeSingle}
         />
-         </NoSsr>
+      </NoSsr>
     </div>
-    )
-    
+  );
 }
 
 export default SelectConceptos;

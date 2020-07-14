@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AgregarServicio({setActualizar,actualizar}) {
+function AgregarServicio({setActualizar,actualizar,concepto, setLoader}) {
   const classes = useStyles();
 
   return (
@@ -30,10 +30,10 @@ function AgregarServicio({setActualizar,actualizar}) {
       spacing={2}
     >
       <Grid item xs={4} spacing={2}>
-      <CardAgregar actualizar ={actualizar} setActualizar={setActualizar}/>
+      <CardAgregar actualizar ={actualizar} setActualizar={setActualizar} concepto={concepto} setLoader={setLoader} />
       </Grid>
       <Grid item xs={4} spacing={2}>
-      <CardEditar/>
+      <CardEditar actualizar ={actualizar} setActualizar={setActualizar}  concepto={concepto} setLoader={setLoader} />
       </Grid>
     </Grid>
   );

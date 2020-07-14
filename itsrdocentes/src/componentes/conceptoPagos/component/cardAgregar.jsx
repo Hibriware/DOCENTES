@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { crearRegistroConcepto } from "../servicios/index";
+import InputNumeros from './inputNumero';
 
 const useStyles = makeStyles({
   root: {
@@ -26,8 +27,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SimpleCard({setActualizar,actualizar}) {
+export default function SimpleCard({
+  setActualizar,
+  actualizar,
+  concepto,
+  setLoader,
+}) {
   const classes = useStyles();
+  const [active, setActive] = React.useState(false);
+
   const [state, setState] = React.useState({
     concepto: "",
     costo: "",
@@ -43,12 +51,39 @@ export default function SimpleCard({setActualizar,actualizar}) {
   };
 
   const guardar = async () => {
+    setActive(true);
+    setLoader(true);
     if (state.clave && state.concepto && state.costo) {
-      await crearRegistroConcepto(state);
-      setActualizar(!actualizar)
+      //filtrar clave
+      let resul = await concepto.filter(
+        (data) => data.nombreconcepto === state.concepto
+      ); //filtro concepto
+      console.log(resul);
+      if (resul.length === 0) {
+        let resuClave = await concepto.filter(
+          (data) => data.clave === state.clave
+        ); //filtro clave
+        console.log(resuClave);
+        if (resuClave.length === 0) {
+          await crearRegistroConcepto(state);
+          setActualizar(!actualizar);
+          //limpiar
+          setState({
+            concepto: "",
+            costo: "",
+            clave: "",
+          });
+        } else {
+          console.log("la clave la sta ocupada");
+        }
+      } else {
+        console.log("los conceptos ya esta registrado");
+      }
     } else {
       console.log("ingrese todo los datos");
     }
+    setLoader(false);
+    setActive(false);
   };
 
   return (
@@ -67,29 +102,46 @@ export default function SimpleCard({setActualizar,actualizar}) {
               name="concepto"
               id="standard-basic"
               label="Concepto"
+              value={state.concepto}
               onChange={handlenChange}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+          <InputNumeros _handlenChange={handlenChange} costo={state.costo}/>
+
+            {/*<TextField
+              type="number"
               name="costo"
               id="standard-basic"
-              label="$ Costo"
+              label="$Costo"
+              value={state.costo}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value, 10 || 0))
+                  .toString()
+                  .slice(0, 20);
+              }}
               onChange={handlenChange}
-            />
+            />*/}
           </Grid>
           <Grid item xs={12}>
             <TextField
+              type="number"
               name="clave"
               id="standard-basic"
               label="Clave"
+              value={state.clave}
               onChange={handlenChange}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value, 10 || 0))
+                  .toString()
+                  .slice(0, 2);
+              }}
             />
           </Grid>
         </Grid>
       </CardContent>
       <CardActions>
-        <Button onClick={guardar} size="small">
+        <Button disabled={active} onClick={guardar} size="small">
           Agregar
         </Button>
       </CardActions>

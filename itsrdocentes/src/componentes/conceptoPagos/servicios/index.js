@@ -20,7 +20,7 @@ console.log(resultados)
           nombreconcepto: datas.concepto,
           costo: parseFloat(datas.costo),
           constante: "A",
-          clave: resultados,
+          claveconcepto: resultados,
         },
         TOKEN_USUARIO
       )

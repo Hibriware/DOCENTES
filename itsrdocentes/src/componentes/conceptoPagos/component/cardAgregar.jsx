@@ -9,6 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { crearRegistroConcepto } from "../servicios/index";
 import InputNumeros from './inputNumero';
+import * as toastr from 'toastr';
+
 
 const useStyles = makeStyles({
   root: {
@@ -46,7 +48,7 @@ export default function SimpleCard({
     console.log(evt.target.value);
     setState({
       ...state,
-      [evt.target.name]: evt.target.value,
+      [evt.target.name]: evt.target.value.toUpperCase() ,
     });
   };
 
@@ -60,8 +62,14 @@ export default function SimpleCard({
       ); //filtro concepto
       console.log(resul);
       if (resul.length === 0) {
+        let cadenaCeros = '00';
+      	let resultados = cadenaCeros + state.clave;
+        resultados = resultados.substring(resultados.length - cadenaCeros.length);
+        console.log(concepto.claveconcepto)
+        console.log(resultados)
+
         let resuClave = await concepto.filter(
-          (data) => data.clave === state.clave
+          (data) => data.claveconcepto === resultados
         ); //filtro clave
         console.log(resuClave);
         if (resuClave.length === 0) {
@@ -75,12 +83,16 @@ export default function SimpleCard({
           });
         } else {
           console.log("la clave la sta ocupada");
+			toastr.warning(`La clave ${resultados}, no esta disponible.`, 'Nota');
+
         }
       } else {
         console.log("los conceptos ya esta registrado");
+			toastr.warning(`El concepto ${state.concepto}, ya existe.`, 'Nota');
+
       }
     } else {
-      console.log("ingrese todo los datos");
+      toastr.warning(`Ingrese los datos `, 'Nota');
     }
     setLoader(false);
     setActive(false);

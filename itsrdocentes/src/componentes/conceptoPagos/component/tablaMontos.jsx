@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { getListaConcepto } from "../servicios";
 
 const columns = [
-  { id: "clave", label: "Clave", align: "center", minWidth: 170 },
+  { id: "claveconcepto", label: "Clave", align: "center", minWidth: 170 },
   { id: "nombreconcepto", label: "Nombre", align: "center", minWidth: 100 },
   {
     id: "costo",

@@ -31,6 +31,7 @@ import Acta_entregas from '../administrador/acta_entregas';
 import Cards from './cards'
 import Boletas from '../boletasCalificacion/boletas';
 import AuthService from '../servicios/AuthService';
+import HomePagos from '../conceptoPagos/homePago';
 
 
 class Menus extends Component {
@@ -47,7 +48,8 @@ class Menus extends Component {
       {icon:<HomeIcon></HomeIcon>,link:'/'},
       {icon:<DescriptionIcon></DescriptionIcon>,link:'/inicio'},
       {icon:<ChromeReaderModeIcon></ChromeReaderModeIcon>,link:'/boletas'},     
-      {icon:<DescriptionIcon></DescriptionIcon>,link:'/Docente'}    
+      {icon:<DescriptionIcon></DescriptionIcon>,link:'/Docente'},
+      {icon:<DescriptionIcon></DescriptionIcon>,link:'/pagos'}    
     ];
   }
   
@@ -57,13 +59,13 @@ class Menus extends Component {
   const{open}=this.state;
 
  const userType=this.AuthService.getUserAccess();
-  //const userType='Administrador';
+  //const userType='Administrador';p
 console.log(userType)
   // const sections=(userType==='Administrador')?['Inicio','Monitoreo','Catalogo Personal','Reportes','Accesos']:
   //                 (userType==='Guardia')?['Inicio','Reporte observaciones']:['Inicio','Reportes','Monitoreo'];
-  const sections=(userType==='Administrador')?['Inicio','Admin','Boletas']:
-  (userType==='administradorse')?['Inicio','Admin','Boletas']:
-  (userType==='Gestión Escolar')?['Inicio','Admin','Boletas']:
+  const sections=(userType==='Administrador')?['Inicio','Admin','Boletas',,'Pagos']:
+  (userType==='administradorse')?['Inicio','Admin','Boletas',,'Pagos']:
+  (userType==='Gestión Escolar')?['Inicio','Admin','Boletas',,'Pagos']:
   (userType==='Docente')?['Inicio',,,'Docente']:['Inicio'];
 
 
@@ -147,6 +149,8 @@ console.log(userType)
                   <Route exact path='/inicio'  render={routeProps=><Acta_entregas{...routeProps} propname={'inicio'}/>}></Route>
                   <Route exact path='/boletas'  render={routeProps=><Boletas{...routeProps} propname={'boletas'}/>}></Route>  
                   <Route exact path='/Docente'  render={routeProps=><Menu_docentes{...routeProps} propname={'o'}/>}></Route>  
+                  <Route exact path='/Pagos'  render={routeProps=><HomePagos {...routeProps} propname={'pagos'}/>}></Route>  
+
                   <Redirect from="*" to="/"/>
               </Switch>
       </main>

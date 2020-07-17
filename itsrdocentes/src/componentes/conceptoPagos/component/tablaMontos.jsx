@@ -18,7 +18,7 @@ const columns = [
     label: "$Costo",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => '$'+value.toFixed(2),
   },
 ];
 

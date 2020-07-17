@@ -100,6 +100,7 @@ export default function SimpleCard({
     <Card className={classes.root}>
       <CardContent>
         <Typography
+        justify="center"
           className={classes.title}
           color="textSecondary"
           gutterBottom

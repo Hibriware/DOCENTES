@@ -105,7 +105,7 @@ export default function StickyHeadTable({ actualizar, concepto, setConcepto }) {
         </Table>
       </TableContainer>
       <TablePagination
-        labelRowsPerPage="Total de paginas:"
+        labelRowsPerPage="Total de filas:"
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={concepto.length}

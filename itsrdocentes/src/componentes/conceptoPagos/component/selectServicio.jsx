@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     alignItems: "center",
     overflow: "hidden",
+    fontSize:'11px',
   },
   chip: {
     margin: theme.spacing(0.5, 0.25),
@@ -45,17 +46,17 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 2),
   },
   singleValue: {
-    fontSize: 16,
+    fontSize: 11,
   },
   placeholder: {
     position: "absolute",
     left: 2,
-    bottom: 6,
+    bottom: 3,
     fontSize: 16,
   },
   paper: {
     position: "absolute",
-    zIndex: 1,
+    zIndex: 3,
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
@@ -155,7 +156,7 @@ function Option(props) {
       selected={props.isFocused}
       component="div"
       style={{
-        fontWeight: props.isSelected ? 500 : 400,
+        fontWeight: props.isSelected ? 700 : 400
       }}
       {...props.innerProps}
     >
@@ -324,7 +325,7 @@ const components = {
   ValueContainer,
 };
 
-function SelectConceptos({ setState, state, concepto }) {
+function SelectConceptos({ setState, state, concepto,setCosto }) {
   const classes = useStyles();
   const theme = useTheme();
   // const [mataeriaElegida, setCarreraEligida] = React.useState(null);
@@ -347,6 +348,8 @@ function SelectConceptos({ setState, state, concepto }) {
 
   function handleChangeSingle(value) {
     setState(value);
+    setCosto(value.costos)
+    
   }
 
   const selectStyles = {
@@ -361,7 +364,7 @@ function SelectConceptos({ setState, state, concepto }) {
 
   return (
     <div className={classes.root}>
-      <NoSsr>
+      <NoSsr  style={{height:'20px'}}>
         <Select
           classes={classes}
           styles={selectStyles}
@@ -377,6 +380,7 @@ function SelectConceptos({ setState, state, concepto }) {
           options={concepto.map((data) => ({
             value: data.idcat_concepto || "",
             label: data.nombreconcepto || "",
+            costos:data.costo
           }))} //carreras //suggestions
           components={components}
           value={state || ""}

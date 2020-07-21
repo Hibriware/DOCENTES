@@ -24,7 +24,7 @@ console.log(resultados)
         },
         TOKEN_USUARIO
       )
-      .then((res) => swal("", `FECHAS REGISTRADAS`, "success"))
+      .then((res) => swal("", `SERVICIO REGISTRADO`, "success"))
       .catch(function (error) {
         console.log(error);
         swal("error!", "Verifique su conexion a internet!", "warning");

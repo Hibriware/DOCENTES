@@ -123,7 +123,7 @@ import swal from 'sweetalert';
 
       //catalogo/carrera/1/137/7/19 SEMESTRE - FOLIO - PERIODO - IDCARRERA (semestre, folio,periodo,idcarrera)
       console.time("DATOS_CARRERAS_3")
-            DATOS_CARRERAS=  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
+            DATOS_CARRERAS =  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
       console.timeEnd("DATOS_CARRERAS_3")
 
             //console.log(DATOS_CARRERAS)
@@ -155,7 +155,7 @@ console.time("DATOS_CALIFICACIONES_4")
                           
 
                                 for (let index2 = 0; index2 < DATOS_CALIFICACIONES.length; index2++) {
-                                    let calificaciontotal = parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal || 0)
+                                    let calificaciontotal = (parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal || 0) < 70 ? -1000:parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal))
                                    // OPCION = parseInt(DATOS_CALIFICACIONES[index2].opcion || 0)
                                     PROMEDIOS_SUMAS = PROMEDIOS_SUMAS+calificaciontotal;
                                 }

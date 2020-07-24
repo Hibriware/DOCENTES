@@ -130,7 +130,7 @@ var calificacions = [];
                           
 
                                 for (let index2 = 0; index2 < DATOS_CALIFICACIONES.length; index2++) {
-                                    let calificaciontotal = parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal || 0)
+                                    let calificaciontotal = (parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal || 0) < 70 ? -1000:parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal))
                                    // OPCION = parseInt(DATOS_CALIFICACIONES[index2].opcion || 0)
                                     PROMEDIOS_SUMAS = PROMEDIOS_SUMAS+calificaciontotal;
                                    

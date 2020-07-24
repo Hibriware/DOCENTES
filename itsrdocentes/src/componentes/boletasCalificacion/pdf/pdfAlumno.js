@@ -56,9 +56,7 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
      doc.text(253, 369, `CRED.APR:`);
 	 doc.text(320, 369, `${CREDITOS_REPROBADOS}`);
 	//cuadrocalificacion
-	doc.setDrawColor(0)
-doc.setFillColor(255, 255, 255)
-doc.roundedRect(70, 100, 470, 200, 3, 3, null) //lista
+
 //cuadros calificaciones HEADER CALIFICACIONS
     doc.setFontSize(8);
 	doc.text(75, 109, "CLAVE");
@@ -178,6 +176,9 @@ doc.roundedRect(70, 100, 470, 200, 3, 3, null) //lista
 	doc.setFontSize(8);
 	doc.text(470, 265,`${DATOS_BOLETA_FINAL[7].opcion}`);//FIN LISTA 8,opcion
 	
+	doc.setDrawColor(0)
+	doc.setFillColor(255, 255, 255)
+	doc.roundedRect(70, 100, 470, 200, 3, 3, null) //lista
 doc.setLineWidth(0)
     doc.line(70, 110, 540, 110)//1
     doc.line(120, 119, 350, 119)//1.0

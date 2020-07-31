@@ -25,7 +25,6 @@ function HomePagos() {
           {/*<Paper className={classes.paper}>
           </Paper>*/}
             <TablaMontos actualizar={actualizar} setConcepto={setConcepto} concepto={concepto} />
-    
         </Grid>
       </Grid>
     </div>

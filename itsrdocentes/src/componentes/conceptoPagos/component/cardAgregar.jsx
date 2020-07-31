@@ -32,7 +32,6 @@ const useStyles = makeStyles({
 async function cleanCadena(value) {
 let res=  await value.normalize('NFD').replace(/[\u0300-\u036f]/g,"");
   return res; 
-
 }
 
 export default function SimpleCard({
@@ -76,7 +75,7 @@ export default function SimpleCard({
         let resuClave = await concepto.filter(
           (data) => data.claveconcepto === resultados
         ); //filtro clave
-        if (resuClave.length === 0) {
+        if (resuClave.length === 0 && resultados!=='01' && resultados!=='00' ) {
           await crearRegistroConcepto(state);
           setActualizar(!actualizar);
           //limpiar

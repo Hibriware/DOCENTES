@@ -29,6 +29,11 @@ const useStyles = makeStyles({
   },
 });
 
+async function cleanCadena(value) {
+let res=  await value.normalize('NFD').replace(/[\u0300-\u036f]/g,"");
+  return res; 
+}
+
 export default function SimpleCard({
   setActualizar,
   actualizar,
@@ -44,11 +49,11 @@ export default function SimpleCard({
     clave: "",
   });
 
-  const handlenChange = (evt) => {
+  const handlenChange = (evt) => { //.value.toUpperCase() ,
     console.log(evt.target.value);
     setState({
       ...state,
-      [evt.target.name]: evt.target.value.toUpperCase() ,
+      [evt.target.name]: evt.target.value
     });
   };
 
@@ -57,22 +62,20 @@ export default function SimpleCard({
     setLoader(true);
     if (state.clave && state.concepto && state.costo) {
       //filtrar clave
+      let dataValue = await cleanCadena(state.concepto);
       let resul = await concepto.filter(
-        (data) => data.nombreconcepto === state.concepto
-      ); //filtro concepto
-      console.log(resul);
+        (data) => data.nombreconcepto === dataValue.toUpperCase() || data.nombreconcepto === dataValue || data.nombreconcepto ===  state.concepto
+        ); //filtro concepto
+
       if (resul.length === 0) {
         let cadenaCeros = '00';
       	let resultados = cadenaCeros + state.clave;
         resultados = resultados.substring(resultados.length - cadenaCeros.length);
-        console.log(concepto.claveconcepto)
-        console.log(resultados)
 
         let resuClave = await concepto.filter(
           (data) => data.claveconcepto === resultados
         ); //filtro clave
-        console.log(resuClave);
-        if (resuClave.length === 0) {
+        if (resuClave.length === 0 && resultados!=='01' && resultados!=='00' ) {
           await crearRegistroConcepto(state);
           setActualizar(!actualizar);
           //limpiar
@@ -82,12 +85,10 @@ export default function SimpleCard({
             clave: "",
           });
         } else {
-          console.log("la clave la sta ocupada");
 			toastr.warning(`La clave ${resultados}, no esta disponible.`, 'Nota');
 
         }
       } else {
-        console.log("los conceptos ya esta registrado");
 			toastr.warning(`El concepto ${state.concepto}, ya existe.`, 'Nota');
 
       }
@@ -102,6 +103,7 @@ export default function SimpleCard({
     <Card className={classes.root}>
       <CardContent>
         <Typography
+        justify="center"
           className={classes.title}
           color="textSecondary"
           gutterBottom
@@ -116,6 +118,8 @@ export default function SimpleCard({
               label="Concepto"
               value={state.concepto}
               onChange={handlenChange}
+              inputProps={{ maxLength: 30 }}
+              required={true}
             />
           </Grid>
           <Grid item xs={12}>

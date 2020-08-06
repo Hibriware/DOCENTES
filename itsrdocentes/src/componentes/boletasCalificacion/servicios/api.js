@@ -87,3 +87,38 @@ export async function getCatalogoSemestre() {
 		console.log(error);
 	}
 }
+
+//refactoris
+export async function getSearchMatter(folio, control,periodo, semestre) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		const response = await axios
+			.get(`${urlApi}/api/reporte/consultar/materias/control/${folio}/${control}/${periodo}/${semestre}`, TOKEN_USUARIO)
+			.then((res) => res.data)
+			.catch(function(error) {
+				swal('!', `${error}`, 'warning');
+				return false;
+			});
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+
+	//folio, periodo, semestre
+	export async function getMatterRatings(folio, periodo,semestre) {
+		try {
+			let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+			const response = await axios
+				.get(`${urlApi}/api/reporte/consultar/calificacion/control/${folio}/${periodo}/${semestre}`, TOKEN_USUARIO)
+				.then((res) => res.data)
+				.catch(function(error) {
+					swal('!', `${error}`, 'warning');
+					return false;
+				});
+			return response;
+		} catch (error) {
+			console.log(error);
+		}
+	}

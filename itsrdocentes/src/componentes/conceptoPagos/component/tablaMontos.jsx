@@ -18,7 +18,7 @@ const columns = [
     label: "$Costo",
     minWidth: 170,
     align: "right",
-    format: (value) => value.toLocaleString("en-US"),
+    format: (value) => '$'+value.toFixed(2),
   },
 ];
 
@@ -40,8 +40,13 @@ export default function StickyHeadTable({ actualizar, concepto, setConcepto }) {
   useEffect(() => {
     async function get() {
       let datas = await getListaConcepto();
+      if(datas){
+        setConcepto(datas);
+      }else{
+        console.log("ERROR DE CONEXION")
+      }
       console.log(datas);
-      setConcepto(datas);
+    
     }
     get();
   }, [actualizar]);
@@ -100,7 +105,7 @@ export default function StickyHeadTable({ actualizar, concepto, setConcepto }) {
         </Table>
       </TableContainer>
       <TablePagination
-        labelRowsPerPage="Total de paginas:"
+        labelRowsPerPage="Total de filas:"
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={concepto.length}

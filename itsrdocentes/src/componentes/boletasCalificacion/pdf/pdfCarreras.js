@@ -129,9 +129,9 @@ let PDF462 = [{
 
 
 
-export function boletacarrera(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS,TODOS_LOS_PDF_INFORMACION) {
+export function boletacarrera(PDF,TODOS_LOS_PDF_INFORMACION,NOMBRE_CARRERA_ASPIRANTES) {
 
-    console.log(PDF)
+    //console.log(PDF)
  
     var doc = new jsPDF('p', 'pt', 'letter');
     var img = new Image();
@@ -186,10 +186,7 @@ export function boletacarrera(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIR
          doc.text(320, 355, `${TODOS_LOS_PDF_INFORMACION[i].alumno[0].totalCreditos}`);
          doc.text(253, 369, `CRED.APR:`);
          doc.text(320, 369, `${TODOS_LOS_PDF_INFORMACION[i].alumno[0].creditosAprobados}`);
-        //cuadrocalificacion
-        doc.setDrawColor(0)
-    doc.setFillColor(255, 255, 255)
-    doc.roundedRect(70, 100, 470, 200, 3, 3, null) //lista
+       
     //cuadros calificaciones HEADER CALIFICACIONS
         doc.setFontSize(8);
         doc.text(75, 109, "CLAVE");
@@ -308,7 +305,10 @@ export function boletacarrera(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIR
         doc.text(415, 265, `${PDF[i].alumno[7].calificacion}`);//calificacion
         doc.setFontSize(8);
         doc.text(470, 265,`${PDF[i].alumno[7].opcion}`);//FIN LISTA 8,opcion
-        
+         //cuadrocalificacion
+         doc.setDrawColor(0)
+         doc.setFillColor(255, 255, 255)
+         doc.roundedRect(70, 100, 470, 200, 3, 3, null) //lista
     doc.setLineWidth(0)
         doc.line(70, 110, 540, 110)//1
         doc.line(120, 119, 350, 119)//1.0
@@ -562,5 +562,5 @@ export function boletacarrera(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIR
     doc.setFontSize(14); //encabezado
   doc.text(130, 15, 'F I N ');
 
-    doc.save(`Acta final.pdf`);
+    doc.save(`${NOMBRE_CARRERA_ASPIRANTES || 'boletas'}.pdf`);
 }

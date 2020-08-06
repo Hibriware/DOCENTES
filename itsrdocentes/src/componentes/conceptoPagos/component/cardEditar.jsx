@@ -10,11 +10,14 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import InputCosto from './inputNumero';
 import { putConcepto } from "../servicios";
+import * as toastr from 'toastr';
+
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
     background:'gainsboro'
+    
   },
   bullet: {
     display: "inline-block",
@@ -43,31 +46,36 @@ export default function SimpleCard({actualizar, setActualizar, concepto,setLoade
     setActive(true)
     setLoader(true)
     if (state && costo) {
-      console.log("actualizar");
       await putConcepto(state.value, costo);
       setActualizar(!actualizar);
       setCosto("")
+      setState("")
+			toastr.success(`Nuevo costo actualizado`, 'Nota');
+
     } else {
-      console.log("ingrese todos los campos");
+			toastr.warning(`Ingrese un costo`, 'Nota');
+
     }
     setLoader(false)
     setActive(false)
   };
 
   return (
-    <Card className={classes.root} variant="">
-      <CardContent>
-        <Typography
+    <div style={{background:'gainsboro',width:'max-content',borderRadius:'6px'}}>
+      <Typography
           className={classes.title}
+          style={{marginLeft:'11px'}}
           color="textSecondary"
           gutterBottom
         >
           Editar
         </Typography>
-        <SelectConcepto setState={setState} state={state}  concepto={concepto} />
+        <SelectConcepto setState={setState} state={state}  concepto={concepto} setCosto={setCosto}/>
+    <Card className={classes.root} variant="">
+      <CardContent>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item xs={12}>
-            <InputCosto _handlenChange={handleChange} costo={costo}/>
+            <InputCosto _handlenChange={handleChange} costo={costo} />
             {/*<TextField
             type="number"
               id="standard-basic"
@@ -89,5 +97,6 @@ export default function SimpleCard({actualizar, setActualizar, concepto,setLoade
         </Button>
       </CardActions>
     </Card>
+    </div>
   );
 }

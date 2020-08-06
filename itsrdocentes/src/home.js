@@ -10,7 +10,7 @@ export var caches, bandera, perio;
 
 export const resetear = () => {
   try {
-    console.log('ELIMINAR TODOS LOD DATOS TEMPORALES');
+    //'ELIMINAR TODOS LOD DATOS TEMPORALES'
     caches = null;
     dataMateria = null;
   } catch (error) {

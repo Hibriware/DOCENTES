@@ -4,7 +4,7 @@ import * as toastr from 'toastr';
 export default class AuthService {
 	constructor(domain) {
 
-		this.domain = domain || 'http://212.237.52.166:4001'; //https://app-api-docentes.herokuapp.com
+		this.domain = domain || 'http://localhost:4001'; //https://app-api-docentes.herokuapp.com
 
 		this.requestFetch = this.requestFetch.bind(this);
 		this.login = this.login.bind(this);
@@ -19,12 +19,13 @@ export default class AuthService {
 			}).then((response) => {
 				if (response.message === 'ocurrio un error' || response.message === 'contraseña incorrecta' || response.message === 'usuario incorrecto') {
 					toastr.warning(response.message, 'Incorrectos');
-				} else {
+				} else if(response.user.length) {
 					this.setToken(response.token);
 					this.setUser(response.user);
 					return Promise.resolve(response);
+				}else{
+					return Promise.resolve("No Autorizado");
 				}
-				//toastr.warning('contraseña o usuario', 'Incorrectos');
 			});
 		} catch (error) {
 			console.log(error);
@@ -33,7 +34,6 @@ export default class AuthService {
 
 	isLoggedIn() {
 		try {
-			console.log('met isLoggedIn');
 			return !!this.getToken();
 		} catch (error) {
 			console.log(error);
@@ -42,7 +42,6 @@ export default class AuthService {
 
 	setToken(token) {
 		try {
-			
 			sessionStorage.setItem('token_id', token);
 		} catch (error) {
 			console.log(error);
@@ -51,7 +50,6 @@ export default class AuthService {
 
 	getToken() {
 		try {
-			//localStorage
 			return sessionStorage.getItem('token_id');
 		} catch (error) {
 			console.log(error);
@@ -107,7 +105,6 @@ export default class AuthService {
 	requestFetch(urlRelative, opcions) {
 		//inicio
 		try {
-
 			const headers = {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'

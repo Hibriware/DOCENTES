@@ -3,7 +3,7 @@ import moment from 'moment';
 import { ID_USUARIO } from '../../home';
 
 const axios = require('axios');
-export const urlApi = 'http://212.237.52.166:4001'; //http://212.237.52.166:4001
+export const urlApi = 'http://localhost:4001'; //http://212.237.52.166:4001
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
 export var datalista = [];
@@ -19,23 +19,6 @@ export var dataListaPeriodo = [];
 
 export var FECHA_ACTUAL = [];
 
-/*export class token{
-
-    constructor(props){
-      super(props)
-      this.AuthServise = new AuthServise()
-        }
-  }*/
-
-/*  function isLoggedIn(){
-    console.log("met isLoggedIn")
-    return !! getToken();
-}
-
-
-function getToken(){
-    return localStorage.getItem('token_id');
-}*/
 
 async function request(url, metodo, data) {
 	const response = await fetch(`${urlApi}${url}`, {
@@ -148,34 +131,7 @@ export async function getListaCarreras() {
 		console.log(error);
 	}
 }
-/*export async function getPeriodo() {
-	try {
-		config = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
-		console.log('periodo');
-		console.log(config);
 
-		const response = await axios
-			.get(`${urlApi}/api/otros/consultar/periodo`, config)
-			.then((res) => {
-				dataPeriodo = res.data.datas;
-				FECHA_ACTUAL = res.data.fechaActual;
-				return dataPeriodo;
-			})
-			.catch(function(error) {
-				swal(' Sin periodos disponibles!', `${error}`, 'warning');
-				return 'error';
-			});
-		console.log();
-		console.log('______');
-
-		PERIODO_ACTUAL = response[0].periodo;
-		EXISTNCIA_ACTA = response[0].existenciaActa;
-
-		return response;
-	} catch (error) {
-		console.log(error);
-	}
-}*/
 
 export async function getListaPeriodo() {
 	try {
@@ -437,6 +393,7 @@ export async function getReporteHorarios(periodo, idMateria, grupo) {
 			)
 			.then((res) => (dataReportHorario = res.data))
 			.catch(function(error) {
+				console.log(error)
 				swal('error al buscar los horarios!', 'Verifique su conexión a internet', 'warning');
 			});
 	} catch (error) {
@@ -455,6 +412,7 @@ export async function getReporteLista(periodo, idMateria, grupo) {
 			)
 			.then((res) => (dataReportLista = res.data))
 			.catch(function(error) {
+				console.log(error)
 				swal('error al buscar lista!', 'Verifique su conexión a internet', 'warning');
 			});
 	} catch (error) {

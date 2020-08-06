@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,14 +11,10 @@ import Imgs1 from '../../img/blob-shape2.svg';
 import Imgs2 from '../../img/blob-shape3.svg';
 import Imgs3 from '../../img/blob-shape4.svg';
 
-var vewImg = Imgs;
 const StoreImg =[{n:Imgs},{n:Imgs1},{n:Imgs2},{n:Imgs3}]
 
 const Cards =  ({clave_materia , nombre,modalidad, semestre,plan}) =>{
 const classes = useStyles();
-
-
-
 
 
     return(

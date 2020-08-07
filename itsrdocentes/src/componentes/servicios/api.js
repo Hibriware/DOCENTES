@@ -2,8 +2,9 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import { ID_USUARIO } from '../../home';
 
+
 const axios = require('axios');
-export const urlApi = 'http://212.237.52.166:4001'; //http://212.237.52.166:4001
+export const urlApi = process.env.REACT_APP_SERVER_HOST; //http://212.237.52.166:4001
 
 export var PERIODO_ACTUAL, EXISTNCIA_ACTA;
 export var datalista = [];
@@ -16,7 +17,6 @@ export var dataPeriodo = [];
 export var dataFechasCierre = [];
 export var dataReporteParciales = [];
 export var dataListaPeriodo = [];
-
 export var FECHA_ACTUAL = [];
 
 

@@ -64,14 +64,7 @@ class Login extends React.Component {
 		return (
 			<div>
 				<header className="stilos">
-					<nav className="navStilos">
-						<a href="#" id="icono" className="icono nav_a">
-							<Button variant="outlined" color="primary">
-								Registrarse
-							</Button>
-						</a>
-						<div className="enlaces uno" id="enlaces" />
-					</nav>
+					
 
 					<div className="container">
 						<div className="textos">

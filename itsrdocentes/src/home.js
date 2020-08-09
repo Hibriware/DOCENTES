@@ -10,7 +10,7 @@ export var caches, bandera, perio;
 
 export const resetear = () => {
   try {
-    console.log('ELIMINAR TODOS LOD DATOS TEMPORALES');
+    //'ELIMINAR TODOS LOD DATOS TEMPORALES'
     caches = null;
     dataMateria = null;
   } catch (error) {
@@ -25,7 +25,7 @@ function CargadeDatos(data) {
 	//validar la ruta
 	if (roles === 'Administrador' || roles === 'Gestión Escolar') {
 		//inicio
-		console.log('Administrador');
+		/*console.log('Administrador');
 		if (!caches) {
 			throw getPeriodo()
 				.then((res) => {
@@ -41,10 +41,7 @@ function CargadeDatos(data) {
 					}
 				})
 				.catch((perio = true));
-		}
-		//fint
-
-		return (
+						return (
 			<React.Fragment>
 				{perio ? (
 					<PageError
@@ -58,6 +55,12 @@ function CargadeDatos(data) {
 				)}
 			</React.Fragment>
 		);
+		}*/
+		//fint
+
+		return (<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />);
+	}else if(roles === 'Jefe académico'){
+		return (<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />);
 	} else if (roles === 'Docente') {
 		//inicio
 		console.log('Docente Docente Docente');

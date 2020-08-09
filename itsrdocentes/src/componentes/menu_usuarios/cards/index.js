@@ -4,7 +4,6 @@ import  {dataMateria} from '../../../home';
 import BinveniAdmi from '../../administrador/bienvenida'
 
 const Cards = () =>{
-console.log(dataMateria)
 if(dataMateria){
     return(
         <>

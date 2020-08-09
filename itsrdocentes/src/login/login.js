@@ -37,8 +37,8 @@ class Login extends React.Component {
 	handleSubmit() {
    if(this.state.usuario.length && this.state.password.length){
 	this.authService.login(this.state.usuario,this.state.password).then(() => {
-		this.props.onAuthChange();
 		this.props.history.replace('/')
+		this.props.onAuthChange();
 	  }).catch(() =>{
 		toastr.error("No se encontró el servicio ", null)
 	  })

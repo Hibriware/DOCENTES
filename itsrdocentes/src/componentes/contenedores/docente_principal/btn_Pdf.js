@@ -23,8 +23,6 @@ export const ButtonPdf =  (data) =>{
         const Materia = dataMateria[index].nombre;
 
         await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO), getReporteLista(PERIODO, ID_MATERIA, GRUPO)])
-        //ORGANIZAR HORAS
-        console.log(dataReportHorario)
 
         await pdfAsistencia(Materia, DOCENTE_ACTUAL)
       }

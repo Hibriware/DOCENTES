@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {PrivateRoute_Doncente,PrivateRoute_Administador} from './rutasProtegidas'
 import clsx from "clsx";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -36,6 +37,7 @@ import Cards from "./cards";
 import Boletas from "../boletasCalificacion/boletas";
 import AuthService from "../servicios/AuthService";
 import HomePagos from "../conceptoPagos/homePago";
+import Reinscripcion from "../Reinscripciones";
 
 class Menus extends Component {
   constructor(props) {
@@ -53,6 +55,7 @@ class Menus extends Component {
       { icon: <ChromeReaderModeIcon></ChromeReaderModeIcon>, link: "/boletas" },
       { icon: <DescriptionIcon></DescriptionIcon>, link: "/Docente" },
       { icon: <DescriptionIcon></DescriptionIcon>, link: "/pagos" },
+      { icon: <DescriptionIcon></DescriptionIcon>, link: "/reinscripcion" }
     ];
   }
 
@@ -62,14 +65,12 @@ class Menus extends Component {
     const userType = this.AuthService.getUserAccess();
     const sections =
       userType === "Administrador"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos"]
+        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion"]
         : userType === "administradorse"
         ? ["Inicio", "Admin", "Boletas", , "Pagos"]
         : userType === "Gestión Escolar"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos"]
-        : userType === "Docente"
-        ? ["Inicio", , , "Docente"]
-        : ["Inicio"];
+        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion"]
+        : userType === "Docente"? ["Inicio", , , "Docente"]:userType === "Jefe académico"? ["Inicio",,,,, "Reinscripcion"]: ["Inicio"];
 
     return (
       <Router>
@@ -157,35 +158,28 @@ class Menus extends Component {
                 exact
                 path="/"
                 render={(routeProps) => <Cards {...routeProps} />}
-              ></Route>
-              <Route
-                exact
-                path="/inicio"
-                render={(routeProps) => (
-                  <Acta_entregas {...routeProps} propname={"inicio"} />
-                )}
-              ></Route>
-              <Route
-                exact
-                path="/boletas"
-                render={(routeProps) => (
-                  <Boletas {...routeProps} propname={"boletas"} />
-                )}
-              ></Route>
-              <Route
+              />
+            <Route exact
+                path="/reinscripcion"
+                render={(routeProps) => <Reinscripcion {...routeProps} />}
+              />
+              <PrivateRoute_Doncente
                 exact
                 path="/Docente"
-                render={(routeProps) => (
-                  <Menu_docentes {...routeProps} propname={"o"} />
-                )}
-              ></Route>
-              <Route
+                component={Menu_docentes}/>
+              <PrivateRoute_Administador
+                exact
+                path="/inicio"
+                component={Acta_entregas}/>
+              <PrivateRoute_Administador
+                exact
+                path="/boletas"
+                component={Boletas}
+                  />
+              <PrivateRoute_Administador
                 exact
                 path="/Pagos"
-                render={(routeProps) => (
-                  <HomePagos {...routeProps} propname={"pagos"} />
-                )}
-              ></Route>
+                component={HomePagos}/>
               <Redirect from="*" to="/" />
             </Switch>
           </main>
@@ -208,3 +202,6 @@ class Menus extends Component {
 }
 
 export default withStyles(useStyles, { withTheme: true })(Menus);
+
+
+

@@ -34,6 +34,7 @@ export default class AuthService {
 
 	isLoggedIn() {
 		try {
+			console.log(!!this.getToken(),"Satus login")
 			return !!this.getToken();
 		} catch (error) {
 			console.log(error);

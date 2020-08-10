@@ -23,6 +23,7 @@ export const ButtonPdf =  (data) =>{
         const Materia = dataMateria[index].nombre;
 
         await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO), getReporteLista(PERIODO, ID_MATERIA, GRUPO)])
+
         await pdfAsistencia(Materia, DOCENTE_ACTUAL)
       }
       setActio(false)
@@ -48,17 +49,17 @@ export const ButtonPdf =  (data) =>{
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
-    { title: "A", dataKey: "" },
-    { title: "N", dataKey: "" },
-    { title: "O", dataKey: "" },
-    { title: "T", dataKey: "" },
-    { title: "A", dataKey: "" },
-    { title: "C", dataKey: "" },
-    { title: "I", dataKey: "" },
-    { title: "O", dataKey: "" },
-    { title: "N", dataKey: "" },
-    { title: "E", dataKey: "" },
-    { title: "S", dataKey: "" },
+    { title: "A", dataKey: "A" },
+    { title: "N", dataKey: "N" },
+    { title: "O", dataKey: "O" },
+    { title: "T", dataKey: "T" },
+    { title: "A", dataKey: "A" },
+    { title: "C", dataKey: "C" },
+    { title: "I ", dataKey: "I" },
+    { title: "O ", dataKey: "O" },
+    { title: "N ", dataKey: "N" },
+    { title: "E ", dataKey: "E" },
+    { title: "S ", dataKey: "S" },
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },
     { title: "", dataKey: "" },

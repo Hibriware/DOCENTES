@@ -1,9 +1,15 @@
 import axios from 'axios';
 import {Student} from '../interfaces';
+const urlApi = process.env.REACT_APP_SERVER_HOST
+console.log(urlApi)
 
-export const me = async (): Promise<Student | null> => {
+export const me = async (numeroControl:string | undefined): Promise<Student | null> => {
+  console.log("studen")
   try {
-    const student: any = await axios.get('/alumno/me').then(result => result.data);
+    const student: any = await axios.get(`${urlApi}/api/alumno/me/control`,{
+      params: {
+        numeroControl: numeroControl,
+      }}).then(result => result.data);
     const {me, semester, nextSemester} = student;
     return {
       career: {

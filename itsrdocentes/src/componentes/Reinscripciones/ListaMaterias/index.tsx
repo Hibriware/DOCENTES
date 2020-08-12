@@ -1,0 +1,446 @@
+import React,{useState,useMemo,useCallback,useEffect} from 'react';
+import {isAfter, isBefore} from 'date-fns';
+import MaterialTable from 'material-table';
+import axios from 'axios';
+
+import {
+    Button,
+    Dialog,
+    DialogActions ,
+    DialogContent,
+    DialogTitle ,
+    Grid,
+    Typography
+  } from '@material-ui/core';
+  import {
+    AvailableSubject,
+    CourseType,
+    StudiedSubjects,
+    Subject
+  } from '../interfaces';
+  import {isSelectedSameSubject, isTimeCrossings} from '../utils/reenrollment-filters';
+  import {
+    AVAILABLE_SUBJECTS_ALL_URL,
+  } from '../constants/end-points';
+import {useStudent} from '../providers/StudentProvider';
+
+
+  type AvailableCareer = {
+    careerID: number;
+    startDate: string;
+    endDate: string;
+    period: number;
+    studyPlanID: number;
+  }
+
+
+const ListaMaterias =({periodos}:any)=>{
+    const {student} = useStudent();
+
+
+    const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
+    const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[]>([]);
+    const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
+    const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
+    const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
+    const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
+    const [loading, setLoading] = useState(false);
+    const [subjects, setSubjects] = useState<Subject[]>([]);
+
+
+
+
+
+    const fetchAvailableSubjects = useCallback(() => {
+        setLoading(true);
+         axios.get(AVAILABLE_SUBJECTS_ALL_URL, {
+          params: {
+            career: student?.career.id,
+            period: periodos,
+          }
+        }).then(value => {
+          setSubjects(value.data)
+          console.log(value.data)
+        })
+          .finally(() => setLoading(false));
+      }, [ setSubjects, setLoading]);
+
+
+
+    const filteredSubjects = useMemo<AvailableSubject[]>(() => {
+        return availableSubjects.filter(({subject}) => {
+            return !studiedSubjects.some(studiedSubject => {
+              return (studiedSubject.clave === subject.clave) &&
+                (+studiedSubject.promedio >= 70)
+            })
+          }
+        ).map(availableSubject => {
+          let courseType = CourseType.Ordinary;
+    
+          const sortedStudiedSubjects = studiedSubjects
+            .filter(subject => subject.clave === availableSubject.subject.clave)
+            .sort((a, b) => {
+              if (a.periodo > b.periodo) {
+                return -1
+              }
+              return 1
+            });
+    
+          if (sortedStudiedSubjects.length > 0) {
+            const latestStudiedSubject = sortedStudiedSubjects[0];
+            switch (latestStudiedSubject.tipo_curso) {
+              case CourseType.Ordinary:
+                courseType = CourseType.Repeat
+                break;
+              case CourseType.Repeat:
+                courseType = CourseType.Especial;
+                break;
+              default:
+                // TODO: quest about this
+                courseType = CourseType.Ordinary;
+                break;
+            }
+          }
+    
+          let checked = false;
+          const currentSubjectIsSelected = selectedSubjects.some(value =>
+            value.subject.materiaDocente_id === availableSubject.subject.materiaDocente_id);
+          if (isTwoEspecialSubjects) {
+            if (currentSubjectIsSelected) {
+              if (courseType === CourseType.Especial) {
+                checked = true;
+              }
+            }
+          } else if (currentSubjectIsSelected) {
+            checked = true;
+          }
+          if (!checked && enrolledSubjectsOnPeriod.length) {
+            checked = enrolledSubjectsOnPeriod
+              .some(enrolledSubject => enrolledSubject.materiadocente_id === availableSubject.subject.materiaDocente_id);
+          }
+    
+          return {
+            ...availableSubject,
+            subject: {
+              ...availableSubject.subject,
+              tipo_curso: courseType,
+            },
+            tableData: {
+              checked,
+            }
+          }
+        });
+      }, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);
+
+      useEffect(() => {
+    
+        fetchAvailableSubjects();
+       
+     }, [fetchAvailableSubjects]);
+
+     const handleDatesWithTime = (time: string) => {
+        if (!time) {
+          return null;
+        }
+        const hour = +time.substring(0, 2) || 0;
+        const minutes = +time.substring(3, 5) || 0;
+        const seconds = +time.substring(6, 8) || 0;
+        return new Date(0, 0, 0, hour, minutes, seconds);
+      }
+    
+
+     const handleStartTime = (currentTime: string, newTime: string) => {
+        const parsedCurrentTime = handleDatesWithTime(currentTime);
+        const parsedNextTime = handleDatesWithTime(newTime);
+        if (parsedCurrentTime && parsedNextTime) {
+          if (isAfter(parsedCurrentTime, parsedNextTime)) {
+            return newTime.substring(0, 5);
+          }
+          return currentTime.substring(0, 5);
+        } else {
+          return newTime.substring(0, 5);
+        }
+      }
+    
+      const handleEndTime = (currentTime: string, newTime: string) => {
+        const parsedCurrentTime = handleDatesWithTime(currentTime);
+        const parsedNextTime = handleDatesWithTime(newTime);
+        if (parsedCurrentTime && parsedNextTime) {
+          if (isBefore(parsedCurrentTime, parsedNextTime)) {
+            return newTime.substring(0, 5);
+          }
+          return currentTime.substring(0, 5);
+        } else {
+          return newTime.substring(0, 5);
+        }
+      }
+
+     useEffect(() => {
+        const teacherAssignment = subjects.filter((subject: any, index: number, self: any[]) => {
+          return self.map((selfItem: any) => selfItem.materiaDocente_id).indexOf(subject.materiaDocente_id) === index;
+        }).map((assigment: any) => assigment.materiaDocente_id);
+    
+        teacherAssignment.forEach((assignment: any) => {
+          let availableSubject: any = {};
+          subjects.filter((subject: any) => subject.materiaDocente_id === assignment).forEach((subject: any) => {
+            availableSubject = {...availableSubject, subject}
+            switch (subject.dia) {
+              case 'Lun':
+                availableSubject.monday = {
+                  startTime: handleStartTime(availableSubject?.monday?.startTime, subject.horaInicio),
+                  endTime: handleEndTime(availableSubject?.monday?.endTime, subject.horaFinal),
+                }
+                break;
+              case 'Mar':
+                availableSubject.tuesday = {
+                  startTime: handleStartTime(availableSubject?.tuesday?.startTime, subject.horaInicio),
+                  endTime: handleEndTime(availableSubject?.tuesday?.endTime, subject.horaFinal),
+                }
+                break;
+              case 'Mie':
+                availableSubject.wednesday = {
+                  startTime: handleStartTime(availableSubject?.wednesday?.startTime, subject.horaInicio),
+                  endTime: handleEndTime(availableSubject?.wednesday?.endTime, subject.horaFinal),
+                }
+                break;
+              case 'Jue':
+                availableSubject.thursdays = {
+                  startTime: handleStartTime(availableSubject?.thursdays?.startTime, subject.horaInicio),
+                  endTime: handleEndTime(availableSubject?.thursdays?.endTime, subject.horaFinal),
+                }
+                break;
+              case 'Vie':
+                availableSubject.friday = {
+                  startTime: handleStartTime(availableSubject?.friday?.startTime, subject.horaInicio),
+                  endTime: handleEndTime(availableSubject?.friday?.endTime, subject.horaFinal),
+                }
+                break;
+              case 'Sab':
+                availableSubject.saturday = {
+                  startTime: handleStartTime(availableSubject?.saturday?.startTime, subject.horaInicio),
+                  endTime: handleEndTime(availableSubject?.saturday?.endTime, subject.horaFinal),
+                }
+                break;
+            }
+          });
+    
+          setAvailableSubjects((prevState: any[]) => {
+            return [...prevState, availableSubject]
+          })
+        });
+      }, [subjects]);
+
+
+
+return(
+    <MaterialTable
+    title="Asignaturas"
+    columns={[
+      {title: 'Semestre', field: 'subject.semestreMateria', type: 'numeric'},
+      {title: 'Clave', field: 'subject.clave'},
+      {title: 'Nombre', field: 'subject.nombre'},
+      {title: 'Créditos', field: 'subject.creditos', type: 'numeric'},
+      {
+        title: 'Tipo',
+        field: 'subject.tipo_curso',
+        lookup: {'ordinario': 'O', 'repeticion': 'R', 'especial': 'E'},
+      },
+      {
+        title: 'Lunes',
+        field: 'monday',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData?.monday?.startTime} - {rowData?.monday?.endTime}</Typography>
+            </Grid>
+          )
+        }
+      },
+      {
+        title: 'Martes',
+        field: 'tuesday',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData?.tuesday?.startTime} - {rowData?.tuesday?.endTime}</Typography>
+            </Grid>
+          )
+        }
+      },
+      {
+        title: 'Miércoles',
+        field: 'wednesday',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData?.wednesday?.startTime} - {rowData?.wednesday?.endTime}</Typography>
+            </Grid>
+          )
+        }
+      },
+      {
+        title: 'Jueves',
+        field: 'thursday',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData?.thursday?.startTime} - {rowData?.thursday?.endTime}</Typography>
+            </Grid>
+          )
+        }
+      },
+      {
+        title: 'Viernes',
+        field: 'friday',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData?.friday?.startTime} - {rowData?.friday?.endTime}</Typography>
+            </Grid>
+          )
+        }
+      },
+      {
+        title: 'Sabado',
+        field: 'saturday',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData?.saturday?.startTime} - {rowData?.saturday?.endTime}</Typography>
+            </Grid>
+          )
+        }
+      },
+      {
+        title: 'Docente',
+        field: 'subject.docente',
+        render: (rowData: any) => {
+          return (
+            <Grid container direction={'column'}>
+              <Typography
+                variant='caption'>{rowData.subject.docente}</Typography>
+            </Grid>
+          )
+        }
+      },
+    ]}
+    data={filteredSubjects}
+    onSelectionChange={data => {
+      setCreditsInfo(() => {
+        let max = 36;
+        let min = 20;
+        const especialSubjects = data
+          .filter(({subject}) => subject.tipo_curso === CourseType.Especial);
+
+        if (especialSubjects.length === 1) {
+          max = 20;
+          min = 1;
+        } else if (especialSubjects.length === 2) {
+          max = especialSubjects.reduce((previousValue, {subject}) => {
+            return previousValue + (+subject.creditos);
+          }, 0);
+          min = 1;
+          setIsTwoEspecialSubjects(true);
+        } else {
+          setIsTwoEspecialSubjects(false);
+        }
+
+        return {
+          max,
+          min,
+        }
+      })
+      setSelectedSubjects(data);
+    }}
+    options={{
+      selection: true,
+      search: false,
+      showSelectAllCheckbox: false,
+      showTextRowsSelected: false,
+      selectionProps: (rowData: AvailableSubject) => {
+        return {
+          disabled:
+            (isSelectedSameSubject(filteredSubjects, rowData) ||
+              isTimeCrossings(filteredSubjects, rowData) || (isTwoEspecialSubjects
+                && rowData.subject.tipo_curso !== CourseType.Especial)) 
+          //|| !!enrolledSubjectsOnPeriod.length,
+        }
+      },
+    }}
+
+    localization={{
+      pagination: {
+        labelDisplayedRows: '{from}-{to} de {count}',
+        labelRowsPerPage: 'Filas por página',
+        labelRowsSelect: 'Filas',
+      },
+      /*body: {
+        emptyDataSourceMessage:
+          <React.Fragment>
+            <Typography variant="h6">No disponible, revisa más tarde.</Typography>
+            <IconButton
+              onClick={() => {
+                //fetchAvailability();
+                //fetchAvailableSubjects();
+              }}
+              disabled={loading}
+              aria-label="delete">
+              <RefreshIcon fontSize="large"/>
+            </IconButton>
+          </React.Fragment>,
+      }*/
+    }}
+  />
+)
+}
+
+
+
+const DialogoListaMaterias =({periodos}:any) =>{
+
+    
+        const [open, setOpen] = React.useState(false);
+      
+        const handleClickOpen = () => {
+          setOpen(true);
+        };
+      
+        const handleClose = () => {
+          setOpen(false);
+        };
+      
+        return (
+          <div>
+            <Button  variant="contained" color="primary" onClick={handleClickOpen}>
+              Añadir Materia
+            </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">{""}</DialogTitle>
+              <DialogContent>
+              <ListaMaterias periodos={periodos}/>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancelar
+                </Button>
+                <Button onClick={handleClose} color="primary" autoFocus>
+                  Agregar
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        );
+}
+
+export default DialogoListaMaterias

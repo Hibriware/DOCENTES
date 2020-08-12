@@ -10,9 +10,12 @@ import { useTheme } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SelectPeriodo from '../Periodo';
 import TextField from '@material-ui/core/TextField';
+import {useStudent} from '../providers/StudentProvider';
 
 
  function BuscarAlumno({periodos,setPeriodos,BuscaNumeroControl,setBuscarNumeroControl}) {
+
+  const {setNumeroControl} = useStudent();
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -24,6 +27,13 @@ import TextField from '@material-ui/core/TextField';
   const handleClose = () => {
     setOpen(false);
   };
+
+  const BuscarNumeroControl=()=>{
+
+    setOpen(false);
+
+    setNumeroControl({numeroControl:BuscaNumeroControl})
+  }
 
   return (
     <div>
@@ -61,7 +71,7 @@ import TextField from '@material-ui/core/TextField';
           <Button autoFocus onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={BuscarNumeroControl} color="primary" autoFocus>
             Buscar
           </Button>
         </DialogActions>

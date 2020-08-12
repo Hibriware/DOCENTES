@@ -102,3 +102,6 @@ export type User = {
     nextSemester:number;
   }
   
+  export interface Control {
+    numeroControl:string
+  }

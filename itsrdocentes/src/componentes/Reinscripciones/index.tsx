@@ -10,6 +10,7 @@ import {
   createStyles,
   Grid,
   Hidden,
+  ButtonGroup,
   IconButton,
   Paper,
   TextField,
@@ -18,7 +19,6 @@ import {
 } from '@material-ui/core';
   import {Refresh as RefreshIcon} from '@material-ui/icons'
   import { makeStyles } from '@material-ui/core/styles';
-  import SelectPeriodo from './Periodo';
   import BuscarAlumno from './BuscarAlumno';
   import {
     AvailableSubject,
@@ -38,6 +38,7 @@ import {
   import Loader from './Loader/index';
 import {protectedPage, useAuth} from './providers/AuthProvider';
 import {useStudent} from './providers/StudentProvider';
+import DialogoListaMaterias from './ListaMaterias';
 
 
 
@@ -112,12 +113,12 @@ import {useStudent} from './providers/StudentProvider';
     const {loading: authLoading} = useAuth();
     //const router = useRouter();
     var router:any;
-    const {student, loadingStudent, setStudent} = useStudent();
+    const {student, loadingStudent, setStudent,setNumeroControl} = useStudent();
     const [availableCareer, setAvailableCareer] = useState<AvailableCareer | null>(null);
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
     const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[]>([]);
-    const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);
+    const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
     const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
     const [loading, setLoading] = useState(false);
     const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
@@ -132,12 +133,13 @@ import {useStudent} from './providers/StudentProvider';
     }, [student]);
   
     useEffect(() => {
-      axios.get(COURSED_SUBJECTS_URL).then(res => {
+      axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
         setStudiedSubjects(res.data?.subjectsStudied || []);
+        console.log(res.data,"COURSED_SUBJECTS_URL")
       }).catch(() => {
         // TODO: Handle error messsage
       });
-    }, []);
+    }, [student]);
   
     const fetchAvailability = useCallback(() => {
       setLoading(true);
@@ -149,7 +151,7 @@ import {useStudent} from './providers/StudentProvider';
         setAvailableCareer(res.data);
       }).catch(() => {
         setAvailableCareer(null);
-        /*enqueueSnackbar('Proceso no aperturado para tu carrera.',
+     /*   enqueueSnackbar('Proceso no aperturado para tu carrera.',
           {
             variant: 'warning',
             preventDuplicate: true,
@@ -160,37 +162,41 @@ import {useStudent} from './providers/StudentProvider';
   
     const fetchAvailableSubjects = useCallback(() => {
       setLoading(true);
-      availableCareer && axios.get(AVAILABLE_SUBJECTS_URL, {
+       axios.get(AVAILABLE_SUBJECTS_URL, {
         params: {
-          career: availableCareer.careerID,
-          studyPlan: availableCareer.studyPlanID,
-          period: availableCareer.period,
+          career: availableCareer?.careerID,
+          studyPlan: availableCareer?.studyPlanID,
+          period: availableCareer?.period,
         }
       }).then(value => {
         setSubjects(value.data)
+        console.log(value.data)
       })
         .finally(() => setLoading(false));
     }, [availableCareer, setSubjects, setLoading]);
   
     useEffect(() => {
-      if (availableCareer) {
+     
         axios.get(ENROLLED_SUBJECTS_BY_PERIOD_URL, {
           params: {
-            period: availableCareer.period,
+            periodo:periodos,// periodo
+            folio:student?.folio ,//pruebas folio
+
           }
         }).then(results => setEnrolledSubjectsOnPeriod(results.data))
-      }
-    }, [availableCareer])
+        console.log(enrolledSubjectsOnPeriod)
+      
+    }, [student])
   
     useEffect(() => {
       updatedStudent && fetchAvailability();
     }, [updatedStudent]);
   
     useEffect(() => {
-      if (availableCareer) {
-        fetchAvailableSubjects();
-      }
-    }, [availableCareer, fetchAvailableSubjects]);
+    
+       fetchAvailableSubjects();
+      
+    }, [fetchAvailableSubjects]);
   
     const handleDatesWithTime = (time: string) => {
       if (!time) {
@@ -377,7 +383,7 @@ import {useStudent} from './providers/StudentProvider';
         axios.post(REENROLLMENT_URL, {
           reenrollmentResults,
           student: updatedStudent || undefined,
-          period: availableCareer?.period,
+          period: 8, //prueba pariodo
         }).then(res => {
           setEnrolledSubjectsOnPeriod(res.data.currentAcademicCharge);
           setStudent(prev => {
@@ -421,8 +427,7 @@ import {useStudent} from './providers/StudentProvider';
   
     return (
       <React.Fragment>
-        {
-          (loadingStudent || authLoading) ? <Loader/> :
+        <DialogoListaMaterias/>
               <div className={classes.root}>
                 <Paper className={classes.paper}>
                   <Hidden lgUp>
@@ -587,6 +592,11 @@ import {useStudent} from './providers/StudentProvider';
                 </Paper>
                 <Grid container spacing={2} className={classes.mt}>
                   <Grid item xs={12}>
+                  <ButtonGroup  size="small" variant="contained" color="primary" aria-label="contained primary button group">
+                  <DialogoListaMaterias periodos={periodos}/>
+                  <Button>Baja Temporal</Button>
+                  <Button>Baja Definitiva</Button>
+                  </ButtonGroup>
                     <MaterialTable
                       title="Asignaturas"
                       columns={[
@@ -722,8 +732,8 @@ import {useStudent} from './providers/StudentProvider';
                             disabled:
                               (isSelectedSameSubject(filteredSubjects, rowData) ||
                                 isTimeCrossings(filteredSubjects, rowData) || (isTwoEspecialSubjects
-                                  && rowData.subject.tipo_curso !== CourseType.Especial)) ||
-                              !!enrolledSubjectsOnPeriod.length,
+                                  && rowData.subject.tipo_curso !== CourseType.Especial)) 
+                            //|| !!enrolledSubjectsOnPeriod.length,
                           }
                         },
                       }}
@@ -734,21 +744,21 @@ import {useStudent} from './providers/StudentProvider';
                           labelRowsPerPage: 'Filas por página',
                           labelRowsSelect: 'Filas',
                         },
-                        body: {
+                        /*body: {
                           emptyDataSourceMessage:
                             <React.Fragment>
                               <Typography variant="h6">No disponible, revisa más tarde.</Typography>
                               <IconButton
                                 onClick={() => {
-                                  fetchAvailability();
-                                  fetchAvailableSubjects();
+                                  //fetchAvailability();
+                                  //fetchAvailableSubjects();
                                 }}
                                 disabled={loading}
                                 aria-label="delete">
                                 <RefreshIcon fontSize="large"/>
                               </IconButton>
                             </React.Fragment>,
-                        }
+                        }*/
                       }}
                     />
                   </Grid>
@@ -767,7 +777,7 @@ import {useStudent} from './providers/StudentProvider';
                   </Grid>
                 </Grid>
               </div>
-        }
+        
       </React.Fragment>
     )
   }

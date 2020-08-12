@@ -3,6 +3,7 @@ import Home from './home';
 import Login from './login/login';
 import {BrowserRouter as Router, Route, Switch,Redirect} from 'react-router-dom'
 import AuthService from './componentes/servicios/AuthService';
+import StudentProvider from './componentes/Reinscripciones/providers/StudentProvider';
 
 //export let  ID_USUARIO = 251 ;
 //export let PERIODO_ACTUAL=7;
@@ -18,7 +19,7 @@ class App extends Component{
   render(){
 
     if(this.state.auth){
-      return(<Home onAuthChange={this.onAuthChange}></Home>)
+      return(<StudentProvider><Home onAuthChange={this.onAuthChange}></Home></StudentProvider>)
     }
     return (   
     

@@ -10,40 +10,36 @@ import {
     DialogContent,
     DialogTitle ,
     Grid,
-    Typography
+    Typography,
+    Backdrop,
+    makeStyles, createStyles, Theme,
+    CircularProgress
   } from '@material-ui/core';
   import {
     AvailableSubject,
-    CourseType,
-    StudiedSubjects,
+    //CourseType,
+   // StudiedSubjects,
     Subject
   } from '../interfaces';
-  import {isSelectedSameSubject, isTimeCrossings} from '../utils/reenrollment-filters';
+  //import {isSelectedSameSubject, isTimeCrossings} from '../utils/reenrollment-filters';
   import {
     AVAILABLE_SUBJECTS_ALL_URL,
   } from '../constants/end-points';
-import {useStudent} from '../providers/StudentProvider';
+//import {useStudent} from '../providers/StudentProvider';
 
 
-  type AvailableCareer = {
-    careerID: number;
-    startDate: string;
-    endDate: string;
-    period: number;
-    studyPlanID: number;
-  }
 
+const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSeleccionada,setMateriasSeleccionada}:any)=>{
+    //const {student} = useStudent();
 
-const ListaMaterias =({periodos}:any)=>{
-    const {student} = useStudent();
-
-
-    const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
-    const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[]>([]);
-    const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
-    const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
-    const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
-    const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
+    const classes = useStyles();
+    const [active, setActive] = React.useState(false);
+    //const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
+    const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[] | any>([]);
+    //const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
+    //const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
+    //const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
+    //const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
     const [loading, setLoading] = useState(false);
     const [subjects, setSubjects] = useState<Subject[]>([]);
 
@@ -51,23 +47,23 @@ const ListaMaterias =({periodos}:any)=>{
 
 
 
+
     const fetchAvailableSubjects = useCallback(() => {
-        setLoading(true);
+      setActive(true)
          axios.get(AVAILABLE_SUBJECTS_ALL_URL, {
           params: {
-            career: student?.career.id,
             period: periodos,
           }
         }).then(value => {
           setSubjects(value.data)
           console.log(value.data)
         })
-          .finally(() => setLoading(false));
-      }, [ setSubjects, setLoading]);
+          .finally(() => setActive(false));
+      }, [ setSubjects]);
 
 
 
-    const filteredSubjects = useMemo<AvailableSubject[]>(() => {
+    /*const filteredSubjects = useMemo<AvailableSubject[]>(() => {
         return availableSubjects.filter(({subject}) => {
             return !studiedSubjects.some(studiedSubject => {
               return (studiedSubject.clave === subject.clave) &&
@@ -130,7 +126,7 @@ const ListaMaterias =({periodos}:any)=>{
             }
           }
         });
-      }, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);
+      }, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);*/
 
       useEffect(() => {
     
@@ -227,12 +223,40 @@ const ListaMaterias =({periodos}:any)=>{
           setAvailableSubjects((prevState: any[]) => {
             return [...prevState, availableSubject]
           })
+
         });
+
       }, [subjects]);
 
+      useEffect(()=>{
+        /*if(availableSubjects.length && cargarAcademica.length){
+          console.log(cargarAcademica,"My car actual")
+          console.log(availableSubjects,"lista materias")
+          for (let x = 0; x < cargarAcademica.length; x++) {
+
+         setAvailableSubjects({
+           ...availableSubjects,
+           availableSubjects:availableSubjects.filter((datas:any)=>{//asignacionGrupo_idgrupo
+              console.log((datas?.subject !== cargarAcademica[x].subject))
+             if ((datas !== cargarAcademica[x])) {
+              return true;
+             }else{
+               return false;
+             }
+           })
+         });
+
+    
+          }
+
+        }*/
+
+      },[availableSubjects])
 
 
 return(
+  <React.Fragment>
+    {materiasSeleccionada.length}
     <MaterialTable
     title="Asignaturas"
     columns={[
@@ -330,9 +354,19 @@ return(
         }
       },
     ]}
-    data={filteredSubjects}
+    //data={filteredSubjects}
+    
+    data={availableSubjects}
+    //data={carganueva}
     onSelectionChange={data => {
-      setCreditsInfo(() => {
+      if(data.length){
+        setMateriasSeleccionada(data)
+      console.log(data)
+      console.log(materiasSeleccionada)
+      }
+
+
+     /* setCreditsInfo(() => {
         let max = 36;
         let min = 20;
         const especialSubjects = data
@@ -356,14 +390,15 @@ return(
           min,
         }
       })
-      setSelectedSubjects(data);
+      setSelectedSubjects(data);*/
+      
     }}
     options={{
       selection: true,
-      search: false,
+      search: true,
       showSelectAllCheckbox: false,
       showTextRowsSelected: false,
-      selectionProps: (rowData: AvailableSubject) => {
+      /*selectionProps: (rowData: AvailableSubject) => {
         return {
           disabled:
             (isSelectedSameSubject(filteredSubjects, rowData) ||
@@ -371,7 +406,7 @@ return(
                 && rowData.subject.tipo_curso !== CourseType.Especial)) 
           //|| !!enrolledSubjectsOnPeriod.length,
         }
-      },
+      },*/
     }}
 
     localization={{
@@ -397,26 +432,45 @@ return(
       }*/
     }}
   />
+    <Backdrop className={classes.backdrop} open={active}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+  </React.Fragment>
 )
 }
 
 
 
-const DialogoListaMaterias =({periodos}:any) =>{
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
+    },
+  }),
+);
 
-    
+const DialogoListaMaterias =({periodos,cargarAcademica,setCargaAcademica ,materiasSeleccionada,setMateriasSeleccionada}:any) =>{
+     
         const [open, setOpen] = React.useState(false);
-      
         const handleClickOpen = () => {
           setOpen(true);
         };
-      
         const handleClose = () => {
           setOpen(false);
         };
-      
+
+        const aprobarAgregarNuevasMaterias = ()=>{
+          if(materiasSeleccionada.length){
+            setCargaAcademica(cargarAcademica.concat(materiasSeleccionada))
+          }
+            
+          setOpen(false);
+
+        }
+
         return (
-          <div>
+          <div  >
             <Button  variant="contained" color="primary" onClick={handleClickOpen}>
               Añadir Materia
             </Button>
@@ -425,20 +479,29 @@ const DialogoListaMaterias =({periodos}:any) =>{
               onClose={handleClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
+              maxWidth="lg"
             >
               <DialogTitle id="alert-dialog-title">{""}</DialogTitle>
-              <DialogContent>
-              <ListaMaterias periodos={periodos}/>
+        
+              <DialogContent >
+              <ListaMaterias 
+              periodos={periodos}
+              cargarAcademica={cargarAcademica} 
+              setCargaAcademica={setCargaAcademica}
+              materiasSeleccionada={materiasSeleccionada}
+              setMateriasSeleccionada={setMateriasSeleccionada}
+              />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose} color="primary">
                   Cancelar
                 </Button>
-                <Button onClick={handleClose} color="primary" autoFocus>
+                <Button onClick={aprobarAgregarNuevasMaterias} color="primary" autoFocus>
                   Agregar
                 </Button>
               </DialogActions>
             </Dialog>
+          
           </div>
         );
 }

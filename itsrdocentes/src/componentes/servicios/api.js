@@ -142,7 +142,7 @@ export async function getListaPeriodo() {
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
-				return false;
+				return [];
 			});
 
 		return respon;

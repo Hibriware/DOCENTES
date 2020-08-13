@@ -52,7 +52,6 @@ import {useStudent} from '../providers/StudentProvider';
       >
         <DialogTitle id="responsive-dialog-title">{"Ingrese un numero de control"}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
           <TextField
                     size="small"
                     id='control-number'
@@ -65,7 +64,6 @@ import {useStudent} from '../providers/StudentProvider';
            <SelectPeriodo 
            periodos={periodos} 
            setPeriodos={setPeriodos}/>
-          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">

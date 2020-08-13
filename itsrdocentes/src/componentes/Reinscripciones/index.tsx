@@ -113,7 +113,7 @@ import DialogoListaMaterias from './ListaMaterias';
     const {loading: authLoading} = useAuth();
     //const router = useRouter();
     var router:any;
-    const {student, loadingStudent, setStudent,setNumeroControl} = useStudent();
+    const {student, setStudent} = useStudent();
     const [availableCareer, setAvailableCareer] = useState<AvailableCareer | null>(null);
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
@@ -126,6 +126,9 @@ import DialogoListaMaterias from './ListaMaterias';
     const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
     const [periodos, setPeriodos] = useState("");
     const [BuscaNumeroControl, setBuscarNumeroControl] = useState("");
+    const [cargarAcademica, setCargaAcademica] = useState<AvailableSubject[]>([]);
+    const [materiasSeleccionada, setMateriasSeleccionada] = useState<AvailableSubject[] | any>([]);
+
 
 
     const updatedStudent = useMemo<Student | null>(() => {
@@ -288,6 +291,8 @@ import DialogoListaMaterias from './ListaMaterias';
         })
       });
     }, [subjects]);
+
+    
   
     const filteredSubjects = useMemo<AvailableSubject[]>(() => {
       return availableSubjects.filter(({subject}) => {
@@ -354,6 +359,17 @@ import DialogoListaMaterias from './ListaMaterias';
       });
     }, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);
   
+    useEffect(()=>{
+      setCargaAcademica(filteredSubjects)
+    },[filteredSubjects])
+
+
+    useEffect(()=>{
+    console.log(cargarAcademica,"mi cargaacademica actualmente") 
+       },[cargarAcademica])
+
+
+
     const updatedSelectedSubjects = useMemo(() => {
       if (isTwoEspecialSubjects) {
         return selectedSubjects.filter(({subject}) => subject.tipo_curso === CourseType.Especial);
@@ -427,7 +443,6 @@ import DialogoListaMaterias from './ListaMaterias';
   
     return (
       <React.Fragment>
-        <DialogoListaMaterias/>
               <div className={classes.root}>
                 <Paper className={classes.paper}>
                   <Hidden lgUp>
@@ -593,7 +608,13 @@ import DialogoListaMaterias from './ListaMaterias';
                 <Grid container spacing={2} className={classes.mt}>
                   <Grid item xs={12}>
                   <ButtonGroup  size="small" variant="contained" color="primary" aria-label="contained primary button group">
-                  <DialogoListaMaterias periodos={periodos}/>
+                  <DialogoListaMaterias
+                   periodos={periodos} 
+                   cargarAcademica={cargarAcademica} 
+                   setCargaAcademica={setCargaAcademica}
+                   materiasSeleccionada={materiasSeleccionada}
+                   setMateriasSeleccionada={setMateriasSeleccionada}
+                   />
                   <Button>Baja Temporal</Button>
                   <Button>Baja Definitiva</Button>
                   </ButtonGroup>
@@ -694,7 +715,8 @@ import DialogoListaMaterias from './ListaMaterias';
                           }
                         },
                       ]}
-                      data={filteredSubjects}
+                     // data={filteredSubjects}
+                     data={cargarAcademica}
                       onSelectionChange={data => {
                         setCreditsInfo(() => {
                           let max = 36;

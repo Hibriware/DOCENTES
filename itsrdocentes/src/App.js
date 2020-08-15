@@ -7,6 +7,7 @@ import StudentProvider from './componentes/Reinscripciones/providers/StudentProv
 
 //export let  ID_USUARIO = 251 ;
 //export let PERIODO_ACTUAL=7;
+//nuevos implementos de pruebas
 
 class App extends Component{
   constructor(props){

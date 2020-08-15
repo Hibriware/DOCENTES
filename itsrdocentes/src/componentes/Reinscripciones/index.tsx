@@ -11,7 +11,6 @@ import {
   Grid,
   Hidden,
   ButtonGroup,
-  IconButton,
   Paper,
   TextField,
   Theme,
@@ -39,6 +38,8 @@ import {
 import {protectedPage, useAuth} from './providers/AuthProvider';
 import {useStudent} from './providers/StudentProvider';
 import DialogoListaMaterias from './ListaMaterias';
+import BajaTemporal from './BajaTemporal/index';
+import BajaPermanente from './BajaPermanente';
 
 
 
@@ -113,7 +114,7 @@ import DialogoListaMaterias from './ListaMaterias';
     const {loading: authLoading} = useAuth();
     //const router = useRouter();
     var router:any;
-    const {student, loadingStudent, setStudent,setNumeroControl} = useStudent();
+    const {student, setStudent} = useStudent();
     const [availableCareer, setAvailableCareer] = useState<AvailableCareer | null>(null);
     const [subjects, setSubjects] = useState<Subject[]>([]);
     const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
@@ -126,6 +127,9 @@ import DialogoListaMaterias from './ListaMaterias';
     const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
     const [periodos, setPeriodos] = useState("");
     const [BuscaNumeroControl, setBuscarNumeroControl] = useState("");
+    const [cargarAcademica, setCargaAcademica] = useState<AvailableSubject[]>([]);
+    const [materiasSeleccionada, setMateriasSeleccionada] = useState<AvailableSubject[] | any>([]);
+
 
 
     const updatedStudent = useMemo<Student | null>(() => {
@@ -133,15 +137,19 @@ import DialogoListaMaterias from './ListaMaterias';
     }, [student]);
   
     useEffect(() => {
-      axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
-        setStudiedSubjects(res.data?.subjectsStudied || []);
-        console.log(res.data,"COURSED_SUBJECTS_URL")
-      }).catch(() => {
-        // TODO: Handle error messsage
-      });
+      if(student?.folio){
+        console.log("solisitar promedio del alumno")
+        axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
+          setStudiedSubjects(res.data?.subjectsStudied || []);
+          console.log(res.data,"COURSED_SUBJECTS_URL Da tos alumno")
+        }).catch(() => {
+          // TODO: Handle error messsage
+        });
+      }
     }, [student]);
+
   
-    const fetchAvailability = useCallback(() => {
+    /*const fetchAvailability = useCallback(() => { // pas 1
       setLoading(true);
       axios.get(AVAILABLE_CAREERS_URL, {
         params: {
@@ -155,27 +163,27 @@ import DialogoListaMaterias from './ListaMaterias';
           {
             variant: 'warning',
             preventDuplicate: true,
-          });*/
+          });
       })
         .finally(() => setLoading(false));
-    }, [updatedStudent, setAvailableCareer, setLoading]);
+    }, [updatedStudent, setAvailableCareer, setLoading]);*/
   
     const fetchAvailableSubjects = useCallback(() => {
       setLoading(true);
+      setSubjects([])
        axios.get(AVAILABLE_SUBJECTS_URL, {
         params: {
-          career: availableCareer?.careerID,
-          studyPlan: availableCareer?.studyPlanID,
-          period: availableCareer?.period,
+          folio:student?.folio,
+          period: periodos,
         }
       }).then(value => {
         setSubjects(value.data)
-        console.log(value.data)
+        console.log(value.data,"AVAILABLE_SUBJECTS_URL lista materias")
       })
         .finally(() => setLoading(false));
-    }, [availableCareer, setSubjects, setLoading]);
+    }, [student,setLoading]);
   
-    useEffect(() => {
+    /*useEffect(() => {
      
         axios.get(ENROLLED_SUBJECTS_BY_PERIOD_URL, {
           params: {
@@ -186,11 +194,11 @@ import DialogoListaMaterias from './ListaMaterias';
         }).then(results => setEnrolledSubjectsOnPeriod(results.data))
         console.log(enrolledSubjectsOnPeriod)
       
-    }, [student])
+    }, [student])*/
   
-    useEffect(() => {
+    /*useEffect(() => {
       updatedStudent && fetchAvailability();
-    }, [updatedStudent]);
+    }, [updatedStudent]);*/
   
     useEffect(() => {
     
@@ -288,6 +296,8 @@ import DialogoListaMaterias from './ListaMaterias';
         })
       });
     }, [subjects]);
+
+    
   
     const filteredSubjects = useMemo<AvailableSubject[]>(() => {
       return availableSubjects.filter(({subject}) => {
@@ -352,8 +362,20 @@ import DialogoListaMaterias from './ListaMaterias';
           }
         }
       });
-    }, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);
-  
+    }, [studiedSubjects, availableSubjects, enrolledSubjectsOnPeriod]);
+    //}, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);
+    
+
+    useEffect(()=>{
+      setCargaAcademica(filteredSubjects)
+    },[filteredSubjects])
+
+
+    useEffect(()=>{
+    console.log(cargarAcademica,"mi cargaacademica actualmente") 
+       },[cargarAcademica])
+
+
     const updatedSelectedSubjects = useMemo(() => {
       if (isTwoEspecialSubjects) {
         return selectedSubjects.filter(({subject}) => subject.tipo_curso === CourseType.Especial);
@@ -368,6 +390,8 @@ import DialogoListaMaterias from './ListaMaterias';
     }, [updatedSelectedSubjects]);
   
     const handleFinish = () => {
+
+
       const reenrollmentResults = selectedSubjects.map<ReenrollmentResult>(selected => {
         const {subject} = selected;
         return {
@@ -378,30 +402,20 @@ import DialogoListaMaterias from './ListaMaterias';
           teacherSubjectId: subject.materiaDocente_id,
         }
       });
+
+      
+
       if (window.confirm('¿Estás seguro de continuar?, Todavía puedes cambiar tu selección de materias.')) {
         setLoading(true);
         axios.post(REENROLLMENT_URL, {
           reenrollmentResults,
-          student: updatedStudent || undefined,
-          period: 8, //prueba pariodo
-        }).then(res => {
-          setEnrolledSubjectsOnPeriod(res.data.currentAcademicCharge);
-          setStudent(prev => {
-            if(!prev){
-              return null;
-            }
-            return {...prev, currentSemester: prev.nextSemester}
-          });
-          setLoading(false);
-          if(window.confirm('Tu carga horaria podrás obtenerla despúes de realizar el pago, a continuación te mostramos donde puedes obtener la línea de captura.')){
-           router.push('/reinscripcion-pago');
-          }else{
-            router.push('/reinscripcion-pago');
-          }
-        }).catch(() => {
+          student: updatedStudent?.folio || undefined,
+          period: periodos, //prueba pariodo
+        }).then(res => alert(res.data)).catch(() => {
           setLoading(false);
         })
       }
+
     }
   
     // get current semester credits
@@ -427,7 +441,6 @@ import DialogoListaMaterias from './ListaMaterias';
   
     return (
       <React.Fragment>
-        <DialogoListaMaterias/>
               <div className={classes.root}>
                 <Paper className={classes.paper}>
                   <Hidden lgUp>
@@ -593,9 +606,18 @@ import DialogoListaMaterias from './ListaMaterias';
                 <Grid container spacing={2} className={classes.mt}>
                   <Grid item xs={12}>
                   <ButtonGroup  size="small" variant="contained" color="primary" aria-label="contained primary button group">
-                  <DialogoListaMaterias periodos={periodos}/>
-                  <Button>Baja Temporal</Button>
-                  <Button>Baja Definitiva</Button>
+                  <DialogoListaMaterias
+                   periodos={periodos} 
+                   cargarAcademica={cargarAcademica} 
+                   setCargaAcademica={setCargaAcademica}
+                   materiasSeleccionada={materiasSeleccionada}
+                   setMateriasSeleccionada={setMateriasSeleccionada}
+                   studiedSubjects={studiedSubjects}
+                   />
+                  <BajaTemporal
+                  periodos={periodos}
+                  />
+                  <BajaPermanente/>
                   </ButtonGroup>
                     <MaterialTable
                       title="Asignaturas"
@@ -694,14 +716,14 @@ import DialogoListaMaterias from './ListaMaterias';
                           }
                         },
                       ]}
-                      data={filteredSubjects}
+                     // data={filteredSubjects}
+                     data={cargarAcademica}
                       onSelectionChange={data => {
                         setCreditsInfo(() => {
                           let max = 36;
                           let min = 20;
                           const especialSubjects = data
                             .filter(({subject}) => subject.tipo_curso === CourseType.Especial);
-  
                           if (especialSubjects.length === 1) {
                             max = 20;
                             min = 1;
@@ -714,7 +736,6 @@ import DialogoListaMaterias from './ListaMaterias';
                           } else {
                             setIsTwoEspecialSubjects(false);
                           }
-  
                           return {
                             max,
                             min,
@@ -722,20 +743,21 @@ import DialogoListaMaterias from './ListaMaterias';
                         })
                         setSelectedSubjects(data);
                       }}
+
                       options={{
                         selection: true,
                         search: false,
                         showSelectAllCheckbox: false,
                         showTextRowsSelected: false,
-                        selectionProps: (rowData: AvailableSubject) => {
+                        /*selectionProps: (rowData: AvailableSubject) => {
                           return {
                             disabled:
                               (isSelectedSameSubject(filteredSubjects, rowData) ||
                                 isTimeCrossings(filteredSubjects, rowData) || (isTwoEspecialSubjects
                                   && rowData.subject.tipo_curso !== CourseType.Especial)) 
-                            //|| !!enrolledSubjectsOnPeriod.length,
+                            || !!enrolledSubjectsOnPeriod.length,
                           }
-                        },
+                        },*/
                       }}
   
                       localization={{

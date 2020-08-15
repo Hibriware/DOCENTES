@@ -17,42 +17,20 @@ type StudentContextValues = {
 const StudentContext = React.createContext<StudentContextValues>({numeroControl:null,setNumeroControl:()=>{},student: null, loadingStudent: false, setStudent: ()=>{},});
 
 const StudentProvider: React.FC = (props) => {
-  const {isLoggedIn, loading: authLoading, checkAuth} = useAuth();
   const [student, setStudent] = useState<Student | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const endTime = (+new Date()) + (2.3 * 1000);
   const[numeroControl,setNumeroControl] = useState<Control | any>(null)
 
-  /*const timedLoading = useCallback(() => {
-    if (+new Date() <= endTime) {
-      setTimeout(() => {
-        setLoading(false);
-      }, endTime - (+new Date()))
-    } else {
-      setLoading(false);
-    }
-  }, []);*/
-
- /* useEffect(() => {
-    !isLoggedIn && setStudent(null);
-  }, [isLoggedIn]);
-*/
+  
   useEffect(() => {
-       me(numeroControl?.numeroControl).then(result => {
-    console.log("useEffecj")
-
+    if(numeroControl?.numeroControl){
+      console.log("actualizar data provider")
+      me(numeroControl?.numeroControl).then(result => {
         if (result) {
           setStudent(result);
-          //timedLoading();
         }
       }).finally();
-   // checkAuth();
-    //if (!isLoggedIn && authLoading) {
-      //timedLoading();
-    //}
-    //if (!authLoading && isLoggedIn) {
-     
-    //}
+    }
   }, [numeroControl]);
 
   const loadingStudent = useMemo(() => {

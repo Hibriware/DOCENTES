@@ -17,8 +17,10 @@ import {
   } from '@material-ui/core';
   import {
     AvailableSubject,
-    //CourseType,
-   // StudiedSubjects,
+    CourseType,
+    ReenrollmentResult,
+    Student,
+    StudiedSubjects,
     Subject
   } from '../interfaces';
   //import {isSelectedSameSubject, isTimeCrossings} from '../utils/reenrollment-filters';
@@ -29,7 +31,7 @@ import {
 
 
 
-const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSeleccionada,setMateriasSeleccionada}:any)=>{
+const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSeleccionada,setMateriasSeleccionada,studiedSubjects}:any)=>{
     //const {student} = useStudent();
 
     const classes = useStyles();
@@ -38,7 +40,7 @@ const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSelecc
     const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[] | any>([]);
     //const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
     //const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
-    //const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
+    const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
     //const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
     const [loading, setLoading] = useState(false);
     const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -63,24 +65,25 @@ const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSelecc
 
 
 
-    /*const filteredSubjects = useMemo<AvailableSubject[]>(() => {
-        return availableSubjects.filter(({subject}) => {
-            return !studiedSubjects.some(studiedSubject => {
-              return (studiedSubject.clave === subject.clave) &&
-                (+studiedSubject.promedio >= 70)
+    const filteredSubjects = useMemo<AvailableSubject[]>(() => {
+
+        return availableSubjects.filter(({subject}:any) => {
+            return !studiedSubjects.some((studiedSubject:any) => {
+              return (studiedSubject.clave === subject.clave)
+               //&&(+studiedSubject.promedio >= 70)
             })
           }
-        ).map(availableSubject => {
+        ).map((availableSubject:any) => {
           let courseType = CourseType.Ordinary;
     
           const sortedStudiedSubjects = studiedSubjects
-            .filter(subject => subject.clave === availableSubject.subject.clave)
-            .sort((a, b) => {
+            .filter((subject:any) => subject.clave === availableSubject.subject.clave)
+            /*.sort((a:any, b:any) => {
               if (a.periodo > b.periodo) {
                 return -1
               }
               return 1
-            });
+            });*/
     
           if (sortedStudiedSubjects.length > 0) {
             const latestStudiedSubject = sortedStudiedSubjects[0];
@@ -97,24 +100,6 @@ const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSelecc
                 break;
             }
           }
-    
-          let checked = false;
-          const currentSubjectIsSelected = selectedSubjects.some(value =>
-            value.subject.materiaDocente_id === availableSubject.subject.materiaDocente_id);
-          if (isTwoEspecialSubjects) {
-            if (currentSubjectIsSelected) {
-              if (courseType === CourseType.Especial) {
-                checked = true;
-              }
-            }
-          } else if (currentSubjectIsSelected) {
-            checked = true;
-          }
-          if (!checked && enrolledSubjectsOnPeriod.length) {
-            checked = enrolledSubjectsOnPeriod
-              .some(enrolledSubject => enrolledSubject.materiadocente_id === availableSubject.subject.materiaDocente_id);
-          }
-    
           return {
             ...availableSubject,
             subject: {
@@ -122,11 +107,11 @@ const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSelecc
               tipo_curso: courseType,
             },
             tableData: {
-              checked,
+              checked:false,
             }
           }
         });
-      }, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);*/
+      }, [studiedSubjects, availableSubjects]);
 
       useEffect(() => {
     
@@ -228,30 +213,7 @@ const ListaMaterias =({periodos,cargarAcademica,setCargaAcademica,materiasSelecc
 
       }, [subjects]);
 
-      useEffect(()=>{
-        /*if(availableSubjects.length && cargarAcademica.length){
-          console.log(cargarAcademica,"My car actual")
-          console.log(availableSubjects,"lista materias")
-          for (let x = 0; x < cargarAcademica.length; x++) {
 
-         setAvailableSubjects({
-           ...availableSubjects,
-           availableSubjects:availableSubjects.filter((datas:any)=>{//asignacionGrupo_idgrupo
-              console.log((datas?.subject !== cargarAcademica[x].subject))
-             if ((datas !== cargarAcademica[x])) {
-              return true;
-             }else{
-               return false;
-             }
-           })
-         });
-
-    
-          }
-
-        }*/
-
-      },[availableSubjects])
 
 
 return(
@@ -354,9 +316,9 @@ return(
         }
       },
     ]}
-    //data={filteredSubjects}
+    data={filteredSubjects}
     
-    data={availableSubjects}
+    //data={availableSubjects}
     //data={carganueva}
     onSelectionChange={data => {
       if(data.length){
@@ -450,7 +412,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const DialogoListaMaterias =({periodos,cargarAcademica,setCargaAcademica ,materiasSeleccionada,setMateriasSeleccionada}:any) =>{
+const DialogoListaMaterias =({periodos,cargarAcademica,setCargaAcademica ,materiasSeleccionada,setMateriasSeleccionada,studiedSubjects}:any) =>{
      
         const [open, setOpen] = React.useState(false);
         const handleClickOpen = () => {
@@ -460,12 +422,34 @@ const DialogoListaMaterias =({periodos,cargarAcademica,setCargaAcademica ,materi
           setOpen(false);
         };
 
-        const aprobarAgregarNuevasMaterias = ()=>{
+        const aprobarAgregarNuevasMaterias = async ()=>{
+         
           if(materiasSeleccionada.length){
-            setCargaAcademica(cargarAcademica.concat(materiasSeleccionada))
+
+            for (let index = 0; index < materiasSeleccionada.length; index++) {
+              let Materia_cargaacademica=[];
+                   let Id_materia_docente = materiasSeleccionada[index]?.subject.materiaDocente_id
+                     Materia_cargaacademica = await cargarAcademica.filter((data:any) => data?.subject?.materiaDocente_id === Id_materia_docente)
+                  
+                    if(Materia_cargaacademica.length === 0){
+                      console.log("comenzar validacion")
+                          //agregar cruse de horas
+                          
+
+                          setCargaAcademica(cargarAcademica.concat(materiasSeleccionada))
+
+                      setOpen(false);
+                    }else{
+                      alert("No puede agregar esta materia, por que ya se encuentra en la cargaacademica")
+                      setMateriasSeleccionada([])
+                    }
+            }
+          
+          
+          }else{
+            alert("Seleccione una materia")
           }
             
-          setOpen(false);
 
         }
 
@@ -490,6 +474,7 @@ const DialogoListaMaterias =({periodos,cargarAcademica,setCargaAcademica ,materi
               setCargaAcademica={setCargaAcademica}
               materiasSeleccionada={materiasSeleccionada}
               setMateriasSeleccionada={setMateriasSeleccionada}
+              studiedSubjects={studiedSubjects}
               />
               </DialogContent>
               <DialogActions>

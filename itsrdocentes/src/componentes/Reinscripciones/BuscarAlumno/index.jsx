@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import {useStudent} from '../providers/StudentProvider';
 
 
- function BuscarAlumno({periodos,setPeriodos,BuscaNumeroControl,setBuscarNumeroControl}) {
+ function BuscarAlumno({periodos,setPeriodos,BuscaNumeroControl,setBuscarNumeroControl, clear}) {
 
   const {setNumeroControl} = useStudent();
   const [open, setOpen] = React.useState(false);
@@ -61,15 +61,18 @@ import {useStudent} from '../providers/StudentProvider';
                     variant="outlined"
                     onChange={(evt)=>(setBuscarNumeroControl(evt.target.value))}
                   />
-           <SelectPeriodo 
-           periodos={periodos} 
+           <SelectPeriodo
+           periodos={periodos}
            setPeriodos={setPeriodos}/>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={BuscarNumeroControl} color="primary" autoFocus>
+          <Button onClick={()=>{
+            clear();
+            BuscarNumeroControl();
+          }} color="primary" autoFocus>
             Buscar
           </Button>
         </DialogActions>

@@ -27,7 +27,7 @@ const isTimeCrossings = (subjects: AvailableSubject[], data: AvailableSubject) =
     value => {
       return value.tableData?.id !== tableData.id &&
         value.tableData?.checked &&
-        !tableData.checked &&
+        tableData.checked &&
         (
           isOverlapping(monday, value.monday) ||
           isOverlapping(tuesday, value.tuesday) ||

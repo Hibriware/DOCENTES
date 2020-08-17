@@ -395,7 +395,7 @@ const DialogoListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, mat
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button size="small" variant="contained" color="primary" onClick={handleClickOpen}>
         Añadir Materia
       </Button>
       <Dialog

@@ -59,7 +59,7 @@ const BajaDefinitiva = ()=>{
 
 return(
     <div>
-    <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    <Button size="small" variant="contained" color="primary" onClick={handleClickOpen}>
       Baja Definitiva
     </Button>
     <Dialog

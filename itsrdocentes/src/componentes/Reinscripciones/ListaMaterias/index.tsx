@@ -2,6 +2,7 @@ import React, {useState, useMemo, useCallback, useEffect} from 'react';
 import {isAfter, isBefore} from 'date-fns';
 import MaterialTable from 'material-table';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 import {
   Button,
@@ -27,7 +28,7 @@ import {
 import {
   AVAILABLE_SUBJECTS_ALL_URL,
 } from '../constants/end-points';
-//import {useStudent} from '../providers/StudentProvider';
+import {useStudent} from '../providers/StudentProvider';
 
 
 const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSeleccionada, setMateriasSeleccionada, studiedSubjects}: any) => {
@@ -72,12 +73,6 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
 
       const sortedStudiedSubjects = studiedSubjects
         .filter((subject: any) => subject.clave === availableSubject.subject.clave)
-      /*.sort((a:any, b:any) => {
-        if (a.periodo > b.periodo) {
-          return -1
-        }
-        return 1
-      });*/
 
       if (sortedStudiedSubjects.length > 0) {
         const latestStudiedSubject = sortedStudiedSubjects[0];
@@ -210,7 +205,6 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
 
   return (
     <React.Fragment>
-      {materiasSeleccionada.length}
       <MaterialTable
         title="Asignaturas"
         columns={[
@@ -319,48 +313,12 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
             console.log(materiasSeleccionada)
           }
 
-
-          /* setCreditsInfo(() => {
-             let max = 36;
-             let min = 20;
-             const especialSubjects = data
-               .filter(({subject}) => subject.tipo_curso === CourseType.Especial);
-
-             if (especialSubjects.length === 1) {
-               max = 20;
-               min = 1;
-             } else if (especialSubjects.length === 2) {
-               max = especialSubjects.reduce((previousValue, {subject}) => {
-                 return previousValue + (+subject.creditos);
-               }, 0);
-               min = 1;
-               setIsTwoEspecialSubjects(true);
-             } else {
-               setIsTwoEspecialSubjects(false);
-             }
-
-             return {
-               max,
-               min,
-             }
-           })
-           setSelectedSubjects(data);*/
-
         }}
         options={{
           selection: true,
           search: true,
           showSelectAllCheckbox: false,
           showTextRowsSelected: false,
-          /*selectionProps: (rowData: AvailableSubject) => {
-            return {
-              disabled:
-                (isSelectedSameSubject(filteredSubjects, rowData) ||
-                  isTimeCrossings(filteredSubjects, rowData) || (isTwoEspecialSubjects
-                    && rowData.subject.tipo_curso !== CourseType.Especial))
-              //|| !!enrolledSubjectsOnPeriod.length,
-            }
-          },*/
         }}
 
         localization={{
@@ -369,21 +327,7 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
             labelRowsPerPage: 'Filas por página',
             labelRowsSelect: 'Filas',
           },
-          /*body: {
-            emptyDataSourceMessage:
-              <React.Fragment>
-                <Typography variant="h6">No disponible, revisa más tarde.</Typography>
-                <IconButton
-                  onClick={() => {
-                    //fetchAvailability();
-                    //fetchAvailableSubjects();
-                  }}
-                  disabled={loading}
-                  aria-label="delete">
-                  <RefreshIcon fontSize="large"/>
-                </IconButton>
-              </React.Fragment>,
-          }*/
+        
         }}
       />
       <Backdrop className={classes.backdrop} open={active}>
@@ -404,10 +348,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const DialogoListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSeleccionada, setMateriasSeleccionada, studiedSubjects}: any) => {
+  const {student} = useStudent();
 
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
-    setOpen(true);
+
+    if(student?.controlNumber.length){
+      setOpen(true);
+    }else{
+      swal({
+        text: "Primero realice una búsqueda!",
+      });
+    }
   };
   const handleClose = () => {
     setOpen(false);
@@ -416,12 +368,7 @@ const DialogoListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, mat
   const aprobarAgregarNuevasMaterias = async () => {
 
     if (materiasSeleccionada.length) {
-      for (let index = 0; index < materiasSeleccionada.length; index++) {
-        let Materia_cargaacademica = [];
-        let Id_materia_docente = materiasSeleccionada[index]?.subject.materiaDocente_id
-        Materia_cargaacademica = await cargarAcademica.filter((data: any) => data?.subject?.materiaDocente_id === Id_materia_docente)
-
-        if (Materia_cargaacademica.length === 0) {
+        if (cargarAcademica.length) {
           console.log('comenzar validacion')
           //agregar cruse de horas
           setCargaAcademica(cargarAcademica.concat(
@@ -438,17 +385,12 @@ const DialogoListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, mat
 
           setOpen(false);
         } else {
-          alert('No puede agregar esta materia, por que ya se encuentra en la cargaacademica')
+          alert('La carga académica no es valida')
           setMateriasSeleccionada([])
         }
-      }
-
-
     } else {
-      alert('Seleccione una materia')
+      alert('Seleccione una materia o cancele')
     }
-
-
   }
 
   return (

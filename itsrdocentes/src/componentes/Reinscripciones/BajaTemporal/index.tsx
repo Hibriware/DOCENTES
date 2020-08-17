@@ -5,7 +5,6 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    Paper,
     DialogTitle,
     Chip,
     Avatar,
@@ -14,6 +13,7 @@ import {
 import {useStudent} from '../providers/StudentProvider';
 import {BAJA_TEMPORAL_URL} from '../constants/end-points';
 import Itsr from '../../img/Logo-Tec.png';
+import swal from 'sweetalert';
 
 
   
@@ -50,7 +50,13 @@ const BajasTemporal =({periodos}:any)=>{
 
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if(student?.controlNumber.length){
+      setOpen(true);
+    }else{
+      swal({
+        text: "Primero realice una búsqueda!",
+      });
+    }
   };
 
   const handleClose = () => {

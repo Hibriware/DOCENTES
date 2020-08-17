@@ -9,7 +9,8 @@ import {
   } from '@material-ui/core';
   import {useStudent} from '../providers/StudentProvider';
   import Itsr from '../../img/Logo-Tec.png';
-
+  import swal from 'sweetalert';
+ 
 
 
   interface State {
@@ -33,7 +34,14 @@ const BajaDefinitiva = ()=>{
       
       
         const handleClickOpen = () => {
-          setOpen(true);
+            if(student?.controlNumber.length){
+              setOpen(true);
+            }else{
+              swal({
+                text: "Primero realice una búsqueda!",
+              });
+            }
+          
         };
       
         const handleClose = () => {

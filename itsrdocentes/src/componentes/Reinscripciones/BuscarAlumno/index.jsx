@@ -29,9 +29,7 @@ import {useStudent} from '../providers/StudentProvider';
   };
 
   const BuscarNumeroControl=()=>{
-
     setOpen(false);
-
     setNumeroControl({numeroControl:BuscaNumeroControl})
   }
 

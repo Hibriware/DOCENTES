@@ -2,8 +2,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import {format, isAfter, isBefore} from 'date-fns';
 import MaterialTable from 'material-table';
-//import {useSnackbar} from 'notistack';
-
 import {
   Avatar,
   Button,
@@ -14,9 +12,9 @@ import {
   Paper,
   TextField,
   Theme,
-  Typography, Container
+  Typography, Container,Chip,Backdrop ,CircularProgress 
 } from '@material-ui/core';
-import {Refresh as RefreshIcon} from '@material-ui/icons'
+import WarningIcon from '@material-ui/icons/Warning';
 import {makeStyles} from '@material-ui/core/styles';
 import BuscarAlumno from './BuscarAlumno';
 import {
@@ -28,25 +26,17 @@ import {
   Subject
 } from './interfaces';
 import {
-  AVAILABLE_CAREERS_URL,
   AVAILABLE_SUBJECTS_URL,
-  COURSED_SUBJECTS_URL, ENROLLED_SUBJECTS_BY_PERIOD_URL,
+  COURSED_SUBJECTS_URL, 
   REENROLLMENT_URL
 } from './constants/end-points';
-import {isSelectedSameSubject, isTimeCrossings} from './utils/reenrollment-filters';
-import Loader from './Loader/index';
-import {protectedPage, useAuth} from './providers/AuthProvider';
+import {isTimeCrossings} from './utils/reenrollment-filters';
 import {useStudent} from './providers/StudentProvider';
 import DialogoListaMaterias from './ListaMaterias';
 import BajaTemporal from './BajaTemporal/index';
 import BajaPermanente from './BajaPermanente';
 
 
-//const [periodos, setPeriodos] = useState("");
-//const [BuscaNumeroControl, setBuscarNumeroControl] = useState("");
-/*<Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                 <BuscarAlumno periodos={periodos} setPeriodos={setPeriodos} BuscaNumeroControl={BuscaNumeroControl} setBuscarNumeroControl={setBuscarNumeroControl} />
-              </Grid>*/
 
 type AvailableCareer = {
   careerID: number;
@@ -55,6 +45,7 @@ type AvailableCareer = {
   period: number;
   studyPlanID: number;
 }
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -74,6 +65,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     mt: {
       marginTop: theme.spacing(1),
+    },backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
     }
   }),
 );
@@ -107,14 +101,8 @@ const TimeField: React.FC = () => {
 }
 
 const ReEnrollmentPage: React.FC = () => {
-  // resetServerContext();
-  //const {enqueueSnackbar} = useSnackbar();
   const classes = useStyles();
-  const {loading: authLoading} = useAuth();
-  //const router = useRouter();
-  var router: any;
-  const {student, setStudent} = useStudent();
-  const [availableCareer, setAvailableCareer] = useState<AvailableCareer | null>(null);
+  const {student} = useStudent();
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
   const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[]>([]);
@@ -122,12 +110,13 @@ const ReEnrollmentPage: React.FC = () => {
   const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
   const [loading, setLoading] = useState(false);
   const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
-
   const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
   const [periodos, setPeriodos] = useState('');
   const [BuscaNumeroControl, setBuscarNumeroControl] = useState('');
   const [cargarAcademica, setCargaAcademica] = useState<AvailableSubject[]>([]);
   const [materiasSeleccionada, setMateriasSeleccionada] = useState<AvailableSubject[] | any>([]);
+  const [hoursCruse,setHoursCruse] = useState(false);
+  const[isLoaders,setLoaders] = useState(false)
 
 
   const updatedStudent = useMemo<Student | null>(() => {
@@ -324,7 +313,6 @@ const ReEnrollmentPage: React.FC = () => {
       }
     });
   }, [studiedSubjects, availableSubjects, enrolledSubjectsOnPeriod]);
-  //}, [studiedSubjects, availableSubjects, isTwoEspecialSubjects, selectedSubjects, enrolledSubjectsOnPeriod]);
 
 
   useEffect(() => {
@@ -346,8 +334,7 @@ const ReEnrollmentPage: React.FC = () => {
   }, [updatedSelectedSubjects]);
 
   const handleFinish = () => {
-
-
+    setLoaders(true)
     const reenrollmentResults = selectedSubjects.map<ReenrollmentResult>(selected => {
       const {subject} = selected;
       return {
@@ -359,7 +346,6 @@ const ReEnrollmentPage: React.FC = () => {
       }
     });
 
-
     if (window.confirm('¿Estás seguro de continuar?, Todavía puedes cambiar tu selección de materias.')) {
       setLoading(true);
       axios.post(REENROLLMENT_URL, {
@@ -370,7 +356,7 @@ const ReEnrollmentPage: React.FC = () => {
         setLoading(false);
       })
     }
-
+    setLoaders(false)
   }
 
   // get current semester credits
@@ -387,12 +373,11 @@ const ReEnrollmentPage: React.FC = () => {
     const disableByValidationOfCredits = (requestedCredits < creditsInfo.min &&
       semesterCredits > requestedCredits) ||
       (requestedCredits > creditsInfo.max);
-
     return !filteredSubjects.length ||
       !selectedSubjects.length ||
       disableByValidationOfCredits ||
       !!enrolledSubjectsOnPeriod.length;
-  }, [filteredSubjects, selectedSubjects, requestedCredits, enrolledSubjectsOnPeriod]);
+  }, [filteredSubjects, selectedSubjects, requestedCredits, enrolledSubjectsOnPeriod,creditsInfo]);
 
   const handleClearOnSearch = React.useCallback(() => {
     setStudiedSubjects([]);
@@ -401,6 +386,10 @@ const ReEnrollmentPage: React.FC = () => {
   }, [setStudiedSubjects, setAvailableSubjects, setEnrolledSubjectsOnPeriod]);
 
   return (
+    <React.Fragment>
+         <Backdrop className={classes.backdrop} open={isLoaders}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     <Container fixed maxWidth={'xl'}>
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -539,7 +528,7 @@ const ReEnrollmentPage: React.FC = () => {
                 <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
                   <TimeField/>
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                <Grid item xs={6}>
                   <BuscarAlumno
                     periodos={periodos}
                     setPeriodos={setPeriodos}
@@ -571,6 +560,13 @@ const ReEnrollmentPage: React.FC = () => {
           </Grid>
         </Paper>
         <Grid container spacing={2} className={classes.mt}>
+        <Grid container direction="row" justify="center" alignItems="center">
+          <Grid>
+            {
+         hoursCruse ?  <Chip color="secondary" size="small" style={{justifyContent:'center'}} icon={<WarningIcon />} label="Existen cruces en los horarios, de las materias seleccionadas"/>:null
+            }
+          </Grid>
+        </Grid>
           <Grid item xs={12}>
             <ButtonGroup size="small" variant="contained" color="primary" aria-label="contained primary button group">
               <DialogoListaMaterias
@@ -708,13 +704,16 @@ const ReEnrollmentPage: React.FC = () => {
                     min,
                   }
                 });
-                // Aqui SAM
                 let cruces = 0;
                 data.forEach((availableSubject, index) => {
                   isTimeCrossings(data, availableSubject) && cruces++;
                 })
-                console.log('cruces totales',cruces * 0.5)
-
+                if(cruces > 0){
+                  setHoursCruse(true)
+                }else{
+                  setHoursCruse(false)
+                }
+                //console.log('cruces totales',cruces * 0.5)
                 setSelectedSubjects(data);
               }}
 
@@ -723,15 +722,6 @@ const ReEnrollmentPage: React.FC = () => {
                 search: false,
                 showSelectAllCheckbox: false,
                 showTextRowsSelected: false,
-                /*selectionProps: (rowData: AvailableSubject) => {
-                  return {
-                    disabled:
-                      (isSelectedSameSubject(filteredSubjects, rowData) ||
-                        isTimeCrossings(filteredSubjects, rowData) || (isTwoEspecialSubjects
-                          && rowData.subject.tipo_curso !== CourseType.Especial))
-                    || !!enrolledSubjectsOnPeriod.length,
-                  }
-                },*/
               }}
 
               localization={{
@@ -740,21 +730,6 @@ const ReEnrollmentPage: React.FC = () => {
                   labelRowsPerPage: 'Filas por página',
                   labelRowsSelect: 'Filas',
                 },
-                /*body: {
-                  emptyDataSourceMessage:
-                    <React.Fragment>
-                      <Typography variant="h6">No disponible, revisa más tarde.</Typography>
-                      <IconButton
-                        onClick={() => {
-                          //fetchAvailability();
-                          //fetchAvailableSubjects();
-                        }}
-                        disabled={loading}
-                        aria-label="delete">
-                        <RefreshIcon fontSize="large"/>
-                      </IconButton>
-                    </React.Fragment>,
-                }*/
               }}
             />
           </Grid>
@@ -763,7 +738,7 @@ const ReEnrollmentPage: React.FC = () => {
           </Hidden>
           <Grid item xs={12} sm={3} md={3} lg={2}>
             <Button
-              disabled={disableFinishButton || loading}
+              disabled={disableFinishButton }
               onClick={handleFinish}
               fullWidth color="primary"
               variant="contained"
@@ -773,8 +748,10 @@ const ReEnrollmentPage: React.FC = () => {
           </Grid>
         </Grid>
       </div>
-
+   
     </Container>
+    
+    </React.Fragment>
   )
 }
 

@@ -64,7 +64,8 @@ const BajasTemporal =({periodos}:any)=>{
   };
 
   const registrarBajaTemporal = async()=>{
-    try {
+    alert("Desabilitado")
+    /*try {
       if (state.comentario.length  || state.incumplimiento) {
         let data  = await axios.post(BAJA_TEMPORAL_URL,{
         motivo_de_baja:state.incumplimiento ? 'INCUMPLIMIENTO REGLAMENTARIO':state.comentario,
@@ -83,8 +84,7 @@ const BajasTemporal =({periodos}:any)=>{
         }  
     } catch (error) {
       alert("Inténtelo más tarde")
-    }
-  
+    }*/
   }
       const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             setState({ ...state, 

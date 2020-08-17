@@ -125,10 +125,8 @@ const ReEnrollmentPage: React.FC = () => {
 
   useEffect(() => {
     if (student?.folio) {
-      console.log('solisitar promedio del alumno')
       axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
         setStudiedSubjects(res.data?.subjectsStudied || []);
-        console.log(res.data, 'COURSED_SUBJECTS_URL Da tos alumno')
       }).catch(() => {
         // TODO: Handle error messsage
       });
@@ -145,7 +143,6 @@ const ReEnrollmentPage: React.FC = () => {
       }
     }).then(value => {
       setSubjects(value.data)
-      console.log(value.data, 'AVAILABLE_SUBJECTS_URL lista materias')
     })
       .finally(() => setLoading(false));
   }, [student, setLoading]);

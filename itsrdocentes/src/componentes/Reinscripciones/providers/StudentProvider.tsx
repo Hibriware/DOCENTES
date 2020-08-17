@@ -24,7 +24,6 @@ const StudentProvider: React.FC = (props) => {
   
   useEffect(() => {
     if(numeroControl?.numeroControl){
-      console.log("actualizar data provider")
       me(numeroControl?.numeroControl).then(result => {
         if (result) {
           setStudent(result);

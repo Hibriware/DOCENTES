@@ -12,7 +12,8 @@ import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-
+import SchoolIcon from '@material-ui/icons/School';
+import EventIcon from '@material-ui/icons/Event';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -30,6 +31,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
+import PaymentIcon from '@material-ui/icons/Payment';
 import { useStyles } from "./styles";
 import Menu_docentes from "../contenedores/menu_opciones";
 import Acta_entregas from "../administrador/acta_entregas";
@@ -51,11 +53,11 @@ class Menus extends Component {
 
     this.menuItems = [
       { icon: <HomeIcon></HomeIcon>, link: "/" },
-      { icon: <DescriptionIcon></DescriptionIcon>, link: "/inicio" },
+      { icon: <EventIcon></EventIcon>, link: "/inicio" },
       { icon: <ChromeReaderModeIcon></ChromeReaderModeIcon>, link: "/boletas" },
       { icon: <DescriptionIcon></DescriptionIcon>, link: "/Docente" },
-      { icon: <DescriptionIcon></DescriptionIcon>, link: "/pagos" },
-      { icon: <DescriptionIcon></DescriptionIcon>, link: "/reinscripcion" }
+      { icon: <PaymentIcon></PaymentIcon>, link: "/pagos" },
+      { icon: <SchoolIcon></SchoolIcon>, link: "/reinscripcion" }
     ];
   }
 

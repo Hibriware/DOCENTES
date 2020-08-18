@@ -21,6 +21,7 @@ const _guardarState=(e)=>{
     <MuiPickersUtilsProvider locale={deLocale}  utils={DateFnsUtils} >
     <Grid container justify="space-around">
         <KeyboardDatePicker
+            defaultValue="2017-05-24T10:30"
             disabled={status}
             margin="normal"
             id="date-picker-dialog"

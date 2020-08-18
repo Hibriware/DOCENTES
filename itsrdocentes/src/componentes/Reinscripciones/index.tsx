@@ -35,6 +35,7 @@ import {useStudent} from './providers/StudentProvider';
 import DialogoListaMaterias from './ListaMaterias';
 import BajaTemporal from './BajaTemporal/index';
 import BajaPermanente from './BajaPermanente';
+import Acceso from './Acceso';
 
 
 
@@ -578,6 +579,7 @@ const ReEnrollmentPage: React.FC = () => {
                 periodos={periodos}
               />
               <BajaPermanente/>
+              <Acceso/>
             </ButtonGroup>
             <MaterialTable
               title="Asignaturas"

@@ -38,7 +38,7 @@ function Acceso() {
 
   return (
     <div>
-      <Button size="small" variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button  size="small" variant="outlined" color="primary" onClick={handleClickOpen}>
         Acceso
       </Button>
       <Dialog
@@ -75,7 +75,7 @@ function Acceso() {
         </Grid>
         </Grid>
         <Grid item xs={6}>
-        <Button size="small" variant="outlined" onClick={saveChanges}>Aplicar cambios</Button>
+        <Button disabled size="small" variant="outlined" onClick={saveChanges}>Aplicar cambios</Button>
         </Grid>
         </Grid>
 

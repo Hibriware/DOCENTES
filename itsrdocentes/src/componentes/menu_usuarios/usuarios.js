@@ -40,6 +40,9 @@ import Boletas from "../boletasCalificacion/boletas";
 import AuthService from "../servicios/AuthService";
 import HomePagos from "../conceptoPagos/homePago";
 import Reinscripcion from "../Reinscripciones";
+import Axios from "axios";
+import {USER_ACCESS_MODULE} from './constants';
+
 
 class Menus extends Component {
   constructor(props) {
@@ -49,6 +52,7 @@ class Menus extends Component {
     this.logout = this.logout.bind(this);
     this.state = {
       open: false,
+      statusJefeAcademico:false
     };
 
     this.menuItems = [
@@ -59,6 +63,16 @@ class Menus extends Component {
       { icon: <PaymentIcon></PaymentIcon>, link: "/pagos" },
       { icon: <SchoolIcon></SchoolIcon>, link: "/reinscripcion" }
     ];
+  }
+ 
+  componentDidMount(){
+    Axios.get(USER_ACCESS_MODULE,{
+      params:{
+        nameModule:'altas/bajas'
+      }
+    }).then((res)=>{
+      this.setState({statusJefeAcademico:res.data.status === 'active'? true:false})
+    }).catch((error)=>console.log(error))
   }
 
   render() {
@@ -72,7 +86,7 @@ class Menus extends Component {
         ? ["Inicio", "Admin", "Boletas", , "Pagos"]
         : userType === "Gestión Escolar"
         ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion"]
-        : userType === "Docente"? ["Inicio", , , "Docente"]:userType === "Jefe académico"? ["Inicio",,,,, "Reinscripcion"]: ["Inicio"];
+        : userType === "Docente"? ["Inicio", , , "Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,,, "Reinscripcion"]: ["Inicio"];
 
     return (
       <Router>

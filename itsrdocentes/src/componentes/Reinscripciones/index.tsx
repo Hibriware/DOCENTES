@@ -137,15 +137,18 @@ const ReEnrollmentPage: React.FC = () => {
   const fetchAvailableSubjects = useCallback(() => {
     setLoading(true);
     setSubjects([])
-    axios.get(AVAILABLE_SUBJECTS_URL, {
-      params: {
-        folio: student?.folio,
-        period: periodos,
-      }
-    }).then(value => {
-      setSubjects(value.data)
-    })
-      .finally(() => setLoading(false));
+    if(student?.folio){
+      axios.get(AVAILABLE_SUBJECTS_URL, {
+        params: {
+          folio: student?.folio,
+          period: periodos,
+        }
+      }).then(value => {
+        setSubjects(value.data)
+      })
+        .finally(() => setLoading(false));
+    }
+    
   }, [student, setLoading]);
 
 

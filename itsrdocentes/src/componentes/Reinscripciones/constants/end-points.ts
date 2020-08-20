@@ -10,5 +10,9 @@ export const REGISTER_ACCOUNT = urlApi+'/api/login/student/register-account';
 
 export const AVAILABLE_SUBJECTS_ALL_URL = urlApi+'/api/reinscripcion/materias/todas/admin';
 export const BAJA_TEMPORAL_URL = urlApi+'/api/bajas/temporal';
+export const MODULE_ACCESS_ADMIN_URL = urlApi+'/api/reinscripcion/module/access/admin';
+export const UPDATE_MODULE_ACCESS_ADMIN_URL = urlApi+'/api/reinscripcion/module/access/update/admin';
+
+
 
 

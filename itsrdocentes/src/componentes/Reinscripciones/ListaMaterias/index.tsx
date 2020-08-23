@@ -39,7 +39,7 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
   //const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
   const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[] | any>([]);
   //const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
-  //const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
+  const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
   const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
   //const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
   const [loading, setLoading] = useState(false);
@@ -306,13 +306,10 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
 
         //data={availableSubjects}
         //data={carganueva}
-        onSelectionChange={data => {
+        onSelectionChange={(data:AvailableSubject[]) => {
           if (data.length) {
-            setMateriasSeleccionada(data)
-            console.log(data)
-            console.log(materiasSeleccionada)
+            setMateriasSeleccionada(data);
           }
-
         }}
         options={{
           selection: true,
@@ -327,7 +324,7 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
             labelRowsPerPage: 'Filas por página',
             labelRowsSelect: 'Filas',
           },
-        
+
         }}
       />
       <Backdrop className={classes.backdrop} open={active}>

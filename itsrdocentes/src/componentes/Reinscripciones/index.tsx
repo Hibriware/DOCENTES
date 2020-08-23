@@ -13,7 +13,7 @@ import {
   Paper,
   TextField,
   Theme,
-  Typography, Container,Chip,Backdrop ,CircularProgress 
+  Typography, Container,Chip,Backdrop ,CircularProgress
 } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import {makeStyles} from '@material-ui/core/styles';
@@ -28,7 +28,7 @@ import {
 } from './interfaces';
 import {
   AVAILABLE_SUBJECTS_URL,
-  COURSED_SUBJECTS_URL, 
+  COURSED_SUBJECTS_URL,
   REENROLLMENT_URL,
   ACADEMIC_CHARGE_ADMIN_URL
 } from './constants/end-points';
@@ -38,6 +38,7 @@ import DialogoListaMaterias from './ListaMaterias';
 import BajaTemporal from './BajaTemporal/index';
 import BajaPermanente from './BajaPermanente';
 import Acceso from './Acceso';
+import {UserRole} from '../../contants';
 
 
 
@@ -155,10 +156,10 @@ const ReEnrollmentPage: React.FC = () => {
         console.log(value.data,"AVAILABLE_SUBJECTS_URL 2")
       })
         .finally(() => setLoading(false));
-    }    
+    }
   }, [student, setLoading]);
 
-  
+
   const fetchAvailableSubjectsAcademic = useCallback(() => {
     setLoading(true);
     //setSubjects([])
@@ -177,7 +178,7 @@ const ReEnrollmentPage: React.FC = () => {
         }
       })
         .finally(() => setLoading(false));
-    }    
+    }
   }, [student, setLoading]);
 
 
@@ -317,7 +318,10 @@ const ReEnrollmentPage: React.FC = () => {
       let checked = false;
       const currentSubjectIsSelected = selectedSubjects.some(value =>
         value.subject.materiaDocente_id === availableSubject.subject.materiaDocente_id);
-      if (isTwoEspecialSubjects) {
+
+      const [{nombreRol}] = JSON.parse(window.sessionStorage.getItem('resul') || '');
+
+      if (isTwoEspecialSubjects && nombreRol !== UserRole.Administrator) {
         if (currentSubjectIsSelected) {
           if (courseType === CourseType.Especial) {
             checked = true;
@@ -449,7 +453,7 @@ const ReEnrollmentPage: React.FC = () => {
                     id='control-number'
                     fullWidth
                     label='No. de Control'
-                    value={updatedStudent?.controlNumber || ''}
+                    value={updatedStudent?.controlNumber || ' '}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -461,7 +465,7 @@ const ReEnrollmentPage: React.FC = () => {
                     id='grade'
                     fullWidth
                     label='Semestre'
-                    value={updatedStudent?.currentSemester || ''}
+                    value={updatedStudent?.currentSemester || ' '}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -487,7 +491,7 @@ const ReEnrollmentPage: React.FC = () => {
                     id='career'
                     fullWidth
                     label='Carrera'
-                    value={updatedStudent?.career?.name || ''}
+                    value={updatedStudent?.career?.name || ' '}
                     InputProps={{
                       readOnly: true,
                     }}
@@ -779,9 +783,9 @@ const ReEnrollmentPage: React.FC = () => {
           </Grid>
         </Grid>
       </div>
-   
+
     </Container>
-    
+
     </React.Fragment>
   )
 }

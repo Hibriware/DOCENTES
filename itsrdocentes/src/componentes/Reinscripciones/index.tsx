@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
+import swal from 'sweetalert'
 import {format, isAfter, isBefore} from 'date-fns';
 import MaterialTable from 'material-table';
 import {
@@ -28,7 +29,8 @@ import {
 import {
   AVAILABLE_SUBJECTS_URL,
   COURSED_SUBJECTS_URL, 
-  REENROLLMENT_URL
+  REENROLLMENT_URL,
+  ACADEMIC_CHARGE_ADMIN_URL
 } from './constants/end-points';
 import {isTimeCrossings} from './utils/reenrollment-filters';
 import {useStudent} from './providers/StudentProvider';
@@ -128,6 +130,7 @@ const ReEnrollmentPage: React.FC = () => {
     if (student?.folio) {
       axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
         setStudiedSubjects(res.data?.subjectsStudied || []);
+        console.log(res.data,"COURSED_SUBJECTS_URL 1")
       }).catch(() => {
         // TODO: Handle error messsage
       });
@@ -135,25 +138,51 @@ const ReEnrollmentPage: React.FC = () => {
   }, [student]);
 
   const fetchAvailableSubjects = useCallback(() => {
+    console.log(student)
     setLoading(true);
     setSubjects([])
     if(student?.folio){
-      axios.get(AVAILABLE_SUBJECTS_URL, {
+       axios.get(AVAILABLE_SUBJECTS_URL, {
+        params: {
+          //folio: student?.folio,
+          period: periodos,
+          //studyPlan:student.career.code,
+          career:student.career.id
+        }
+
+      }).then(value => {
+        setSubjects(value.data)
+        console.log(value.data,"AVAILABLE_SUBJECTS_URL 2")
+      })
+        .finally(() => setLoading(false));
+    }    
+  }, [student, setLoading]);
+
+  
+  const fetchAvailableSubjectsAcademic = useCallback(() => {
+    setLoading(true);
+    //setSubjects([])
+    if(student?.folio){
+       axios.get(ACADEMIC_CHARGE_ADMIN_URL, {
         params: {
           folio: student?.folio,
           period: periodos,
         }
+
       }).then(value => {
-        setSubjects(value.data)
+        //setSubjects(value.data)
+        console.log(value.data,"ACADEMIC_CHARGE_ADMIN_URL 3")
+        if (!value.data.length) {
+          swal("Aviso", `No sé puede llevar a cabo el proceso porque, El alumno no ha realizado el proceso de reinscripción`);
+        }
       })
         .finally(() => setLoading(false));
-    }
-    
+    }    
   }, [student, setLoading]);
 
 
   useEffect(() => {
-
+    fetchAvailableSubjectsAcademic()
     fetchAvailableSubjects();
 
   }, [fetchAvailableSubjects]);

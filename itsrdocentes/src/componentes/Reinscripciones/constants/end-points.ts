@@ -12,6 +12,8 @@ export const AVAILABLE_SUBJECTS_ALL_URL = urlApi+'/api/reinscripcion/materias/to
 export const BAJA_TEMPORAL_URL = urlApi+'/api/bajas/temporal';
 export const MODULE_ACCESS_ADMIN_URL = urlApi+'/api/reinscripcion/module/access/admin';
 export const UPDATE_MODULE_ACCESS_ADMIN_URL = urlApi+'/api/reinscripcion/module/access/update/admin';
+export const ACADEMIC_CHARGE_ADMIN_URL = urlApi+'/api/reinscripcion/module/academic-charge/admin';
+
 
 
 

@@ -13,7 +13,7 @@ import {
   Paper,
   TextField,
   Theme,
-  Typography, Container,Chip,Backdrop ,CircularProgress
+  Typography, Container, Chip, Backdrop, CircularProgress
 } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import {makeStyles} from '@material-ui/core/styles';
@@ -41,13 +41,21 @@ import Acceso from './Acceso';
 import {UserRole} from '../../contants';
 
 
-
 type AvailableCareer = {
   careerID: number;
   startDate: string;
   endDate: string;
   period: number;
   studyPlanID: number;
+}
+
+type SelectedCharge = {
+  aspirante_Folio: number;
+  clave: string;
+  materiadocente_id: number;
+  nombre: string;
+  periodo: number;
+  semestre: number;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -69,7 +77,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     mt: {
       marginTop: theme.spacing(1),
-    },backdrop: {
+    }, backdrop: {
       zIndex: theme.zIndex.drawer + 1,
       color: '#fff',
     }
@@ -119,8 +127,11 @@ const ReEnrollmentPage: React.FC = () => {
   const [BuscaNumeroControl, setBuscarNumeroControl] = useState('');
   const [cargarAcademica, setCargaAcademica] = useState<AvailableSubject[]>([]);
   const [materiasSeleccionada, setMateriasSeleccionada] = useState<AvailableSubject[] | any>([]);
-  const [hoursCruse,setHoursCruse] = useState(false);
-  const[isLoaders,setLoaders] = useState(false)
+  const [hoursCruse, setHoursCruse] = useState(false);
+  const [isLoaders, setLoaders] = useState(false)
+
+  // selected subjects by student
+  const [selectedChargeByStudent, setSelectedChargeByStudent] = useState<SelectedCharge[]>([])
 
 
   const updatedStudent = useMemo<Student | null>(() => {
@@ -131,7 +142,7 @@ const ReEnrollmentPage: React.FC = () => {
     if (student?.folio) {
       axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
         setStudiedSubjects(res.data?.subjectsStudied || []);
-        console.log(res.data,"COURSED_SUBJECTS_URL 1")
+        console.log(res.data, 'COURSED_SUBJECTS_URL 1')
       }).catch(() => {
         // TODO: Handle error messsage
       });
@@ -142,18 +153,18 @@ const ReEnrollmentPage: React.FC = () => {
     console.log(student)
     setLoading(true);
     setSubjects([])
-    if(student?.folio){
-       axios.get(AVAILABLE_SUBJECTS_URL, {
+    if (student?.folio) {
+      axios.get(AVAILABLE_SUBJECTS_URL, {
         params: {
           //folio: student?.folio,
           period: periodos,
           //studyPlan:student.career.code,
-          career:student.career.id
+          career: student.career.id
         }
 
       }).then(value => {
         setSubjects(value.data)
-        console.log(value.data,"AVAILABLE_SUBJECTS_URL 2")
+        console.log(value.data, 'AVAILABLE_SUBJECTS_URL 2')
       })
         .finally(() => setLoading(false));
     }
@@ -163,8 +174,8 @@ const ReEnrollmentPage: React.FC = () => {
   const fetchAvailableSubjectsAcademic = useCallback(() => {
     setLoading(true);
     //setSubjects([])
-    if(student?.folio){
-       axios.get(ACADEMIC_CHARGE_ADMIN_URL, {
+    if (student?.folio) {
+      axios.get(ACADEMIC_CHARGE_ADMIN_URL, {
         params: {
           folio: student?.folio,
           period: periodos,
@@ -172,9 +183,9 @@ const ReEnrollmentPage: React.FC = () => {
 
       }).then(value => {
         //setSubjects(value.data)
-        console.log(value.data,"ACADEMIC_CHARGE_ADMIN_URL 3")
+        setSelectedChargeByStudent(value.data);
         if (!value.data.length) {
-          swal("Aviso", `No sé puede llevar a cabo el proceso porque, El alumno no ha realizado el proceso de reinscripción`);
+          swal('Aviso', `No sé puede llevar a cabo el proceso porque, El alumno no ha realizado el proceso de reinscripción`);
         }
       })
         .finally(() => setLoading(false));
@@ -348,10 +359,24 @@ const ReEnrollmentPage: React.FC = () => {
     });
   }, [studiedSubjects, availableSubjects, enrolledSubjectsOnPeriod]);
 
+  useEffect(() => {
+    setCargaAcademica(filteredSubjects.map(value => {
+      const {tableData, subject} = value;
+      return {
+        ...value,
+        tableData: {
+          ...tableData,
+          checked: selectedChargeByStudent
+            .some(selectedByStudent =>
+              selectedByStudent.materiadocente_id === subject.materiaDocente_id)
+        }
+      }
+    }))
+  }, [filteredSubjects, selectedChargeByStudent]);
 
   useEffect(() => {
-    setCargaAcademica(filteredSubjects)
-  }, [filteredSubjects])
+    handleSelection(cargarAcademica);
+  }, [cargarAcademica])
 
 
   const updatedSelectedSubjects = useMemo(() => {
@@ -411,7 +436,7 @@ const ReEnrollmentPage: React.FC = () => {
       !selectedSubjects.length ||
       disableByValidationOfCredits ||
       !!enrolledSubjectsOnPeriod.length;
-  }, [filteredSubjects, selectedSubjects, requestedCredits, enrolledSubjectsOnPeriod,creditsInfo]);
+  }, [filteredSubjects, selectedSubjects, requestedCredits, enrolledSubjectsOnPeriod, creditsInfo]);
 
   const handleClearOnSearch = React.useCallback(() => {
     setStudiedSubjects([]);
@@ -419,161 +444,51 @@ const ReEnrollmentPage: React.FC = () => {
     setEnrolledSubjectsOnPeriod([]);
   }, [setStudiedSubjects, setAvailableSubjects, setEnrolledSubjectsOnPeriod]);
 
+  const handleSelection = (data: AvailableSubject[]) => {
+    setCreditsInfo(() => {
+      let max = 36;
+      let min = 20;
+      const especialSubjects = data
+        .filter(({subject}) => subject.tipo_curso === CourseType.Especial);
+      if (especialSubjects.length === 1) {
+        max = 20;
+        min = 1;
+      } else if (especialSubjects.length === 2) {
+        max = especialSubjects.reduce((previousValue, {subject}) => {
+          return previousValue + (+subject.creditos);
+        }, 0);
+        min = 1;
+        setIsTwoEspecialSubjects(true);
+      } else {
+        setIsTwoEspecialSubjects(false);
+      }
+      return {
+        max,
+        min,
+      }
+    });
+    let cruces = 0;
+    data.forEach((availableSubject, index) => {
+      isTimeCrossings(data, availableSubject) && cruces++;
+    })
+    if (cruces > 0) {
+      setHoursCruse(true)
+    } else {
+      setHoursCruse(false)
+    }
+    //console.log('cruces totales',cruces * 0.5)
+    setSelectedSubjects(data);
+  }
+
   return (
     <React.Fragment>
-         <Backdrop className={classes.backdrop} open={isLoaders}>
-        <CircularProgress color="inherit" />
+      <Backdrop className={classes.backdrop} open={isLoaders}>
+        <CircularProgress color="inherit"/>
       </Backdrop>
-    <Container fixed maxWidth={'xl'}>
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <Hidden lgUp>
-            <Grid item lg={2}>
-              <Grid container direction="column"
-                    alignItems="center"
-                    style={{minHeight: '17vh'}}
-                    justify="center">
-                <Grid item xs={12}>
-                  <Avatar
-                    variant='square'
-                    className={classes.avatarLarge}
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRWcS-F1QZx9oUUizxWNlzolbc8nZJ7S0D49Q&usqp=CAU"
-                  >
-                    C
-                  </Avatar>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Hidden>
-          <Grid container spacing={2}>
-            <Grid item xs={12} lg={10}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                  <TextField
-                    id='control-number'
-                    fullWidth
-                    label='No. de Control'
-                    value={updatedStudent?.controlNumber || ' '}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={1} xl={3}>
-                  <TextField
-                    id='grade'
-                    fullWidth
-                    label='Semestre'
-                    value={updatedStudent?.currentSemester || ' '}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={5} xl={3}>
-                  <TextField
-                    id='student'
-                    fullWidth
-                    label='Alumno'
-                    value={`${updatedStudent?.firstName || ''
-                    } ${updatedStudent?.fatherName || ''
-                    } ${updatedStudent?.motherName || ''}`}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
-                  <TextField
-                    id='career'
-                    fullWidth
-                    label='Carrera'
-                    value={updatedStudent?.career?.name || ' '}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                  <TextField
-                    id='min-credits'
-                    fullWidth
-                    label='Créditos mínimos'
-                    value={((semesterCredits < creditsInfo.min && semesterCredits > 1) ?
-                      semesterCredits : creditsInfo.min) || 0}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                  <TextField
-                    id='max-credits'
-                    fullWidth
-                    label='Créditos máximos'
-                    value={creditsInfo.max || 0}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                  <TextField
-                    id='current-credits'
-                    fullWidth
-                    label='Créditos solicitados'
-                    value={requestedCredits || 0}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={2}>
-                  <TextField
-                    id='subjects'
-                    fullWidth
-                    label='Asignaturas seleccionadas'
-                    value={updatedSelectedSubjects.length}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                  <TextField
-                    id='date'
-                    fullWidth
-                    label='Fecha'
-                    defaultValue={new Date().toISOString().substring(0, 10)}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
-                  <TimeField/>
-                </Grid>
-                <Grid item xs={6}>
-                  <BuscarAlumno
-                    periodos={periodos}
-                    setPeriodos={setPeriodos}
-                    BuscaNumeroControl={BuscaNumeroControl}
-                    setBuscarNumeroControl={setBuscarNumeroControl}
-                    clear={handleClearOnSearch}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-            <Hidden mdDown>
+      <Container fixed maxWidth={'xl'}>
+        <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <Hidden lgUp>
               <Grid item lg={2}>
                 <Grid container direction="column"
                       alignItems="center"
@@ -583,7 +498,7 @@ const ReEnrollmentPage: React.FC = () => {
                     <Avatar
                       variant='square'
                       className={classes.avatarLarge}
-                      src="https://lh3.googleusercontent.com/proxy/jnfe8F3mRr6smjRWVci80rV0YJ6SST8tkoWuKou0iNd40LQ5xBL3j3oaT1NjKLAnb43_wHKLZT0M7ONt"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRWcS-F1QZx9oUUizxWNlzolbc8nZJ7S0D49Q&usqp=CAU"
                     >
                       C
                     </Avatar>
@@ -591,200 +506,316 @@ const ReEnrollmentPage: React.FC = () => {
                 </Grid>
               </Grid>
             </Hidden>
-          </Grid>
-        </Paper>
-        <Grid container spacing={2} className={classes.mt}>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid>
-            {
-         hoursCruse ?  <Chip color="secondary" size="small" style={{justifyContent:'center'}} icon={<WarningIcon />} label="Existen cruces en los horarios, de las materias seleccionadas"/>:null
-            }
-          </Grid>
-        </Grid>
-          <Grid item xs={12}>
-            <ButtonGroup size="small" variant="contained" color="primary" aria-label="contained primary button group">
-              <DialogoListaMaterias
-                periodos={periodos}
-                cargarAcademica={cargarAcademica}
-                setCargaAcademica={setCargaAcademica}
-                materiasSeleccionada={materiasSeleccionada}
-                setMateriasSeleccionada={setMateriasSeleccionada}
-                studiedSubjects={studiedSubjects}
-              />
-              <BajaTemporal
-                periodos={periodos}
-              />
-              <BajaPermanente/>
-              <Acceso/>
-            </ButtonGroup>
-            <MaterialTable
-              title="Asignaturas"
-              columns={[
-                {title: 'Semestre', field: 'subject.semestreMateria', type: 'numeric'},
-                {title: 'Clave', field: 'subject.clave'},
-                {title: 'Nombre', field: 'subject.nombre'},
-                {title: 'Créditos', field: 'subject.creditos', type: 'numeric'},
+            <Grid container spacing={2}>
+              <Grid item xs={12} lg={10}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                    <TextField
+                      id='control-number'
+                      fullWidth
+                      label='No. de Control'
+                      value={updatedStudent?.controlNumber || ' '}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={1} xl={3}>
+                    <TextField
+                      id='grade'
+                      fullWidth
+                      label='Semestre'
+                      value={updatedStudent?.currentSemester || ' '}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={5} xl={3}>
+                    <TextField
+                      id='student'
+                      fullWidth
+                      label='Alumno'
+                      value={`${updatedStudent?.firstName || ''
+                      } ${updatedStudent?.fatherName || ''
+                      } ${updatedStudent?.motherName || ''}`}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
+                    <TextField
+                      id='career'
+                      fullWidth
+                      label='Carrera'
+                      value={updatedStudent?.career?.name || ' '}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                    <TextField
+                      id='min-credits'
+                      fullWidth
+                      label='Créditos mínimos'
+                      value={((semesterCredits < creditsInfo.min && semesterCredits > 1) ?
+                        semesterCredits : creditsInfo.min) || 0}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                    <TextField
+                      id='max-credits'
+                      fullWidth
+                      label='Créditos máximos'
+                      value={creditsInfo.max || 0}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                    <TextField
+                      id='current-credits'
+                      fullWidth
+                      label='Créditos solicitados'
+                      value={requestedCredits || 0}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={2}>
+                    <TextField
+                      id='subjects'
+                      fullWidth
+                      label='Asignaturas seleccionadas'
+                      value={updatedSelectedSubjects.length}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                    <TextField
+                      id='date'
+                      fullWidth
+                      label='Fecha'
+                      defaultValue={new Date().toISOString().substring(0, 10)}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={2} xl={3}>
+                    <TimeField/>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <BuscarAlumno
+                      periodos={periodos}
+                      setPeriodos={setPeriodos}
+                      BuscaNumeroControl={BuscaNumeroControl}
+                      setBuscarNumeroControl={setBuscarNumeroControl}
+                      clear={handleClearOnSearch}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Hidden mdDown>
+                <Grid item lg={2}>
+                  <Grid container direction="column"
+                        alignItems="center"
+                        style={{minHeight: '17vh'}}
+                        justify="center">
+                    <Grid item xs={12}>
+                      <Avatar
+                        variant='square'
+                        className={classes.avatarLarge}
+                        src="https://lh3.googleusercontent.com/proxy/jnfe8F3mRr6smjRWVci80rV0YJ6SST8tkoWuKou0iNd40LQ5xBL3j3oaT1NjKLAnb43_wHKLZT0M7ONt"
+                      >
+                        C
+                      </Avatar>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Hidden>
+            </Grid>
+          </Paper>
+          <Grid container spacing={2} className={classes.mt}>
+            <Grid container direction="row" justify="center" alignItems="center">
+              <Grid>
                 {
-                  title: 'Tipo',
-                  field: 'subject.tipo_curso',
-                  lookup: {'ordinario': 'O', 'repeticion': 'R', 'especial': 'E'},
-                },
-                {
-                  title: 'Lunes',
-                  field: 'monday',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData?.monday?.startTime} - {rowData?.monday?.endTime}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-                {
-                  title: 'Martes',
-                  field: 'tuesday',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData?.tuesday?.startTime} - {rowData?.tuesday?.endTime}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-                {
-                  title: 'Miércoles',
-                  field: 'wednesday',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData?.wednesday?.startTime} - {rowData?.wednesday?.endTime}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-                {
-                  title: 'Jueves',
-                  field: 'thursday',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData?.thursday?.startTime} - {rowData?.thursday?.endTime}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-                {
-                  title: 'Viernes',
-                  field: 'friday',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData?.friday?.startTime} - {rowData?.friday?.endTime}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-                {
-                  title: 'Sabado',
-                  field: 'saturday',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData?.saturday?.startTime} - {rowData?.saturday?.endTime}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-                {
-                  title: 'Docente',
-                  field: 'subject.docente',
-                  render: (rowData: any) => {
-                    return (
-                      <Grid container direction={'column'}>
-                        <Typography
-                          variant='caption'>{rowData.subject?.docente || ''}</Typography>
-                      </Grid>
-                    )
-                  }
-                },
-              ]}
-              // data={filteredSubjects}
-              data={cargarAcademica}
-              onSelectionChange={(data, rowData) => {
-                setCreditsInfo(() => {
-                  let max = 36;
-                  let min = 20;
-                  const especialSubjects = data
-                    .filter(({subject}) => subject.tipo_curso === CourseType.Especial);
-                  if (especialSubjects.length === 1) {
-                    max = 20;
-                    min = 1;
-                  } else if (especialSubjects.length === 2) {
-                    max = especialSubjects.reduce((previousValue, {subject}) => {
-                      return previousValue + (+subject.creditos);
-                    }, 0);
-                    min = 1;
-                    setIsTwoEspecialSubjects(true);
-                  } else {
-                    setIsTwoEspecialSubjects(false);
-                  }
-                  return {
-                    max,
-                    min,
-                  }
-                });
-                let cruces = 0;
-                data.forEach((availableSubject, index) => {
-                  isTimeCrossings(data, availableSubject) && cruces++;
-                })
-                if(cruces > 0){
-                  setHoursCruse(true)
-                }else{
-                  setHoursCruse(false)
+                  hoursCruse ?
+                    <Chip color="secondary" size="small" style={{justifyContent: 'center'}} icon={<WarningIcon/>}
+                          label="Existen cruces en los horarios, de las materias seleccionadas"/> : null
                 }
-                //console.log('cruces totales',cruces * 0.5)
-                setSelectedSubjects(data);
-              }}
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <ButtonGroup size="small" variant="contained" color="primary" aria-label="contained primary button group">
+                <DialogoListaMaterias
+                  periodos={periodos}
+                  cargarAcademica={cargarAcademica}
+                  setCargaAcademica={setCargaAcademica}
+                  materiasSeleccionada={materiasSeleccionada}
+                  setMateriasSeleccionada={setMateriasSeleccionada}
+                  studiedSubjects={studiedSubjects}
+                />
+                <BajaTemporal
+                  periodos={periodos}
+                />
+                <BajaPermanente/>
+                <Acceso/>
+              </ButtonGroup>
+              <MaterialTable
+                title="Asignaturas"
+                columns={[
+                  {title: 'Semestre', field: 'subject.semestreMateria', type: 'numeric'},
+                  {title: 'Clave', field: 'subject.clave'},
+                  {title: 'Nombre', field: 'subject.nombre'},
+                  {title: 'Créditos', field: 'subject.creditos', type: 'numeric'},
+                  {
+                    title: 'Tipo',
+                    field: 'subject.tipo_curso',
+                    lookup: {'ordinario': 'O', 'repeticion': 'R', 'especial': 'E'},
+                  },
+                  {
+                    title: 'Lunes',
+                    field: 'monday',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData?.monday?.startTime} - {rowData?.monday?.endTime}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                  {
+                    title: 'Martes',
+                    field: 'tuesday',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData?.tuesday?.startTime} - {rowData?.tuesday?.endTime}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                  {
+                    title: 'Miércoles',
+                    field: 'wednesday',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData?.wednesday?.startTime} - {rowData?.wednesday?.endTime}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                  {
+                    title: 'Jueves',
+                    field: 'thursday',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData?.thursday?.startTime} - {rowData?.thursday?.endTime}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                  {
+                    title: 'Viernes',
+                    field: 'friday',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData?.friday?.startTime} - {rowData?.friday?.endTime}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                  {
+                    title: 'Sabado',
+                    field: 'saturday',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData?.saturday?.startTime} - {rowData?.saturday?.endTime}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                  {
+                    title: 'Docente',
+                    field: 'subject.docente',
+                    render: (rowData: any) => {
+                      return (
+                        <Grid container direction={'column'}>
+                          <Typography
+                            variant='caption'>{rowData.subject?.docente || ''}</Typography>
+                        </Grid>
+                      )
+                    }
+                  },
+                ]}
+                // data={filteredSubjects}
+                data={cargarAcademica}
+                onSelectionChange={(data: AvailableSubject[]) => {
+                  handleSelection(data);
+                }}
 
-              options={{
-                selection: true,
-                search: false,
-                showSelectAllCheckbox: false,
-                showTextRowsSelected: false,
-              }}
+                options={{
+                  selection: true,
+                  search: false,
+                  showSelectAllCheckbox: false,
+                  showTextRowsSelected: false,
+                }}
 
-              localization={{
-                pagination: {
-                  labelDisplayedRows: '{from}-{to} de {count}',
-                  labelRowsPerPage: 'Filas por página',
-                  labelRowsSelect: 'Filas',
-                },
-              }}
-            />
+                localization={{
+                  pagination: {
+                    labelDisplayedRows: '{from}-{to} de {count}',
+                    labelRowsPerPage: 'Filas por página',
+                    labelRowsSelect: 'Filas',
+                  },
+                }}
+              />
+            </Grid>
+            <Hidden only={'xs'}>
+              <Grid item sm={9} md={9} lg={10}/>
+            </Hidden>
+            <Grid item xs={12} sm={3} md={3} lg={2}>
+              <Button
+                disabled={disableFinishButton}
+                onClick={handleFinish}
+                fullWidth color="primary"
+                variant="contained"
+              >
+                Finalizar
+              </Button>
+            </Grid>
           </Grid>
-          <Hidden only={'xs'}>
-            <Grid item sm={9} md={9} lg={10}/>
-          </Hidden>
-          <Grid item xs={12} sm={3} md={3} lg={2}>
-            <Button
-              disabled={disableFinishButton }
-              onClick={handleFinish}
-              fullWidth color="primary"
-              variant="contained"
-            >
-              Finalizar
-            </Button>
-          </Grid>
-        </Grid>
-      </div>
+        </div>
 
-    </Container>
+      </Container>
 
     </React.Fragment>
   )

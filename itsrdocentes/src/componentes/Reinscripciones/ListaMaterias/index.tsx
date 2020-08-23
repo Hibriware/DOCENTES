@@ -37,7 +37,7 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
   const classes = useStyles();
   const [active, setActive] = React.useState(false);
   //const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
-  const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[] | any>([]);
+  const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[]>([]);
   //const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
   const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
   const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
@@ -62,13 +62,13 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
 
   const filteredSubjects = useMemo<AvailableSubject[]>(() => {
 
-    return availableSubjects.filter(({subject}: any) => {
+    return availableSubjects.filter(({subject}) => {
         return !studiedSubjects.some((studiedSubject: any) => {
           return (studiedSubject.clave === subject.clave)
           //&&(+studiedSubject.promedio >= 70)
         })
       }
-    ).map((availableSubject: any) => {
+    ).map<AvailableSubject>((availableSubject: any) => {
       let courseType = CourseType.Ordinary;
 
       const sortedStudiedSubjects = studiedSubjects
@@ -99,7 +99,11 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
           checked: false,
         }
       }
-    });
+    })
+      .filter( availableSubject => !(cargarAcademica as AvailableSubject[])
+        .some(value =>
+          value.subject.materiaDocente_id === availableSubject.subject.materiaDocente_id)
+      )
   }, [studiedSubjects, availableSubjects]);
 
   useEffect(() => {

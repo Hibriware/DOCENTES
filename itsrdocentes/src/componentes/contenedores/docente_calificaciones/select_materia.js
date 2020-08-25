@@ -23,10 +23,6 @@ export const SelecMaterias = React.memo((data) => {
         await getTemas(idMateriaActual, data.minimo, data.cierre);
         let [idGroup] = await dataMateria.filter((res)=>res.idMateria === idMateriaActual)
         data.setGroup(idGroup?.idGrupos)
-
-        console.log(datalista,"datalista")
-        console.log(dataMateria,"dataMateria")
-
         data.setListas(datalista)//actualiza el la lista de materias actual
     };//fi
 

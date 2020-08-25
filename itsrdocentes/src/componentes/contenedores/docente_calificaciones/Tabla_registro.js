@@ -44,9 +44,6 @@ export const TablaCapturaCalificaciones = (datas) => {
 			await updateCalificaion(idcalificacion, datos);
 		} else {
 			//crear registro para el alumno en registro calificacion
-			console.log('unidadCalificacion  v');
-
-			console.log(unidadCalificacion);
 			await crearCalificacion(datos, unidadCalificacion, id_criterios);
 			await getAlumnos(datos.idMateria, unidadCalificacion); //LISTA DE ALUMNOS
 			await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });

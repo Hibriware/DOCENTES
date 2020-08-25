@@ -9,7 +9,6 @@ export var unidadCalificacion, id_criterios;
 
 export const SelectTemas = React.memo((data) => {
     console.log('memo sect temas')
-
     //const [unidad, setUnidad] = React.useState('');
     const estilos = useStyles();
     console.log(data,'selctMterias')
@@ -18,7 +17,6 @@ export const SelectTemas = React.memo((data) => {
     console.log('limpiar lista de temas anteriores')
     data.setUnidad('')
     }, [data.MATERIA_ID])
-        console.log(data.group,"data.group")
 
     const _obtenerTema = async (tem) => {//inico
         data.setOpen(true)
@@ -26,10 +24,8 @@ export const SelectTemas = React.memo((data) => {
         data.setUnidad(numTemas);
         await getAlumnos(data.MATERIA_ID, numTemas,data.group);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
         await data.setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
-
         await data.updates(data.MATERIA_ID, numTemas)
         data.setOpen(false)
-
         unidadCalificacion = dataCriterios[0].numUnidad
         id_criterios = dataCriterios[0].idcat_Unidad
 

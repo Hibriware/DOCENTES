@@ -12,8 +12,6 @@ import { ButtonPdf } from './btn_Pdf';
 
  function ComposedTextField() {
 	const classes = useStyles();
-console.log('dataMateria <<<')
-
 	return (
 		<div>
 			<CssBaseline />

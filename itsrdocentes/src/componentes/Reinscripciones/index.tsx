@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
-import swal from 'sweetalert'
+import  swal from 'sweetalert';
 import {format, isAfter, isBefore} from 'date-fns';
 import MaterialTable from 'material-table';
 import {
@@ -129,6 +129,10 @@ const ReEnrollmentPage: React.FC = () => {
   const [materiasSeleccionada, setMateriasSeleccionada] = useState<AvailableSubject[] | any>([]);
   const [hoursCruse, setHoursCruse] = useState(false);
   const [isLoaders, setLoaders] = useState(false)
+  const [isButton, setIsButton] = useState(true)
+
+
+  
 
   // selected subjects by student
   const [selectedChargeByStudent, setSelectedChargeByStudent] = useState<SelectedCharge[]>([])
@@ -142,7 +146,6 @@ const ReEnrollmentPage: React.FC = () => {
     if (student?.folio) {
       axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
         setStudiedSubjects(res.data?.subjectsStudied || []);
-        console.log(res.data, 'COURSED_SUBJECTS_URL 1')
       }).catch(() => {
         // TODO: Handle error messsage
       });
@@ -150,21 +153,17 @@ const ReEnrollmentPage: React.FC = () => {
   }, [student]);
 
   const fetchAvailableSubjects = useCallback(() => {
-    console.log(student)
     setLoading(true);
     setSubjects([])
     if (student?.folio) {
       axios.get(AVAILABLE_SUBJECTS_URL, {
         params: {
-          //folio: student?.folio,
           period: periodos,
-          //studyPlan:student.career.code,
           career: student.career.id
         }
 
       }).then(value => {
         setSubjects(value.data)
-        console.log(value.data, 'AVAILABLE_SUBJECTS_URL 2')
       })
         .finally(() => setLoading(false));
     }
@@ -185,8 +184,12 @@ const ReEnrollmentPage: React.FC = () => {
         //setSubjects(value.data)
         setSelectedChargeByStudent(value.data);
         if (!value.data.length) {
-          swal('Aviso', `No sé puede llevar a cabo el proceso porque, El alumno no ha realizado el proceso de reinscripción`);
-        }
+          swal('Aviso', `No sé puede llevar a cabo el proceso porque, El alumno "${student.firstName}" no ha realizado el proceso de reinscripción`);
+          setIsButton(false)
+          }else{
+            setIsButton(true)
+          }
+
       })
         .finally(() => setLoading(false));
     }
@@ -405,16 +408,39 @@ const ReEnrollmentPage: React.FC = () => {
       }
     });
 
-    if (window.confirm('¿Estás seguro de continuar?, Todavía puedes cambiar tu selección de materias.')) {
-      setLoading(true);
-      axios.post(REENROLLMENT_URL, {
-        reenrollmentResults,
-        student: updatedStudent?.folio || undefined,
-        period: periodos, //prueba pariodo
-      }).then(res => alert(res.data)).catch(() => {
-        setLoading(false);
-      })
-    }
+    swal({
+      title: "Actualización de la carga académica",
+      text: "Se actualizará la carga académica, con las materias seleccionadas, confirme para seguir.",
+      icon: "warning",
+      dangerMode: true,
+      buttons: ["Cancelar", "Confirmar"],
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+            setLoading(true);
+            axios.post(REENROLLMENT_URL, {
+              reenrollmentResults,
+              student: updatedStudent?.folio || undefined,
+              period: periodos, //prueba pariodo
+            }).then(() => {
+              swal("La actualización de carga académica se realizó correctamente", {
+                icon: "success",
+              });
+              handleClearOnSearch()
+            }).catch(() => {
+              swal("El proceso fue cancelado.");
+              setLoading(false);
+            })
+       
+      } else {
+        swal("No se encontró el servicio!");
+        setLoaders(false)
+      }
+    });
+
+    /*if (window.confirm('¿Estás seguro de continuar?, Todavía puedes cambiar tu selección de materias.')) {
+  
+    }*/
     setLoaders(false)
   }
 
@@ -803,14 +829,14 @@ const ReEnrollmentPage: React.FC = () => {
               <Grid item sm={9} md={9} lg={10}/>
             </Hidden>
             <Grid item xs={12} sm={3} md={3} lg={2}>
-              <Button
+            {isButton ? (<Button
                 disabled={disableFinishButton}
                 onClick={handleFinish}
                 fullWidth color="primary"
                 variant="contained"
               >
                 Finalizar
-              </Button>
+              </Button>):null}
             </Grid>
           </Grid>
         </div>

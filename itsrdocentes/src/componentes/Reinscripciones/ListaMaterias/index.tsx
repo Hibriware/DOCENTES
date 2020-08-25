@@ -19,44 +19,43 @@ import {
 import {
   AvailableSubject,
   CourseType,
-  ReenrollmentResult,
-  Student,
-  StudiedSubjects,
   Subject
 } from '../interfaces';
-//import {isSelectedSameSubject, isTimeCrossings} from '../utils/reenrollment-filters';
 import {
   AVAILABLE_SUBJECTS_ALL_URL,
 } from '../constants/end-points';
 import {useStudent} from '../providers/StudentProvider';
 
 
-const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSeleccionada, setMateriasSeleccionada, studiedSubjects}: any) => {
-  //const {student} = useStudent();
+const ListaMaterias = ({periodos, cargarAcademica, setMateriasSeleccionada, studiedSubjects}: any) => {
+  const {student} = useStudent();
 
   const classes = useStyles();
   const [active, setActive] = React.useState(false);
-  //const [studiedSubjects, setStudiedSubjects] = useState<StudiedSubjects[]>([]);//listo
   const [availableSubjects, setAvailableSubjects] = useState<AvailableSubject[]>([]);
-  //const [selectedSubjects, setSelectedSubjects] = useState<AvailableSubject[]>([]);
-  const [isTwoEspecialSubjects, setIsTwoEspecialSubjects] = useState(false);
-  const [enrolledSubjectsOnPeriod, setEnrolledSubjectsOnPeriod] = useState<any[]>([]);
-  //const [creditsInfo, setCreditsInfo] = useState({min: 20, max: 36});
-  const [loading, setLoading] = useState(false);
   const [subjects, setSubjects] = useState<Subject[]>([]);
 
 
   const fetchAvailableSubjects = useCallback(() => {
     setActive(true)
-    axios.get(AVAILABLE_SUBJECTS_ALL_URL, {
-      params: {
-        period: periodos,
+      let alumnoCarrera:any = student?.career.name;
+      let extraerCarrera=[]
+      extraerCarrera = alumnoCarrera.split(' ')
+      if(extraerCarrera.length){
+          const[tipo]=extraerCarrera
+          axios.get(AVAILABLE_SUBJECTS_ALL_URL, {
+            params: {
+              period: periodos,
+              career:tipo
+            }
+          }).then(value => {
+            setSubjects(value.data)
+            console.log(value.data)
+          })
+            .finally(() => setActive(false));
       }
-    }).then(value => {
-      setSubjects(value.data)
-      console.log(value.data)
-    })
-      .finally(() => setActive(false));
+      setActive(false)
+  
   }, [setSubjects]);
 
 
@@ -107,7 +106,6 @@ const ListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, materiasSe
   }, [studiedSubjects, availableSubjects]);
 
   useEffect(() => {
-
     fetchAvailableSubjects();
 
   }, [fetchAvailableSubjects]);
@@ -353,7 +351,6 @@ const DialogoListaMaterias = ({periodos, cargarAcademica, setCargaAcademica, mat
 
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
-
     if(student?.controlNumber.length){
       setOpen(true);
     }else{

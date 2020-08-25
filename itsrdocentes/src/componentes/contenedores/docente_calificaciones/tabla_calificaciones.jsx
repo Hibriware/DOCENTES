@@ -37,6 +37,8 @@ export const MaterialTableDemo = () => {//inicio del componente
   const [listasTemas, setListas] = React.useState([]);
   const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
   const [unidad, setUnidad] = React.useState('');
+  const [group, setGroup] = React.useState('');
+
 
   const [cierre, setCierre] = React.useState(false);
   const [minimo, setMinimo] = React.useState(false);
@@ -353,7 +355,7 @@ export const MaterialTableDemo = () => {//inicio del componente
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
             <SelecMaterias setListas={setListas} setcalificaciones={setcalificaciones}
-              setMATERIA_ID={setMATERIA_ID} minimo={minimo} cierre={cierre} />
+              setMATERIA_ID={setMATERIA_ID} minimo={minimo} cierre={cierre} setGroup={setGroup}/>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
@@ -364,7 +366,8 @@ export const MaterialTableDemo = () => {//inicio del componente
               setUnidad={setUnidad}
               unidad={unidad}
               setOpen={setOpen}
-              MATERIA_ID={MATERIA_ID} />
+              MATERIA_ID={MATERIA_ID}
+              group={group} />
             {/*<SelectTemas unidad={unidad} lisTemas={obtenerTema}  listasTemas={listasTemas}/>*/}
           </Paper>
         </Grid>

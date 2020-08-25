@@ -82,7 +82,7 @@ export const TablaCapturaCalificaciones = (datas) => {
 				editable={{
 					onRowUpdate: (newData, oldData) =>
 						new Promise((resolve) => {
-              setLoad(true)
+              				setLoad(true)
 							setTimeout(() => {
 								if (oldData) {
 									setcalificaciones((prevState) => {

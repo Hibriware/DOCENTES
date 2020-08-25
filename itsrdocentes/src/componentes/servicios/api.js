@@ -202,12 +202,12 @@ export async function getStatus_temas(id_usuario, id_materia) {
 	}
 }
 
-export async function getAlumnos(idMateria, unidad) {
+export async function getAlumnos(idMateria, unidad, group) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		//consultarAlumnos/:idMateria/:periodo/:idDocente/:unidad
 			await axios
 			.get(
-				`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}`,
+				`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}/${group}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (datalistaAlumnos = res.data))

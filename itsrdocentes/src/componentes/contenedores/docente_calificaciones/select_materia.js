@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -13,7 +13,6 @@ export const SelecMaterias = React.memo((data) => {
     const estilos = useStyles();
     const [materia, setMateria] = React.useState('');
 
-
     const _buscarTema = async materiaid => {//inicio selec materia en la vista
 
         let idMateriaActual = materiaid.target.value;
@@ -22,7 +21,12 @@ export const SelecMaterias = React.memo((data) => {
         setMateria(idMateriaActual)
         data.setMATERIA_ID(idMateriaActual);//actualizar al estado
         await getTemas(idMateriaActual, data.minimo, data.cierre);
-        console.log(datalista)
+        let [idGroup] = await dataMateria.filter((res)=>res.idMateria === idMateriaActual)
+        data.setGroup(idGroup?.idGrupos)
+
+        console.log(datalista,"datalista")
+        console.log(dataMateria,"dataMateria")
+
         data.setListas(datalista)//actualiza el la lista de materias actual
     };//fi
 

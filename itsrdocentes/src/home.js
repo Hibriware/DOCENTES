@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import Usuarios from './componentes/menu_usuarios/usuarios';
 import PageError from './componentes/404';
 import { materiasD, getPeriodo } from './componentes/servicios/api';
-import Loader from './login/cargaDedatos';
+import Loader from './login/loading';
 import AuthService from './componentes/servicios/AuthService';
 export var dataMateria = null,
 	ID_USUARIO = 0;
@@ -14,7 +14,7 @@ export const resetear = () => {
     caches = null;
     dataMateria = null;
   } catch (error) {
-    console.log("ERROR EN LA FUNCION RESETEAR()")
+    console.log(error)
   }
 
 };
@@ -22,48 +22,11 @@ export const resetear = () => {
 function CargadeDatos(data) {
 	let roles = data.data[0].nombreRol;
 	ID_USUARIO = data.data[0].usuarioID;
-	//validar la ruta
 	if (roles === 'Administrador' || roles === 'Gestión Escolar') {
-		//inicio
-		/*console.log('Administrador');
-		if (!caches) {
-			throw getPeriodo()
-				.then((res) => {
-					if (res === 'error') {
-						perio = true;
-						caches = res;
-					} else if (res === 'not') {
-						perio = false;
-						caches = true;
-					} else {
-						caches = res;
-						perio = false;
-					}
-				})
-				.catch((perio = true));
-						return (
-			<React.Fragment>
-				{perio ? (
-					<PageError
-						onAuthChange={data.onAuthChange}
-						onGenerar={data.logout}
-						resetear={resetear}
-						informacion="Informacion no disponible "
-					/>
-				) : (
-					<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />
-				)}
-			</React.Fragment>
-		);
-		}*/
-		//fint
-
 		return (<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />);
 	}else if(roles === 'Jefe académico'){
-		return (<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />);
+			return (<Usuarios onAuthChange={data.onAuthChange} resetear={resetear} />);
 	} else if (roles === 'Docente') {
-		//inicio
-		console.log('Docente Docente Docente');
 		if (!caches) {
 			throw getPeriodo()
 				.then((res) => {
@@ -113,20 +76,14 @@ function CargadeDatos(data) {
 		);
 	} else{
 		return (
-			<PageError
+					<PageError
 						onAuthChange={data.onAuthChange}
 						onGenerar={data.logout}
 						resetear={resetear}
 						informacion="No está asignado a ningun modulo"
-					/>
+						/>
 		  );
 	}
-
-	/*return (
-    <div>
-      {dataMateria === 'error' ? <h1>API 404 o Actualmente no cuenta con materias asisgnada...</h1> : <Usuarios />}
-    </div>
-  );*/
 
 }
 
@@ -134,7 +91,6 @@ export const dataMaterias = async () => {
 	dataMateria = await materiasD();
 };
 
-//export var fecha1 = '2020-02-27', fecha2 = '2020-03-27', fecha3 = '2020-04-27';
 
 class Home extends Component {
 	constructor(props) {

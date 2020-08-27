@@ -1,5 +1,5 @@
 import React from 'react';
-import './loginCss.css';
+import '././css/loginCss.css';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
@@ -11,18 +11,27 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { useStyles } from './styles';
-import Add from './20670.webp';
+import { useStyles } from './styles/styles';
+import Add from '../componentes/img/20670.webp';
 import AuthService from '../componentes/servicios/AuthService';
 import {withRouter} from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import *as toastr from 'toastr';
 
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import FormControl from '@material-ui/core/FormControl';
+import clsx from 'clsx';
+import IconButton from '@material-ui/core/IconButton';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { usuario: '', password: '' };
+		this.state = { usuario: '', password: '', showPassword: false };
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.authService = new AuthService();
@@ -32,6 +41,14 @@ class Login extends React.Component {
 		this.setState({
 			[e.target.name]: e.target.value
 		});
+  }
+
+   handleClickShowPassword =()=> {
+    this.setState({ ...this.state, showPassword: !this.state.showPassword });
+  };
+
+   handleMouseDownPassword(event) {
+    event.preventDefault();
   }
   
 	handleSubmit() {
@@ -84,18 +101,46 @@ class Login extends React.Component {
 											//	autoFocus
 												onChange={this.handleChange}
 											/>
-											<TextField
+											{/*<TextField
 												variant="outlined"
 												margin="normal"
 												required
 												fullWidth
+												value={this.state.password}
 												name="password"
 												label="Ingrese su contraseña"
 												type="password"
 												id="password"
 												autoComplete="current-password"
 												onChange={this.handleChange}
+											/>*/}
+
+											<FormControl variant="outlined" fullWidth>
+											<InputLabel htmlFor="outlined-adornment-password">Ingrese su contraseña</InputLabel>
+											<OutlinedInput
+												id="outlined-adornment-password"
+												name="password"
+												label="Ingrese su contraseña"
+												fullWidth
+												type={this.state.showPassword ? 'text' : 'password'}
+												value={this.state.password}
+												onChange={this.handleChange}
+												endAdornment={
+												<InputAdornment position="end">
+													<IconButton
+													aria-label="toggle password visibility"
+													onClick={this.handleClickShowPassword}
+													onMouseDown={this.handleMouseDownPassword}
+													edge="end"
+													>
+													{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+													</IconButton>
+												</InputAdornment>
+												}
+												labelWidth={70}
 											/>
+											</FormControl>
+
 											<Button style={{marginTop:'3rem'}}
 												fullWidth
 												variant="contained"

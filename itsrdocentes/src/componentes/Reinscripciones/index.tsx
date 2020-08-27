@@ -386,7 +386,7 @@ const ReEnrollmentPage: React.FC = () => {
     if (isTwoEspecialSubjects) {
       return selectedSubjects.filter(({subject}) => subject.tipo_curso === CourseType.Especial);
     }
-    return selectedSubjects;
+    return selectedSubjects.filter(({tableData}) => tableData.checked === true);
   }, [selectedSubjects, isTwoEspecialSubjects])
 
   const requestedCredits = useMemo(() => {

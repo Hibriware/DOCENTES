@@ -5,6 +5,8 @@ import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
+import ErrorIcon from '@material-ui/icons/Error';
 import moment from 'moment';
 import Lista_Periodos from './selectPeriodos';
 import Editar from './btnEditar';
@@ -136,6 +138,7 @@ const Entregas = () => {
 
 	return (
 		<div>
+			  <Chip size="small" icon={<ErrorIcon />} label="El periodo activo será asignado al sistema de alumnos" color="secondary" />
 			<h3 style={{ textAlign: 'center' }}>CALENDARIO DE ENTREGA DE CALIFICACIONES</h3>
 			<h4 style={{ textAlign: 'center' }}>PERIODO ACTIVO:{PERIODO ? PERIODO.rango + PERIODO.anio: 'NO DISPONIBLE'}</h4>
 					<ActivarTemas disabled={temas.disabled} isTemas={temas.temas} handleChange={handleChange} />

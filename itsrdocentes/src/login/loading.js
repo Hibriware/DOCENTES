@@ -1,5 +1,5 @@
 import React from 'react';
-import './carga.css';
+import './css/carga.css';
 
 
 export default function loader() {

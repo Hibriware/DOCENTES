@@ -26,7 +26,6 @@ function SelectSemestre({setSemestres,semestres}) {
   }, []);
   
   const _handleChange = (evt) =>{
-    console.log(evt)
     setSemestres(evt.target.value)
   }
 

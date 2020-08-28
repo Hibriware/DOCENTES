@@ -68,7 +68,6 @@ export const MaterialTableDemo = () => {//inicio del componente
     async function fechasGet() {//establese el cieere de acta de acuerdo la fecha actual
       try {
         if (dataFechasCierre.length === 0) {
-          console.log('iniciando la peticon de fechas')
           await getAdmiFechas()
         }
 
@@ -93,7 +92,6 @@ export const MaterialTableDemo = () => {//inicio del componente
           setCierre(entrega_final)
           setMinimo(tercera)
         }else if(habilitar_todas===1){
-          console.log("temas disponibles---")
           let rest = moment(primera).subtract(3, 'month');
           setCierre(entrega_final)
           setMinimo(moment(rest).format('YYYY-MM-DD'))
@@ -110,7 +108,6 @@ export const MaterialTableDemo = () => {//inicio del componente
   }, []);
 
   useEffect(() => {
-    console.log('actualizando clen')
     ccx1=0
     ccx2=0
     ccx3=0
@@ -146,7 +143,6 @@ export const MaterialTableDemo = () => {//inicio del componente
 
   const updates = useCallback(async (m, u,idMateria_docente) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
     try {
-      console.log(idMateria_docente,"idMateria_docente")
       await getCriterios(m, u,idMateria_docente);// LISTA DE CRITERIO getTem
       await Promise.all([
       ccx1 = dataCriterios[0].porcentageC1,
@@ -177,7 +173,6 @@ export const MaterialTableDemo = () => {//inicio del componente
     setC2(crt2)
     setC3(crt3)
     setC4(crt4)*/
-    console.log('ACTUALIZACION TERMINADA')
     return true
     } catch (error) {
       console.log(error)
@@ -266,8 +261,6 @@ export const MaterialTableDemo = () => {//inicio del componente
   //funtions.add(guardarPorcentaje_c2)
   //funtions.add(guardarPorcentaje_c3)
   //funtions.add(guardarPorcentaje_c4)
-  console.log(funtions)
-
 
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
     columns: [

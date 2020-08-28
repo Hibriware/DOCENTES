@@ -25,6 +25,5 @@ export const EnviarCriterios= async (bam ,porcentage, criterio, updates) => {//p
             default:
                 return'Error'
    }
-   console.log('fin fin y actualizando las materias')
     return true
   }//fin

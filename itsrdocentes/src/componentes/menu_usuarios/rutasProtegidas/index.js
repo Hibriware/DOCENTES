@@ -8,7 +8,6 @@ import {Redirect,Route} from 'react-router-dom';
 function isLoggedInDocente (textRol) {
         if(!!getToken()){
             const [{nombreRol}] = JSON.parse(sessionStorage.getItem("resul"))
-            console.log(nombreRol)
             return nombreRol === textRol ? true: false
         }else{
             return false;
@@ -18,7 +17,6 @@ function isLoggedInDocente (textRol) {
 function isLoggedInAdministradores () {
     if(!!getToken()){
         const [{nombreRol}] = JSON.parse(sessionStorage.getItem("resul"))
-        console.log(nombreRol)
         return nombreRol === 'Administrador' || nombreRol === 'Gestión Escolar' ? true: false
     }else{
         return false;

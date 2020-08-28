@@ -12,7 +12,6 @@ export const Confirmacion = (data) => {
     const [open, setOpen] = React.useState({open:false,isDisable:false});
 
     useEffect(() => {
-        console.log("useEffect")
         setOpen({...open, open:data.open})
     },[data.open])
 

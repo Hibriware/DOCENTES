@@ -16,7 +16,6 @@ function codes () {
         LIMITE = LIMITE - c2;
         LIMITE = LIMITE - c3;
         LIMITE = LIMITE - c4;
-console.log(LIMITE);
 
     }else if(LIMITE===0){
         console.log("DESBLOKETAR")

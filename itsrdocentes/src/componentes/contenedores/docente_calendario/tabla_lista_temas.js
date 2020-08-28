@@ -13,7 +13,6 @@ import { useStyles } from './dialogos';
 
 
 export const TablaVerTemas =React.memo((data) =>{
-  console.log('Lista temas')
     const classes = useStyles();
 
     return(

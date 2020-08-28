@@ -45,9 +45,6 @@ function MenuCriterios({open,handleClose,updates }){
     }
 
 async function gurardarcriterios() {
-  console.log("GUARDANDO TODOS LOS CRITERIOS")
-  console.log(TODOS_LOS_CRITERIOS.c1)
-  console.log(TODOS_LOS_CRITERIOS.c2)
   await EnviarCriterios(1, TODOS_LOS_CRITERIOS.c1, "sin descripcion" );
   await EnviarCriterios(2, TODOS_LOS_CRITERIOS.c2, "sin descripcion" );
   await EnviarCriterios(3, TODOS_LOS_CRITERIOS.c3, "sin descripcion" );

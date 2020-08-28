@@ -35,7 +35,6 @@ async function request(url, metodo, data) {
 
 export async function treeApi(datas) {
 	try {
-		console.log(datas,"datas----")
 		await axios({
 			method: 'POST',
 			url: `${urlApi}/api/aspirante/registrar`,

@@ -36,7 +36,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 
 	useEffect(
 		() => {
-			console.log('validar limite para el buton');
 			setIsBtn(
 				LIMITE === 0
 					? CRITERIO_C1.current.value && CRITERIO_C2.current.value && CRITERIO_C3.current.value ? false : true
@@ -50,7 +49,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 		() => {
 		
 			if (!isBtn) {
-				console.log('pasar los criterios');
 				setTodo_los_criterios({
 					...TODOS_LOS_CRITERIOS,
 					c1: CRITERIO_C1.current.value,

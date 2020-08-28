@@ -1,10 +1,8 @@
 import axios from 'axios';
 import {Student} from '../interfaces';
 const urlApi = process.env.REACT_APP_SERVER_HOST
-console.log(urlApi)
 
 export const me = async (numeroControl:string | undefined): Promise<Student | null> => {
-  console.log("studen")
   try {
     const student: any = await axios.get(`${urlApi}/api/alumno/me/control`,{
       params: {

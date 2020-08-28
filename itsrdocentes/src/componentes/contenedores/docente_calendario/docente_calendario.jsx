@@ -113,10 +113,11 @@ export default function CustomizedTables() {
 	};
 
 	const list_materia = async (materiaid) => {
-		// inicio get datos materias- para el select
+		// inicio get datos materias- para el select materiaDocenteId
 		var id = materiaid.target.value;
 		var materia = materiaid.target.value.idMateria;
 		var grupo = materiaid.target.value.idGrupos;
+		var MateriaDocente = materiaid.target.value.materiaDocenteId;
 		setMateria(id);
 		//var materia_grupo = id.split(" "); // separa los datos del arry
 		resultado = await dataMateria.filter(
@@ -131,7 +132,7 @@ export default function CustomizedTables() {
 			setActivo('none');
 			setBtn(true);
 			//listar staus de temas periodo , id personal , id materia
-			await getStatus_temas(ID_USUARIO, materia);
+			await getStatus_temas(ID_USUARIO, materia,MateriaDocente);
 			await setEleccion_temas({ data: dataStatusTemas });
 		}
 	}; //  fin get datos materias- para el select dataStatusTemas
@@ -516,6 +517,7 @@ export default function CustomizedTables() {
 			id_Materias: resul_state[0].idMateria,
 			periodo: resul_state[0].idnomenclaturaPeriodo,
 			grupo_id: resul_state[0].idGrupos,
+			materiaDocenteId: resul_state[0].materiaDocenteId,
 			tema1_nombre: temaActual,
 			fecha_limite: fechaLimite,
 			numUnidad

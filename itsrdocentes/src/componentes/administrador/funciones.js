@@ -9,13 +9,10 @@ import {
 	updateRegistrosfechas,
 	restablecerStatus,
 	dataFechasCierre,
-	EXISTNCIA_ACTA,
-	getPeriodo
 } from '../servicios/api';
 import { useStyles } from './styles';
 
 export const Btn_evaluar = (fechas) => {
-	console.log(fechas);
 	const classes = useStyles();
 	const [ loading, setLoading ] = React.useState(false);
 
@@ -28,16 +25,11 @@ export const Btn_evaluar = (fechas) => {
 		) {
 			setLoading(true);
 			if (fechas.isDisable) {
-				console.log('creando fechas');
 				await crearRegistrosfechas(fechas);
 
 			} else {
 				let STATUS_ACTUAL = dataFechasCierre[0].status;
-				console.log(fechas.status);
-				console.log(STATUS_ACTUAL);
-
 				if (fechas.status != STATUS_ACTUAL) {
-					console.log('BORRAR__STATUS__Y__ASIGNAR_NEW');
 					await restablecerStatus();
 				}
 				//	ACTUALIZACION DE FECHAS	console.log('actualizando fechas NORMAL');

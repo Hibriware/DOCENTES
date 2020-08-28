@@ -4,7 +4,6 @@ import Switch from '@material-ui/core/Switch';
 
 
 function Status({isPeriodo,isperiodo=false,isdisabled=true}) {
-      console.log(isdisabled)
       const handleChange = event => {
         isPeriodo(event.target.checked );
       }

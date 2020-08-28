@@ -8,9 +8,7 @@ import { dataMateria } from '../../../home';
 
 
 export const SelectMaterias = React.memo((data) => {
-    console.log("Selec mataria")
     const classes = useStyles();
-console.log(dataMateria,"DATA MATERIA")
     const _list_materia = (e) => {
         e.preventDefault()
         data.mos_Materias(e)

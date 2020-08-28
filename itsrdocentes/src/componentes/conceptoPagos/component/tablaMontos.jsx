@@ -45,7 +45,6 @@ export default function StickyHeadTable({ actualizar, concepto, setConcepto }) {
       }else{
         console.log("ERROR DE CONEXION")
       }
-      console.log(datas);
     
     }
     get();

@@ -21,8 +21,9 @@ export const ButtonPdf =  (data) =>{
         const PERIODO = dataMateria[index].idnomenclaturaPeriodo;
         const GRUPO = dataMateria[index].idGrupos;
         const Materia = dataMateria[index].nombre;
+        const materiaDocenteId = dataMateria[index].materiaDocenteId
 
-        await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO), getReporteLista(PERIODO, ID_MATERIA, GRUPO)])
+        await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId), getReporteLista(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId)])
 
         await pdfAsistencia(Materia, DOCENTE_ACTUAL)
       }

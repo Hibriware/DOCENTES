@@ -31,7 +31,6 @@ function Alumno({setLoader}) {
 				control:evt.target.value
 			})
 
-			console.log(control)
 		}
 
 	return (

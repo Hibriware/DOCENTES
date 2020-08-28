@@ -11,7 +11,6 @@ export const FechaDate = (data) => {
 	const { setValue, onGuardar, info } = data;
 
 	const _guardarState = (e) => {
-		console.log(setValue);
 		onGuardar(moment(e).format('YYYY-MM-DD, h:mm:ss a'));
 		//onGuardar(e);
 	};

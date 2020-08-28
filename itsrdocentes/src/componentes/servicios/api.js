@@ -35,6 +35,7 @@ async function request(url, metodo, data) {
 
 export async function treeApi(datas) {
 	try {
+		console.log(datas,"datas----")
 		await axios({
 			method: 'POST',
 			url: `${urlApi}/api/aspirante/registrar`,
@@ -151,12 +152,12 @@ export async function getListaPeriodo() {
 	}
 }
 
-export async function getTemas(idMateria, minimo, cierre) {
+export async function getTemas(idMateria, minimo, cierre,materiaDocenteId) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 	await axios
 		.get(
-			`${urlApi}/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}`,
+			`${urlApi}/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${minimo}/${cierre}/${materiaDocenteId}`,
 			TOKEN_USUARIO
 		)
 		.then((res) => (datalista = res.data))
@@ -183,14 +184,14 @@ export async function getTemasReportes(idMateria) {
 	return datos;
 }
 
-export async function getStatus_temas(id_usuario, id_materia) {
+export async function getStatus_temas(id_usuario, id_materia,materiaDocenteId) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 	try {
 		//PERIODO_ACTUAL, ID_USUARIO, materia
 		await axios
 			.get(
-				`${urlApi}/api/aspirante/consultar/estado/temas/${PERIODO_ACTUAL}/${id_materia}/${id_usuario}`,
+				`${urlApi}/api/aspirante/consultar/estado/temas/${PERIODO_ACTUAL}/${id_materia}/${id_usuario}/${materiaDocenteId}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (dataStatusTemas = res.data))
@@ -202,12 +203,12 @@ export async function getStatus_temas(id_usuario, id_materia) {
 	}
 }
 
-export async function getAlumnos(idMateria, unidad, group) {
+export async function getAlumnos(idMateria, unidad, group, materiaDocente_id) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		//consultarAlumnos/:idMateria/:periodo/:idDocente/:unidad
 			await axios
 			.get(
-				`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}/${group}`,
+				`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}/${group}/${materiaDocente_id}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (datalistaAlumnos = res.data))
@@ -216,13 +217,13 @@ export async function getAlumnos(idMateria, unidad, group) {
 			});
 	}
 
-export async function getCriterios(idMateria, unidad) {
+export async function getCriterios(idMateria, unidad,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.get(
-				`${urlApi}/api/administrador/consultarCriterios/${PERIODO_ACTUAL}/${idMateria}/${unidad}`,
+				`${urlApi}/api/administrador/consultarCriterios/${PERIODO_ACTUAL}/${idMateria}/${unidad}/${materiaDocenteId}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (dataCriterios = res.data))
@@ -234,13 +235,13 @@ export async function getCriterios(idMateria, unidad) {
 	}
 }
 
-export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1) {
+export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.put(
-				`${urlApi}/api/aspirante/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				`${urlApi}/api/aspirante/update/criteriosc1/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}/${materiaDocenteId}`,
 				{
 					criterio1: criterio1,
 					porcentageC1: porcentageC1
@@ -248,7 +249,7 @@ export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, crite
 				TOKEN_USUARIO
 			)
 			.then(function(response) {
-				console.log(response.data);
+				console.log("");
 			})
 			.catch(function(error) {
 				console.log(error);
@@ -258,13 +259,13 @@ export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, crite
 	}
 }
 
-export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, criterio2) {
+export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, criterio2,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.put(
-				`${urlApi}/api/aspirante/update/criteriosc2/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				`${urlApi}/api/aspirante/update/criteriosc2/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}/${materiaDocenteId}`,
 				{
 					criterio2: criterio2,
 					porcentageC2: porcentageC2
@@ -272,7 +273,7 @@ export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, crite
 				TOKEN_USUARIO
 			)
 			.then(function(response) {
-				console.log(response.data);
+				console.log("");
 			})
 			.catch(function(error) {
 				console.log(error);
@@ -282,13 +283,13 @@ export async function putCriteriosc2(materia, unidad, grupo, porcentageC2, crite
 	}
 }
 
-export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, criterio3) {
+export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, criterio3,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.put(
-				`${urlApi}/api/aspirante/update/criteriosc3/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				`${urlApi}/api/aspirante/update/criteriosc3/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}/${materiaDocenteId}`,
 				{
 					criterio3: criterio3,
 					porcentageC3: porcentageC3
@@ -296,7 +297,7 @@ export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, crite
 				TOKEN_USUARIO
 			)
 			.then(function(response) {
-				console.log(response.data);
+				console.log("");
 			})
 			.catch(function(error) {
 				console.log(error);
@@ -306,13 +307,13 @@ export async function putCriteriosc3(materia, unidad, grupo, porcentageC3, crite
 	}
 }
 
-export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4) {
+export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, criterio4,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.put(
-				`${urlApi}/api/aspirante/update/criteriosc4/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}`,
+				`${urlApi}/api/aspirante/update/criteriosc4/${PERIODO_ACTUAL}/${materia}/${unidad}/${grupo}/${materiaDocenteId}`,
 				{
 					criterio4: criterio4,
 					porcentageC4: porcentageC4 || 0
@@ -320,7 +321,7 @@ export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, crite
 				TOKEN_USUARIO
 			)
 			.then(function(response) {
-				console.log(response.data);
+				console.log("");
 			})
 			.catch(function(error) {
 				console.log(error);
@@ -352,7 +353,7 @@ export async function updateCalificaion(idCalificacion, data) {
 			TOKEN_USUARIO
 		)
 		.then(function(response) {
-			console.log(response.data);
+			console.log("");
 		})
 		.catch(function(error) {
 			console.log(error);
@@ -382,13 +383,13 @@ export async function materiasD() {
 	}
 }
 
-export async function getReporteHorarios(periodo, idMateria, grupo) {
+export async function getReporteHorarios(periodo, idMateria, grupo,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.get(
-				`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`,
+				`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}/${materiaDocenteId}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (dataReportHorario = res.data))
@@ -401,13 +402,13 @@ export async function getReporteHorarios(periodo, idMateria, grupo) {
 	}
 }
 
-export async function getReporteLista(periodo, idMateria, grupo) {
+export async function getReporteLista(periodo, idMateria, grupo,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.get(
-				`${urlApi}/api/reporte/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}`,
+				`${urlApi}/api/reporte/consultar/reporte/lista/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}/${materiaDocenteId}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (dataReportLista = res.data))

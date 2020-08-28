@@ -16,8 +16,7 @@ export const TablaCapturaCalificaciones = (datas) => {
   const estilos = useStyles();
   
 
-	console.log('memo Tabla registro ');
-	const { alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4 } = datas;
+	const { alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4, MateriaDocente,group } = datas;
 
 	const guardarPromedio = async (datos) => {
 		//inicio  enviar el promedio asignado en la tabla captura_calificacion
@@ -45,7 +44,7 @@ export const TablaCapturaCalificaciones = (datas) => {
 		} else {
 			//crear registro para el alumno en registro calificacion
 			await crearCalificacion(datos, unidadCalificacion, id_criterios);
-			await getAlumnos(datos.idMateria, unidadCalificacion); //LISTA DE ALUMNOS
+			await getAlumnos(datos.idMateria, unidadCalificacion,group, MateriaDocente); //LISTA DE ALUMNOS
 			await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
 		}
 	}; //fin
@@ -113,8 +112,8 @@ export const TablaCapturaCalificaciones = (datas) => {
 										);
 										//console.log(newData)//estado fila modificado
 										async function save() {
-                      await guardarPromedio(newData);
-                      setLoad(false)
+                      					await guardarPromedio(newData);
+                      					setLoad(false)
 											return true;
 										}
 										save().then((res) => console.log('listo'));

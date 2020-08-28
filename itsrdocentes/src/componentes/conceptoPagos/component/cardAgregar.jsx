@@ -50,7 +50,6 @@ export default function SimpleCard({
   });
 
   const handlenChange = (evt) => { //.value.toUpperCase() ,
-    console.log(evt.target.value);
     setState({
       ...state,
       [evt.target.name]: evt.target.value

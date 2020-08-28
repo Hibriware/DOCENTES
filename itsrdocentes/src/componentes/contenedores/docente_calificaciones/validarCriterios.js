@@ -25,7 +25,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 	const CRITERIO_C2 = React.useRef(0);
 	const CRITERIO_C3 = React.useRef(0);
 	const CRITERIO_C4 = React.useRef(0);
-	var LIMITE_CRITERIOS = 100;
 
 	const [ LIMITE, setLimite ] = React.useState(100);
 	const [ BLOQUEO_PARCIAL, SETBLOQUEO_PARCIAL ] = React.useState({
@@ -99,7 +98,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 			CRITERIO_C1.current.value = Math.max(0, Math.min(parseInt(CRITERIO_C1.current.value || 0), LIMITE))
 				.toString()
 				.slice(0, 2);
-			console.log(LIMITE);
 		}
 	}
 
@@ -119,7 +117,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 			CRITERIO_C2.current.value = Math.max(0, Math.min(parseInt(CRITERIO_C2.current.value || 0), LIMITE))
 				.toString()
 				.slice(0, 2);
-			console.log(LIMITE);
 		}
 	}
 
@@ -139,7 +136,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 			CRITERIO_C3.current.value = Math.max(0, Math.min(parseInt(CRITERIO_C3.current.value || 0), LIMITE))
 				.toString()
 				.slice(0, 2);
-			console.log(LIMITE);
 		}
 	}
 
@@ -158,7 +154,6 @@ function ValidarCriterios({ setIsBtn, TODOS_LOS_CRITERIOS, setTodo_los_criterios
 			CRITERIO_C4.current.value = Math.max(0, Math.min(parseInt(CRITERIO_C4.current.value || 0), LIMITE))
 				.toString()
 				.slice(0, 2);
-			console.log(LIMITE);
 		}
 	}
 

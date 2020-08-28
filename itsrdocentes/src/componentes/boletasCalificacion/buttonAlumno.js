@@ -18,9 +18,6 @@ function ButtonAlumno({idPeriodo, idControl, semestres,setLoader}) {
 
     async function _imprimir() {
       setActivo(true)
-        console.log(idPeriodo)
-        console.log(idControl)
-
         if(idPeriodo && idControl && semestres){
           setLoader(true)
          await main(idPeriodo,idControl,semestres)

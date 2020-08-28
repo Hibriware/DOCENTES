@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
-import *as toastr from 'toastr';
 
 import './calificaciones.css';
 import { useStyles } from './dialogos_calificacion';
@@ -15,7 +13,6 @@ import { dataFechasCierre,FECHA_ACTUAL } from '../../servicios/api';
 import { SelecMaterias } from './select_materia';
 import { SelectTemas } from './select_temas';
 import { TablaCapturaCalificaciones } from './Tabla_registro';
-import { EnviarCriterios } from './cont_criterios';
 import {ReportParciales} from './reportes/parciales/parciales';
 import {ActaFinal} from './reportes/actaFinal/acta';
 export var unidad_Tema;
@@ -36,6 +33,8 @@ export const MaterialTableDemo = () => {//inicio del componente
   const [calificaciones, setcalificaciones] = React.useState({ datalistaAlumnos });
   const [listasTemas, setListas] = React.useState([]);
   const [MATERIA_ID, setMATERIA_ID] = React.useState([]);
+  const [MateriaDocente, setMateriaDocente] = React.useState([]);
+
   const [unidad, setUnidad] = React.useState('');
   const [group, setGroup] = React.useState('');
 
@@ -67,7 +66,6 @@ export const MaterialTableDemo = () => {//inicio del componente
 
     // document.getElementById('porcentajeC1').disabled = true;
     async function fechasGet() {//establese el cieere de acta de acuerdo la fecha actual
-      console.log(dataFechasCierre)
       try {
         if (dataFechasCierre.length === 0) {
           console.log('iniciando la peticon de fechas')
@@ -146,10 +144,11 @@ export const MaterialTableDemo = () => {//inicio del componente
 
   }, [ccx41])*/
 
-  const updates = useCallback(async (m, u) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
-    console.log('INICIANDO LA ACTUALIZACION')
-    await getCriterios(m, u);// LISTA DE CRITERIO getTem
-    await Promise.all([
+  const updates = useCallback(async (m, u,idMateria_docente) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
+    try {
+      console.log(idMateria_docente,"idMateria_docente")
+      await getCriterios(m, u,idMateria_docente);// LISTA DE CRITERIO getTem
+      await Promise.all([
       ccx1 = dataCriterios[0].porcentageC1,
       ccx2 = dataCriterios[0].porcentageC2,
       ccx3 = dataCriterios[0].porcentageC3,
@@ -180,6 +179,10 @@ export const MaterialTableDemo = () => {//inicio del componente
     setC4(crt4)*/
     console.log('ACTUALIZACION TERMINADA')
     return true
+    } catch (error) {
+      console.log(error)
+    }
+    
   }, [])
 
 
@@ -355,7 +358,7 @@ export const MaterialTableDemo = () => {//inicio del componente
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.papermaterias}>
             <SelecMaterias setListas={setListas} setcalificaciones={setcalificaciones}
-              setMATERIA_ID={setMATERIA_ID} minimo={minimo} cierre={cierre} setGroup={setGroup}/>
+              setMATERIA_ID={setMATERIA_ID} minimo={minimo} cierre={cierre} setGroup={setGroup} setMateriaDocente={setMateriaDocente}/>
           </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
@@ -367,6 +370,7 @@ export const MaterialTableDemo = () => {//inicio del componente
               unidad={unidad}
               setOpen={setOpen}
               MATERIA_ID={MATERIA_ID}
+              MateriaDocente={MateriaDocente}
               group={group} />
             {/*<SelectTemas unidad={unidad} lisTemas={obtenerTema}  listasTemas={listasTemas}/>*/}
           </Paper>
@@ -377,7 +381,7 @@ export const MaterialTableDemo = () => {//inicio del componente
           <Paper elevation={3} >
             <TablaCapturaCalificaciones
               alumnos={alumnos} setcalificaciones={setcalificaciones} calificaciones={calificaciones}
-              ccx1={ccx11} ccx2={ccx21} ccx3={ccx31} ccx4={ccx41} updates={updates} unidad={unidad}/>
+              ccx1={ccx11} ccx2={ccx21} ccx3={ccx31} ccx4={ccx41} updates={updates} unidad={unidad} MateriaDocente={MateriaDocente} group={group}/>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>

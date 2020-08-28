@@ -9,21 +9,25 @@ import { dataMateria } from '../../../home'
 import { useStyles } from './dialogos_calificacion';
 
 export const SelecMaterias = React.memo((data) => {
-    console.log('memo materias')
     const estilos = useStyles();
     const [materia, setMateria] = React.useState('');
 
     const _buscarTema = async materiaid => {//inicio selec materia en la vista
-
-        let idMateriaActual = materiaid.target.value;
-        data.setListas([])//actualiza el la lista de materias actual
-        await data.setcalificaciones({ datalistaAlumnos: [] });
-        setMateria(idMateriaActual)
-        data.setMATERIA_ID(idMateriaActual);//actualizar al estado
-        await getTemas(idMateriaActual, data.minimo, data.cierre);
-        let [idGroup] = await dataMateria.filter((res)=>res.idMateria === idMateriaActual)
-        data.setGroup(idGroup?.idGrupos)
-        data.setListas(datalista)//actualiza el la lista de materias actual
+            try {
+                let idMateriaActual = materiaid.target.value;
+                data.setListas([])//actualiza el la lista de materias actual
+                setMateria(idMateriaActual)
+                await data.setcalificaciones({ datalistaAlumnos: [] });
+                let [{idGrupos,materiaDocenteId,idMateria}] = await dataMateria.filter((res)=>res.materiaDocenteId === idMateriaActual)
+                data.setMATERIA_ID(idMateria);//actualizar al estado
+                data.setMateriaDocente(materiaDocenteId)
+                await getTemas(idMateria, data.minimo, data.cierre,materiaDocenteId);
+                data.setGroup(idGrupos)
+                data.setListas(datalista)//actualiza el la lista de materias actual
+            } catch (error) {
+                console.log(error)
+            }
+       
     };//fi
 
     return (
@@ -36,7 +40,7 @@ export const SelecMaterias = React.memo((data) => {
                     onChange={_buscarTema}
                     label="Materia"
                     value={materia}>
-                    {dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.idMateria} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))}
+                    {dataMateria.map((materias) => (<MenuItem key={materias.nm} value={materias.materiaDocenteId} >{materias.nombre + ' (' + materias.semestre + "/" + materias.nomenclatura + ") " + materias.nombreCorto}</MenuItem>))}
                 </Select>
             </FormControl>
       

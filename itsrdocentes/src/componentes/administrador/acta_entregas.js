@@ -17,13 +17,9 @@ import *as toastr from 'toastr';
 import { Btn_evaluar } from './funciones';
 import { useStyles } from './styles';
 import {
-	EXISTNCIA_ACTA,
-	getPeriodo,
-	dataPeriodo,
 	getStatusPeriodo,
 	getAdmiFechas,
 	dataFechasCierre,
-	getListaPeriodo
 } from '../servicios/api';
 import { FechaDate } from './dates';
 
@@ -83,22 +79,18 @@ const Entregas = () => {
 				if(RANGO_PERIODO.periodo){
 				await	buscar_cierre_de_acta(RANGO_PERIODO.periodo)
 					setActivaTemas({...temas,disabled:true})
-					console.log("cargar fechas")
 				}else{
 			
 				await buscar_cierre_de_acta(periodos)
 				}
-			console.log('RANGO_PERIODO')
 			}
 
 			actualizar();
-			console.log('actualizar pantalla');
 		},
 		[ recargar ]
 	);
 
 	const handleChange = event => {
-       console.log(event)
         setActivaTemas({...temas, temas:event})
 	  }
 	  const handleDisables = event => {
@@ -109,7 +101,6 @@ const Entregas = () => {
 	const buscar_cierre_de_acta = async (evt) => {
 		await getAdmiFechas(evt);
 		setPeriodos(evt);
-		console.log(dataFechasCierre);
 		if (dataFechasCierre.length) {//
 			setStatus(true);
 			setSave(false);
@@ -133,7 +124,6 @@ const Entregas = () => {
 			toastr.warning('No se encontraron fechas establecidas', '!')
 		}
 
-		console.log('dataFechasCierre..');
 	};
 
 	return (

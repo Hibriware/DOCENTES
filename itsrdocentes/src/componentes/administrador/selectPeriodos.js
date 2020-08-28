@@ -3,7 +3,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {getListaPeriodo,dataListaPeriodo} from '../servicios/api';
+import {getListaPeriodo} from '../servicios/api';
 
 
 
@@ -25,7 +25,6 @@ function Lista_Periodo({onBuscar}) {
     const _buscar = async (evt)=>{
         if(evt.target.value){
           console.log('buscar....')
-          console.log(evt.target.value)
          await onBuscar(evt.target.value)
         }
     }
@@ -39,8 +38,6 @@ function Lista_Periodo({onBuscar}) {
           value={periodos.rango}
           onClick={_buscar}
         >
-
-          
          {
              periodos.map((data, i) => (
                     <MenuItem value={data.idnomenclaturaPeriodo}>{data.rango}</MenuItem>

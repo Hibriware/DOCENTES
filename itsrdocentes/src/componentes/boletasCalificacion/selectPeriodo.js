@@ -4,7 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { useStyles } from './styles';
-import { getListaPeriodo, dataListaPeriodo } from '../servicios/api';
+import { getListaPeriodo } from '../servicios/api';
 
 function SelectPeriodo({setPeriodo,idPeriodo}) {
 	const classes = useStyles();
@@ -14,7 +14,6 @@ function SelectPeriodo({setPeriodo,idPeriodo}) {
 	useEffect(() => {
 		async function lista() {
 			let res = await getListaPeriodo();
-			console.log(res);
 			if (res) {
 				setPeriodos(res);
 			} else {
@@ -25,7 +24,6 @@ function SelectPeriodo({setPeriodo,idPeriodo}) {
   }, []);
   
   const _handleChange = (evt) =>{
-    console.log(evt)
     setPeriodo(evt.target.value)
   }
 

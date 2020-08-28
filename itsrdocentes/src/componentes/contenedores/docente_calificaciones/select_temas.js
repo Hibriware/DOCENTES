@@ -8,13 +8,10 @@ import { useStyles } from './dialogos_calificacion';
 export var unidadCalificacion, id_criterios;
 
 export const SelectTemas = React.memo((data) => {
-    console.log('memo sect temas')
     //const [unidad, setUnidad] = React.useState('');
     const estilos = useStyles();
-    console.log(data,'selctMterias')
-
     useEffect(() => {
-    console.log('limpiar lista de temas anteriores')
+        
     data.setUnidad('')
     }, [data.MATERIA_ID])
 
@@ -22,9 +19,9 @@ export const SelectTemas = React.memo((data) => {
         data.setOpen(true)
         let numTemas = tem.target.value;
         data.setUnidad(numTemas);
-        await getAlumnos(data.MATERIA_ID, numTemas,data.group);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
+        await getAlumnos(data.MATERIA_ID, numTemas,data.group,data.MateriaDocente);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
         await data.setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
-        await data.updates(data.MATERIA_ID, numTemas)
+        await data.updates(data.MATERIA_ID, numTemas,data.MateriaDocente)
         data.setOpen(false)
         unidadCalificacion = dataCriterios[0].numUnidad
         id_criterios = dataCriterios[0].idcat_Unidad

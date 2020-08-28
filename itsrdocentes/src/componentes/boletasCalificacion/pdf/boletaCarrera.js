@@ -135,7 +135,6 @@ import swal from 'sweetalert';
 console.time("DATOS_CALIFICACIONES_4")
                 DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
                      
-                    console.log(DATOS_CALIFICACIONES)
                      console.timeEnd("DATOS_CALIFICACIONES_4")
                      //console.log(DATOS_CARRERAS[index].nombre)
                      //console.log(DATOS_CALIFICACIONES)

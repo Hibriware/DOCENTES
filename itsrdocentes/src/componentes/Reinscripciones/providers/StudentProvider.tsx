@@ -1,8 +1,6 @@
-import React, {Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import React, {Dispatch, SetStateAction,  useContext, useEffect, useMemo, useState} from 'react';
 import {Student,Control} from '../interfaces';
 import {me} from '../services/StudentService';
-import {useAuth} from './AuthProvider';
-import { strict } from 'assert';
 
 
 type StudentContextValues = {

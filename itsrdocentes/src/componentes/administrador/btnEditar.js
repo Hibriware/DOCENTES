@@ -15,7 +15,6 @@ function Editar({ disabled = true, isDisable,periodos ,setIsStatus,handleDisable
 	const classes = useStyles();
 
 	const _validar = () => {
-		console.log('habiliatar dates'+''+periodos);
 		if(periodos){
 			isDisable(false);
 			setIsStatus(false)

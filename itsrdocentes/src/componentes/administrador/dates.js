@@ -12,7 +12,6 @@ import {
 
 export  const FechaDate = (data) => {
 const {status,entrega, onGuardar,info } =  data;
-console.log(status)
 const _guardarState=(e)=>{
   onGuardar(e)
 }

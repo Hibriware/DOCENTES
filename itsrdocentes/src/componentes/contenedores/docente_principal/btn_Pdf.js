@@ -21,11 +21,14 @@ export const ButtonPdf =  (data) =>{
         const PERIODO = dataMateria[index].idnomenclaturaPeriodo;
         const GRUPO = dataMateria[index].idGrupos;
         const Materia = dataMateria[index].nombre;
+        const Nombre_Carrera = dataMateria[index].nombreCorto.toUpperCase() ;
+        const Clave_Materia = dataMateria[index].clave_materia
+
         const materiaDocenteId = dataMateria[index].materiaDocenteId
 
         await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId), getReporteLista(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId)])
 
-        await pdfAsistencia(Materia, DOCENTE_ACTUAL)
+        await pdfAsistencia(Materia, DOCENTE_ACTUAL,Nombre_Carrera,Clave_Materia)
       }
       setActio(false)
     } catch (error) {
@@ -33,7 +36,7 @@ export const ButtonPdf =  (data) =>{
     }
   }
 
-  const pdfAsistencia = (nomMateria, docente_actual) => {
+  const pdfAsistencia = (nomMateria, docente_actual,Nombre_Carrera,Clave_Materia) => {
     const Horas_clases = dataReportHorario[0].semanas;
     const Grupo = dataReportHorario[0].grupo;
     const Semestre = dataReportHorario[0].semestre;
@@ -87,13 +90,15 @@ export const ButtonPdf =  (data) =>{
     pdf.setFontSize(14)//encabezado
     pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS')
     pdf.line(100, 17, 500, 17) // horizontal line
-    pdf.setFontSize(8)
-    pdf.text(262, 26, "PRELISTA");
+    pdf.setFontSize(7)
+    pdf.text(262, 25, "PRELISTA");
     pdf.roundedRect(102, 45, 400, 12, 3, 3)
     pdf.setFontSize(8)
-    pdf.text(100, 40, `MATERIA: ${nomMateria}`);
+    pdf.text(100, 32, `CARRERA: ${Nombre_Carrera}`);
     pdf.setFontSize(8)
-    pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
+    pdf.text(100, 42, `MATERIA: ${Clave_Materia} - ${nomMateria}`);
+    pdf.setFontSize(8)
+    pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango} ${dataPeriodo[0].anio}`);
     pdf.setFontSize(8)
     pdf.text(500, 40, `FECHA: ${moment().format('DD/MM/YYYY')}`);
     pdf.setFontSize(7)

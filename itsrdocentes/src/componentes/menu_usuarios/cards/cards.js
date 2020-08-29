@@ -13,7 +13,7 @@ import Imgs3 from '../../img/blob-shape4.svg';
 
 const StoreImg =[{n:Imgs},{n:Imgs1},{n:Imgs2},{n:Imgs3}]
 
-const Cards =  ({clave_materia , nombre,modalidad, semestre,plan}) =>{
+const Cards =  ({clave_materia , nombre,modalidad, semestre,plan,carrera,grupo}) =>{
 const classes = useStyles();
 
 
@@ -31,13 +31,15 @@ const classes = useStyles();
           Modalidad: {modalidad}
         </Typography>
         <Typography variant="body2" component="p">
+        {carrera}
+        <br />
         Plan: {plan}
           <br />
           Clave: {clave_materia}
         </Typography>
       </CardContent>
       <CardActions>
-    <Button size="small">Semestre: "{semestre}"</Button> <Button style={{marginInlineStart:'auto'}} size="small"><Link to="/Docente">Iniciar</Link></Button>
+    <Button size="small">Semestre: "{semestre} {grupo}"</Button> <Button style={{marginInlineStart:'auto'}} size="small"><Link to="/Docente">Iniciar</Link></Button>
       </CardActions>
     </Card>
 </>

@@ -41,14 +41,6 @@ import Acceso from './Acceso';
 import {UserRole} from '../../contants';
 
 
-type AvailableCareer = {
-  careerID: number;
-  startDate: string;
-  endDate: string;
-  period: number;
-  studyPlanID: number;
-}
-
 type SelectedCharge = {
   aspirante_Folio: number;
   clave: string;

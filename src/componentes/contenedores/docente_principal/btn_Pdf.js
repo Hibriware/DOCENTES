@@ -28,7 +28,7 @@ export const ButtonPdf =  (data) =>{
 
         await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId), getReporteLista(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId)])
 
-        await pdfAsistencia(Materia, DOCENTE_ACTUAL,Nombre_Carrera,Clave_Materia)
+        await pdfAsistencia(Materia, DOCENTE_ACTUAL,Nombre_Carrera,Clave_Materia);
       }
       setActio(false)
     } catch (error) {
@@ -69,7 +69,13 @@ export const ButtonPdf =  (data) =>{
     { title: "", dataKey: "" },
     { title: "C", dataKey: "modalidad" },
     ];
-    //dataReportLista,
+
+    let contador = 1;
+    for (let x = 0; x < dataReportLista.length; x++) {
+      dataReportLista[x].nm = contador
+      contador++
+    }
+
     pdf.autoTable(columns,dataReportLista, 
       {
         margin: { top: 75 },
@@ -81,11 +87,9 @@ export const ButtonPdf =  (data) =>{
     );
 
 
-    //piede paginas
     const pageCount = pdf.internal.getNumberOfPages();
     for (var i = 1; i <= pageCount; i++) {
       pdf.setPage(i);
-
 
     pdf.setFontSize(14)//encabezado
     pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS')
@@ -109,7 +113,6 @@ export const ButtonPdf =  (data) =>{
     pdf.text(100, 66, `DOCENTE: ${docente_actual}`);
     pdf.addImage(img, 'PNG', 13, 10, 63, 63)
 
-
       pdf.setFontSize(7)//pie de pagina
       pdf.text(20, 760, "C= curso (O: Ordinario, R: Repetición, E: Especial)");
       pdf.setLineWidth(1.6)
@@ -119,7 +122,6 @@ export const ButtonPdf =  (data) =>{
       pdf.text(20, 770, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, "right");
     }
     pdf.save(nomMateria + '.pdf');
-    console.log(dataReportLista)
   }
   
 

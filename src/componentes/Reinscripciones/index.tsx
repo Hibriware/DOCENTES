@@ -35,8 +35,8 @@ import {
 import {isTimeCrossings} from './utils/reenrollment-filters';
 import {useStudent} from './providers/StudentProvider';
 import DialogoListaMaterias from './ListaMaterias';
-import BajaTemporal from './BajaTemporal/index';
-import BajaPermanente from './BajaPermanente';
+//import BajaTemporal from './BajaTemporal/index';
+//import BajaPermanente from './BajaPermanente';
 import Acceso from './Acceso';
 import {UserRole} from '../../contants';
 
@@ -692,10 +692,10 @@ const ReEnrollmentPage: React.FC = () => {
                   setMateriasSeleccionada={setMateriasSeleccionada}
                   studiedSubjects={studiedSubjects}
                 />
-                <BajaTemporal
+                {/*<BajaTemporal
                   periodos={periodos}
                 />
-                <BajaPermanente/>
+                <BajaPermanente/>*/}
                 <Acceso/>
               </ButtonGroup>
               <MaterialTable

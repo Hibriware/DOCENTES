@@ -17,6 +17,7 @@ import EventIcon from '@material-ui/icons/Event';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Prelist from "../Reportes";
 import {
   BrowserRouter as Router,
   Route,
@@ -31,6 +32,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
+import FindInPageIcon from '@material-ui/icons/FindInPage';
 import PaymentIcon from '@material-ui/icons/Payment';
 import { useStyles } from "./styles";
 import Menu_docentes from "../contenedores/menu_opciones";
@@ -61,7 +63,9 @@ class Menus extends Component {
       { icon: <ChromeReaderModeIcon></ChromeReaderModeIcon>, link: "/boletas" },
       { icon: <DescriptionIcon></DescriptionIcon>, link: "/Docente" },
       { icon: <PaymentIcon></PaymentIcon>, link: "/pagos" },
-      { icon: <SchoolIcon></SchoolIcon>, link: "/reinscripcion" }
+      { icon: <SchoolIcon></SchoolIcon>, link: "/reinscripcion" },
+      { icon: <FindInPageIcon></FindInPageIcon>, link: "/reportes" }
+
     ];
   }
  
@@ -81,12 +85,12 @@ class Menus extends Component {
     const userType = this.AuthService.getUserAccess();
     const sections =
       userType === "Administrador"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion"]
+        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion","Reportes"]
         : userType === "administradorse"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos"]
+        ? ["Inicio", "Admin", "Boletas", , "Pagos",,"Reportes"]
         : userType === "Gestión Escolar"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion"]
-        : userType === "Docente"? ["Inicio", , , "Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,,, "Reinscripcion"]: ["Inicio"];
+        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion","Reportes"]
+        : userType === "Docente"? ["Inicio", , , "Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,,, "Reinscripcion","Reportes"]: ["Inicio"];
 
     return (
       <Router>
@@ -178,6 +182,10 @@ class Menus extends Component {
             <Route exact
                 path="/reinscripcion"
                 render={(routeProps) => <Reinscripcion {...routeProps} />}
+              />
+              <Route exact
+                path="/reportes"
+                render={(routeProps) => <Prelist {...routeProps} />}
               />
               <PrivateRoute_Doncente
                 exact

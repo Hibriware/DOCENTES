@@ -11,6 +11,8 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { getListaCarreras} from '../servicios/api'
+import {list_teacher} from './constants/end-points';
+import Axios from 'axios';
 
 
 
@@ -309,36 +311,29 @@ const components = {
   ValueContainer,
 };
 
-function SelectMateria({setIdCarrera, idDcarreras=''}) {
+function ListTeacher({setIdPersonal, idPersonal,setInfoTeacher}) {
   const classes = useStyles();
   const theme = useTheme();
- // const [mataeriaElegida, setCarreraEligida] = React.useState(null);
-  //const [multi, setMulti] = React.useState(null);
-  const [carreras, setCarreras] = React.useState([]);
-
+  const [teacher, setTeacher] = React.useState([]);
 
 
 useEffect(() => {
-  async function cargarCarreras() {
-    try {
-      let datos = await  getListaCarreras()
-  console.log(datos)
-  if(datos){
-    setCarreras(datos)
-  }
-    } catch (error) {
-      
-    }
-  
-  }
-  cargarCarreras()
+    Axios.get(list_teacher)
+    .then(data=>{
+        setTeacher(data.data)
+    })
+    .catch(()=>{
+        alert("No se encontró una lista valida")})
 }, [])
 
+const dataUpdateSubject=React.useMemo(()=>{
+  const teacherFilter = teacher.filter(data=>data?.idPersonal === idPersonal?.value)
+  setInfoTeacher(teacherFilter)
+},[idPersonal])
 
-  function handleChangeSingle(value) {
-    setIdCarrera(value)
+ async function handleChangeSingle(value) {
+    setIdPersonal(value)
   }
-
   
   const selectStyles = {
     input: base => ({
@@ -359,21 +354,21 @@ useEffect(() => {
           styles={selectStyles}
           inputId="react-select-single"
           TextFieldProps={{
-            label: 'Carrera',
+            label: 'Docente',
             InputLabelProps: {
               htmlFor: 'react-select-single',
               shrink: true,
             },
           }}
-          placeholder="buscar carrera ..."
+          placeholder="Buscar Docente ..."
           options={
-            carreras.map(data => ({
-            value: data.idCarrera || '',
-            label: data.nombreCorto || '',
+            teacher.map(data => ({
+            value: data?.idPersonal || '',
+            label: `${data?.Docente} / CLAVE:${data?.clavePersonal}` || '',
           }))
         }//carreras //suggestions
           components={components}
-          value={idDcarreras || ''}
+          value={idPersonal || ''}
           onChange={handleChangeSingle}
         />
          </NoSsr>
@@ -382,4 +377,4 @@ useEffect(() => {
     
 }
 
-export default SelectMateria;
+export default ListTeacher;

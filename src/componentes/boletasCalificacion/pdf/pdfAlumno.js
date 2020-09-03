@@ -1,21 +1,16 @@
+import jsPDF from 'jspdf';
 import moment from 'moment';
 import Itsr from '../../img/Logo-Tec.png';
-let jsPDF = null;
-var img = null;
 
-if (typeof window !== 'undefined') {
-    import('jspdf').then(module => {
-      jsPDF = module.default;
-    });
-    img = new Image();
-    img.src = Itsr;
-  }
 
-export async function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
+
+export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
 
 	var doc = new jsPDF('p', 'pt', 'letter');
-	//doc.addImage(img, 'PNG', 8, 8, 70, 70)
-	//doc.addImage(img, 'PNG', 8, 420, 70, 70)
+	var img = new Image();
+	img.src = Itsr;
+	doc.addImage(img, 'PNG', 8, 8, 70, 70);
+	doc.addImage(img, 'PNG', 8, 420, 70, 70);
     doc.setFontSize(14); //encabezado
 	doc.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS');
 	doc.line(100, 17, 500, 17); // horizontal line

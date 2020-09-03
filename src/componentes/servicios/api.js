@@ -401,6 +401,25 @@ export async function getReporteHorarios(periodo, idMateria, grupo,materiaDocent
 	}
 }
 
+export async function getReportSchedule(periodo, idMateria, grupo,materiaDocenteId,idPersonal) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+		await axios
+			.get(
+				`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${idPersonal}/${grupo}/${materiaDocenteId}`,
+				TOKEN_USUARIO
+			)
+			.then((res) => (dataReportHorario = res.data))
+			.catch(function(error) {
+				console.log(error)
+				swal('error al buscar los horarios!', 'Verifique su conexión a internet', 'warning');
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export async function getReporteLista(periodo, idMateria, grupo,materiaDocenteId) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
@@ -419,6 +438,27 @@ export async function getReporteLista(periodo, idMateria, grupo,materiaDocenteId
 		console.log(error);
 	}
 }
+
+export async function getReportList(periodo, idMateria, grupo,materiaDocenteId,idPersonal) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+		await axios
+			.get(
+				`${urlApi}/api/reporte/consultar/reporte/lista/${periodo}/${idMateria}/${idPersonal}/${grupo}/${materiaDocenteId}`,
+				TOKEN_USUARIO
+			)
+			.then((res) => (dataReportLista = res.data))
+			.catch(function(error) {
+				console.log(error)
+				swal('error al buscar lista!', 'Verifique su conexión a internet', 'warning');
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+
 
 export function update(id, data) {
 	return request(`/materias/${id}`, 'POST', data);

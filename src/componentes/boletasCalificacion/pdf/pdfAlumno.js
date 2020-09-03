@@ -1,9 +1,15 @@
-import jsPDF from 'jspdf';
 import moment from 'moment';
 import Itsr from '../../img/Logo-Tec.png';
+let jsPDF = null;
+var img = null;
 
-var img = new Image();
-
+if (typeof window !== 'undefined') {
+    import('jspdf').then(module => {
+      jsPDF = module.default;
+    });
+    img = new Image();
+    img.src = Itsr;
+  }
 
 export async function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
 

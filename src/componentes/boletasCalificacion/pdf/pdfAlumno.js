@@ -1,6 +1,6 @@
-import jsPDF from 'jspdf';
+import *as jsPDF from 'jspdf';
 import moment from 'moment';
-import Itsr from '../../img/Logo-Tec.png';
+import Itsr from '../../img/logo.jpg';
 
 
 
@@ -9,8 +9,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	var doc = new jsPDF('p', 'pt', 'letter');
 	var img = new Image();
 	img.src = Itsr;
-	doc.addImage(img, 'PNG', 8, 8, 70, 70);
-	doc.addImage(img, 'PNG', 8, 420, 70, 70);
+	doc.addImage(img, 'JPG', 8, 8, 70, 70);
+	doc.addImage(img, 'JPG', 8, 420, 70, 70);
     doc.setFontSize(14); //encabezado
 	doc.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS');
 	doc.line(100, 17, 500, 17); // horizontal line

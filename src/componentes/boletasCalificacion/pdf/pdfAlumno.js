@@ -1,15 +1,13 @@
 import jsPDF from 'jspdf';
 import moment from 'moment';
-import {columns} from './heders';
 import Itsr from '../../img/Logo-Tec.png';
 
 
 
-let calificacions
-export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
+export async function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
 
 	var doc = new jsPDF('p', 'pt', 'letter');
-	var img = new Image();
+	var img = await new Image();
 	img.src = Itsr;
 	doc.addImage(img, 'PNG', 8, 8, 70, 70)
 	doc.addImage(img, 'PNG', 8, 420, 70, 70)

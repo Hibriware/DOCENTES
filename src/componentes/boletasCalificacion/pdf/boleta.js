@@ -2,7 +2,6 @@ import {getListaCarreras,getCalificaciones,getCatalogoCarrera} from '../servicio
 import {boletaAlumno} from './pdfAlumno';
 import swal from 'sweetalert';
 
-var calificacions = [];
 
 //BUSCAR ASPIRANTE, CAREERA, PERIODO
  export async function main(PERIODO, NUMERO_CONTROL,SEMESTRE) {

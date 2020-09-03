@@ -6,7 +6,7 @@ export default function Prelist() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container fixed style={{ height: "80vh" }}>
+      <Container fixed style={{ height: "35vh" }}>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item xs={12}>
           LISTAS DE ASISTENCIA

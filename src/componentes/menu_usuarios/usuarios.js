@@ -17,7 +17,6 @@ import EventIcon from '@material-ui/icons/Event';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Prelist from "../Reportes";
 import {
   BrowserRouter as Router,
   Route,
@@ -32,8 +31,8 @@ import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import DescriptionIcon from "@material-ui/icons/Description";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
-import FindInPageIcon from '@material-ui/icons/FindInPage';
 import PaymentIcon from '@material-ui/icons/Payment';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import { useStyles } from "./styles";
 import Menu_docentes from "../contenedores/menu_opciones";
 import Acta_entregas from "../administrador/acta_entregas";
@@ -42,6 +41,7 @@ import Boletas from "../boletasCalificacion/boletas";
 import AuthService from "../servicios/AuthService";
 import HomePagos from "../conceptoPagos/homePago";
 import Reinscripcion from "../Reinscripciones";
+import AdminReport from "../AdminReport"
 import Axios from "axios";
 import {USER_ACCESS_MODULE} from './constants';
 
@@ -60,11 +60,11 @@ class Menus extends Component {
     this.menuItems = [
       { icon: <HomeIcon></HomeIcon>, link: "/" },
       { icon: <EventIcon></EventIcon>, link: "/inicio" },
-      { icon: <ChromeReaderModeIcon></ChromeReaderModeIcon>, link: "/boletas" },
       { icon: <DescriptionIcon></DescriptionIcon>, link: "/Docente" },
       { icon: <PaymentIcon></PaymentIcon>, link: "/pagos" },
       { icon: <SchoolIcon></SchoolIcon>, link: "/reinscripcion" },
-      { icon: <FindInPageIcon></FindInPageIcon>, link: "/reportes" }
+      { icon: <PictureAsPdfIcon></PictureAsPdfIcon>, link: "/admin/report" }
+
 
     ];
   }
@@ -85,12 +85,12 @@ class Menus extends Component {
     const userType = this.AuthService.getUserAccess();
     const sections =
       userType === "Administrador"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion","Reportes"]
+        ? ["Inicio", "Admin", , "Pagos","Reinscripcion","Reportes"]
         : userType === "administradorse"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos",,"Reportes"]
+        ? ["Inicio", "Admin", , "Pagos",,"Reportes"]
         : userType === "Gestión Escolar"
-        ? ["Inicio", "Admin", "Boletas", , "Pagos","Reinscripcion","Reportes"]
-        : userType === "Docente"? ["Inicio", , , "Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,,, "Reinscripcion","Reportes"]: ["Inicio"];
+        ? ["Inicio", "Admin", , "Pagos","Reinscripcion","Reportes"]
+        : userType === "Docente"? ["Inicio", ,"Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,, "Reinscripcion","Reportes"]: ["Inicio",,,,,"Reportes"];
 
     return (
       <Router>
@@ -184,8 +184,8 @@ class Menus extends Component {
                 render={(routeProps) => <Reinscripcion {...routeProps} />}
               />
               <Route exact
-                path="/reportes"
-                render={(routeProps) => <Prelist {...routeProps} />}
+                path="/admin/report"
+                render={(routeProps) => <AdminReport {...routeProps} />}
               />
               <PrivateRoute_Doncente
                 exact

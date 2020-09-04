@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Boletas from '../boletasCalificacion/boletas';
 import ListSubject from '../Reportes';
+import ListTemas from './ListSubject';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -71,6 +72,7 @@ export default function ScrollableTabsButtonAuto() {
         >
           <Tab label="Boletas de calificaciones" {...a11yProps(0)} />
           <Tab label="Listas de asistencias" {...a11yProps(1)} />
+          <Tab label="Consultar temas" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -78,6 +80,9 @@ export default function ScrollableTabsButtonAuto() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ListSubject/>
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <ListTemas/>
       </TabPanel>
     </div>
   );

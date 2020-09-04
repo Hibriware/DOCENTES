@@ -20,7 +20,7 @@ function Subject({ idPeriodo, idPersonal,idMateriaD,setIdMateriaD }) {
   const [ListSubjects, setSubject] = React.useState([]);
 
   const SearhSubject = React.useMemo(()=>{
-  idPeriodo.idnomenclaturaPeriodo && idPersonal &&  Axios.get(list_subject,{
+  idPeriodo?.idnomenclaturaPeriodo && idPersonal &&  Axios.get(list_subject,{
         params:{
             periodo:idPeriodo.idnomenclaturaPeriodo,
             idPersonal:idPersonal?.value

@@ -535,7 +535,6 @@ export async function getAdmiFechas(periodo) {
 			.get(`${urlApi}/api/administrador/fechas/${periodo || PERIODO_ACTUAL}`, TOKEN_USUARIO)
 			.then((res) => {
 				dataFechasCierre = res.data;
-				console.log('Guardado');
 				return true;
 			})
 			.catch(function(error) {

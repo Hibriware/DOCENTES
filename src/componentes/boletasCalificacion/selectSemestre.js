@@ -15,7 +15,6 @@ function SelectSemestre({setSemestres,semestres}) {
 	useEffect(() => {
 		async function lista() {
 			let res = await getCatalogoSemestre();
-			console.log(res);
 			if (res) {
 				seSemestre(res);
 			} else {
@@ -31,7 +30,7 @@ function SelectSemestre({setSemestres,semestres}) {
 
 
 	return (
-		<FormControl size="small" variant="outlined" className={classes.formControl}>
+		<FormControl size="small" fullWidth variant="outlined" className={classes.formControl}>
 			<InputLabel id="demo-simple-select-outlined-labelp">Semestre</InputLabel>
 			<Select labelId="demo-simple-select-outlined-labelp" id="demo-simple-select-outlinedp" value={semestres} onChange={_handleChange} label="Semestre">
 				{semestre.map((data, index) => (

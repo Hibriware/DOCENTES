@@ -2,10 +2,9 @@ import moment from 'moment';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { dataReportHorario, getReportList, getReportSchedule, dataReportLista} from '../../servicios/api';
-import Itsr from '../../img/Logo-Tec.png';
 import {list_subject} from '../constants/end-points';
 import Axios from 'axios';
-
+import {img} from '../../boletasCalificacion/pdf/img';
 
  
     
@@ -51,9 +50,7 @@ for (let index = 0; index < DATA_MATERIAS.length; index++) {
     const Horas_clases = dataReportHorario[0].semanas;
     const Grupo = dataReportHorario[0].grupo;
     const Semestre = dataReportHorario[0].semestre;
-    var img = new Image();
-
-    img.src = Itsr;
+    
     const pdf = new jsPDF('p', 'pt', 'letter')
 
     

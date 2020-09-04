@@ -1,16 +1,14 @@
 import *as jsPDF from 'jspdf';
 import moment from 'moment';
-import Itsr from '../../img/logo.jpg';
-
+import {img} from './img';
 
 
 export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
 
 	var doc = new jsPDF('p', 'pt', 'letter');
-	var img = new Image();
-	img.src = Itsr;
-	doc.addImage(img, 'JPG', 8, 8, 70, 70);
-	doc.addImage(img, 'JPG', 8, 420, 70, 70);
+	
+	doc.addImage(img, 'JPEG', 8, 8, 70, 70);
+	doc.addImage(img, 'JPEG', 8, 420, 70, 70);
     doc.setFontSize(14); //encabezado
 	doc.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS');
 	doc.line(100, 17, 500, 17); // horizontal line

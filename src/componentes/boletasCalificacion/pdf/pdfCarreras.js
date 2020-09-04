@@ -1,146 +1,17 @@
 import moment from 'moment';
 import jsPDF from 'jspdf';
-import Itsr from '../../img/Logo-Tec.png';
-
-let PDF462 = [{
-    alumno:[{
-        calificacion: '20',
-        clave: 'ASQWE',
-        creditos: '10',
-        docente: 'FERNANDO MAY ESQUIVEL',
-        materia: 'MATERIA DE PRUEBAS',
-        opcion: 'super 1'
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },
-    {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },   {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },
-    {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    }]
-},
-{
-    alumno:[{
-        calificacion: '35',
-        clave: 'AAA2',
-        creditos: '7',
-        docente: 'MINIM.RESID',
-        materia: 'MATERIA DE PRUEBS 2',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },
-    {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },   {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },
-    {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    },  {
-        calificacion: '',
-        clave: '',
-        creditos: '',
-        docente: '',
-        materia: '',
-        opcion: ''
-    }]
-}
-    
-];
-
-
+import{img} from './img';
 
 export function boletacarrera(PDF,TODOS_LOS_PDF_INFORMACION,NOMBRE_CARRERA_ASPIRANTES) {
 
     //console.log(PDF)
  
     var doc = new jsPDF('p', 'pt', 'letter');
-    var img = new Image();
-	img.src = Itsr;
+
    // doc.addPage(1);
   // doc.setPage(i);
   
    
-     var paginas = 1;
      for (var i = 0; i < PDF.length; i++) {
         doc.addImage(img, 'PNG', 8, 8, 70, 70)
         doc.addImage(img, 'PNG', 8, 420, 70, 70)

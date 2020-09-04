@@ -13,8 +13,8 @@ export function boletacarrera(PDF,TODOS_LOS_PDF_INFORMACION,NOMBRE_CARRERA_ASPIR
   
    
      for (var i = 0; i < PDF.length; i++) {
-        doc.addImage(img, 'PNG', 8, 8, 70, 70)
-        doc.addImage(img, 'PNG', 8, 420, 70, 70)
+        doc.addImage(img, 'JPEG', 8, 8, 70, 70)
+        doc.addImage(img, 'JPEG', 8, 420, 70, 70)
         doc.setFontSize(14); //encabezado
         doc.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS');
         doc.line(100, 17, 500, 17); // horizontal line

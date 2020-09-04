@@ -119,7 +119,7 @@ for (let index = 0; index < DATA_MATERIAS.length; index++) {
     pdf.text(500, 66, `GRUPO: ${Semestre} ${Grupo}`);
     pdf.setFontSize(8)
     pdf.text(100, 66, `DOCENTE: ${docente_actual}`);
-    pdf.addImage(img, 'PNG', 13, 10, 63, 63)
+    pdf.addImage(img, 'JPEG', 13, 10, 63, 63)
 
       pdf.setFontSize(7)//pie de pagina
       pdf.text(20, 760, "C= curso (O: Ordinario, R: Repetición, E: Especial)");

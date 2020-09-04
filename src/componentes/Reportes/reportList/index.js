@@ -2,8 +2,7 @@ import moment from 'moment';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { dataReportHorario, getReportList, getReportSchedule, dataReportLista} from '../../servicios/api';
-import Itsr from '../../img/Logo-Tec.png';
-
+import {img} from '../../boletasCalificacion/pdf/img';
 
  
     
@@ -37,9 +36,7 @@ import Itsr from '../../img/Logo-Tec.png';
     const Horas_clases = dataReportHorario[0].semanas;
     const Grupo = dataReportHorario[0].grupo;
     const Semestre = dataReportHorario[0].semestre;
-    var img = new Image();
 
-    img.src = Itsr;
     const pdf = new jsPDF('p', 'pt', 'letter')
 
     
@@ -108,7 +105,7 @@ import Itsr from '../../img/Logo-Tec.png';
     pdf.text(500, 66, `GRUPO: ${Semestre} ${Grupo}`);
     pdf.setFontSize(8)
     pdf.text(100, 66, `DOCENTE: ${docente_actual}`);
-    pdf.addImage(img, 'PNG', 13, 10, 63, 63)
+    pdf.addImage(img, 'JPEG', 13, 10, 63, 63)
 
       pdf.setFontSize(7)//pie de pagina
       pdf.text(20, 760, "C= curso (O: Ordinario, R: Repetición, E: Especial)");

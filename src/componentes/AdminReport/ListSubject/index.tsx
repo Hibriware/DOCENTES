@@ -49,7 +49,6 @@ function ListSubject() {
     
 
     const listDate = React.useMemo(()=>{
-         console.log(idPeriodo)
          idPeriodo && idMateriaD && idPersonal && Axios.get(`${list_date}/${idPeriodo?.idnomenclaturaPeriodo}`).then((res)=>{
             const[DATES]=res.data;
             setFecha1(DATES?.primera_entrega)
@@ -62,7 +61,6 @@ function ListSubject() {
     const listDateSubject = React.useMemo(()=>{
         idPeriodo && idMateriaD && idPersonal && Axios.get(`${All_List_Date}/${idPeriodo?.idnomenclaturaPeriodo}/${idMateriaD?.idmaterias}/${idPersonal?.value}/${idMateriaD?.materiaDocenteId}`)
         .then((res)=>{
-            console.log(res,"list data the teacher")
             setEleccion_temas({data:res.data})
         }).catch((err)=>console.log(err))
     },[fecha1,fecha2,idMateriaD?.materiaDocenteId,idPersonal]);

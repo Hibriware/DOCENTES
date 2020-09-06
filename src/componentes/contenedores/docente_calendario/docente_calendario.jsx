@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 //import 'date-fns';
+import { format} from 'date-fns'
+
 import Grid from '@material-ui/core/Grid';
 import swal from 'sweetalert';
 import moment from 'moment';
@@ -19,6 +21,14 @@ import { TablaAsignacionFecha } from './Tabla_fechas_evaluacion';
 import { TablaVerTemas } from './tabla_lista_temas';
 import { FechaDate } from './date/Dateinput';
 import * as toastr from 'toastr';
+import {
+	isDatesDifferent,
+	isDatesHigher,
+	isDatesHigherEqual,
+	dateMayor,
+	dateMenor,
+	menorIgual
+} from './date/isDate';
 
 var resultado,
 	descri = 'Seleccione una fecha correcta',
@@ -29,7 +39,6 @@ function createDatatemas(save, tema, fecha) {
 }
 
 export default function CustomizedTables() {
-	console.log('Docente calendario')
 	//constante tablas
 	//estado de la table tema
 	const [ eleccion_temas, setEleccion_temas ] = React.useState({ data: [] });
@@ -38,9 +47,9 @@ export default function CustomizedTables() {
 	const [ activo, setActivo ] = React.useState('none');
 	const [ resul_state, setResul ] = React.useState();
 	const [ btn, setBtn ] = React.useState(true);
-	//fecha
+	//format(new Date(e), 'MM/dd/yyyy')
 	//var default_fecha = moment(new Date(FECHA_ACTUAL)).format('YYYY-MM-DD');//pasar data server
-	const default_fecha = moment(new Date()).format('YYYY-MM-DD, h:mm:ss a');
+	const default_fecha = format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy') ;
 	const [ date_ficha1, setDate_fecha1 ] = React.useState(default_fecha);
 	const [ date_ficha2, setDate_fecha2 ] = React.useState(default_fecha);
 	const [ date_ficha3, setDate_fecha3 ] = React.useState(default_fecha);
@@ -76,18 +85,17 @@ export default function CustomizedTables() {
 
 	useEffect(
 		() => {
-			console.log('useEffect docente');
 			async function fechas() {
 				try {
 					if (dataFechasCierre.length === 0) {
 						await getAdmiFechas(); //moment().format('DD-MM-YYYY')
-					}
-					setFecha1(moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD'));
-					setFecha2(moment(dataFechasCierre[0].segunda_entrega).format('YYYY-MM-DD'));
-					setFecha3(moment(dataFechasCierre[0].tercera_entrega).format('YYYY-MM-DD'));
-					setFechafinal(moment(dataFechasCierre[0].entrega_final).format('YYYY-MM-DD'));
+					}//format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')  moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD')
+					setFecha1(format(new Date(dataFechasCierre[0].primera_entrega), 'MM/dd/yyyy'));
+					setFecha2(format(new Date(dataFechasCierre[0].segunda_entrega), 'MM/dd/yyyy'));
+					setFecha3(format(new Date(dataFechasCierre[0].tercera_entrega), 'MM/dd/yyyy'));
+					setFechafinal(format(new Date(dataFechasCierre[0].entrega_final), 'MM/dd/yyyy'));
 
-					if ((moment(FECHA_ACTUAL).format('YYYY-MM-DD')) === fecha1 && (moment(FECHA_ACTUAL).format('YYYY-MM-DD')) === fecha2) {
+					if ((format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')) === fecha1 && (format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')) === fecha2) {
 						setDisablesd(true);
 					}
 				} catch (error) {
@@ -137,12 +145,13 @@ export default function CustomizedTables() {
 		}
 	}; //  fin get datos materias- para el select dataStatusTemas
 
+
+
 	//paso despues de validar materia
-	//var fecha1 = '2020-02-27', fecha2 = '2020-03-27', fecha3 = '2020-04-27';
 	const Mitema1 = 'Tema 1';
 	const actualizar_fecha_tema1 = async (date) => {
 		//tema1 seleccionar fecha para el tema-----------------------------@#######
-		if (date < fecha1) {
+		if (isDatesHigher(date , fecha1)) {
 			removerTema(Mitema1); //eliminar estado
 			setChectema1(false);
 			setDate_fecha1(date);
@@ -157,9 +166,8 @@ export default function CustomizedTables() {
 		//tema1 activar el tema o no
 		const numUnidad = 1;
 		const valor_chek = teman.target.checked;
-
 		setChectema1(valor_chek);
-		if (valor_chek === true &&  date_ficha1 < fecha1 && date_ficha1 < fechaFinal) {
+		if (valor_chek === true &&  dateMenor(date_ficha1 , fecha1) && isDatesHigher(date_ficha1 , fechaFinal)) {
 			validar_fecha(date_ficha1, Mitema1, date_ficha1, numUnidad);
 			setDisablesdCheck(false);
 		} else {
@@ -174,7 +182,7 @@ export default function CustomizedTables() {
 	const Mitema2 = 'Tema 2';
 	const actualizar_fecha_tema2 = (date) => {
 		//tema1-----------------------------····#####3
-		if (date >= date_ficha1 && date < fechaFinal && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date, date_ficha1) && isDatesHigher(date ,fechaFinal) && isDatesDifferent(date,fecha2) && isDatesDifferent(date, fecha3)) {
 			removerTema(Mitema2);
 			setChectema2(false); //cambiar checked a false
 			setDate_fecha2(date);
@@ -187,15 +195,14 @@ export default function CustomizedTables() {
 	}; //fin
 
 	const tema_2 = async (teman2) => {
-		//tema2
 		const numUnidad = 2;
 		const valor_chek = teman2.target.checked;
 		setChectema2(valor_chek);
 		if (
 			valor_chek === true &&
 			//date_ficha2 !== default_fecha &&
-			date_ficha2 >= date_ficha1 &&
-			date_ficha2 < fechaFinal
+			isDatesHigherEqual(date_ficha2, date_ficha1) &&
+			isDatesHigher(date_ficha2 , fechaFinal)
 		) {
 			validar_fecha(date_ficha2, Mitema2, date_ficha2, numUnidad);
 			setBtn(false);
@@ -207,11 +214,10 @@ export default function CustomizedTables() {
 		}
 	}; //fin tema2
 
-	//tema 3 configuracion
 	const Mitema3 = 'Tema 3';
 	const actualizar_fecha_tema3 = (date) => {
 		//tema3-----------------------------########
-		if (date >= date_ficha2 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha2) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema3);
 			setChectema3(false); //canbiar checked a false
 			setDate_fecha3(date);
@@ -230,8 +236,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 			//date_ficha3 !== default_fecha &&
-			date_ficha3 >= date_ficha2 &&
-			date_ficha3 < fechaFinal
+			isDatesHigherEqual(date_ficha3 , date_ficha2) &&
+			isDatesHigher(date_ficha3 , fechaFinal)
 		) {
 			validar_fecha(date_ficha3, Mitema3, date_ficha3, numUnidad);
 			
@@ -245,7 +251,7 @@ export default function CustomizedTables() {
 	const Mitema4 = 'Tema 4';
 	const actualizar_fecha_tema4 = (date) => {
 		//tema4-----------------------------########
-		if (date >= date_ficha3 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha3) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent( date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema4);
 			setChectema4(false); //canbiar checked a false
 			setDate_fecha4(date);
@@ -264,8 +270,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 		//	date_ficha4 !== default_fecha &&
-			date_ficha4 >= date_ficha3 &&
-			date_ficha4 < fechaFinal
+		isDatesHigherEqual(date_ficha4 , date_ficha3) &&
+		isDatesHigher(date_ficha4 , fechaFinal)
 		) {
 			validar_fecha(date_ficha4, Mitema4, date_ficha4, numUnidad);
 		} else {
@@ -278,7 +284,7 @@ export default function CustomizedTables() {
 	const Mitema5 = 'Tema 5';
 	const actualizar_fecha_tema5 = (date) => {
 		//tema5-----------------------------########
-		if (date >= date_ficha4 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha4) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) &&isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema5);
 			setChectema5(false); //canbiar checked a false
 			setDate_fecha5(date);
@@ -297,8 +303,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 			//date_ficha5 !== default_fecha &&
-			date_ficha5 >= date_ficha4 &&
-			date_ficha5 < fechaFinal
+			isDatesHigherEqual(date_ficha5, date_ficha4) &&
+			isDatesHigher(date_ficha5 , fechaFinal)
 		) {
 			validar_fecha(date_ficha5, Mitema5, date_ficha5, numUnidad);
 		} else {
@@ -311,7 +317,7 @@ export default function CustomizedTables() {
 	const Mitema6 = 'Tema 6';
 	const actualizar_fecha_tema6 = (date) => {
 		//tema6-----------------------------########
-		if (date >= date_ficha5 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3 ) {
+		if (isDatesHigherEqual(date , date_ficha5) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date, fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3) ) {
 			removerTema(Mitema6);
 			setChectema6(false); //canbiar checked a false
 			setDate_fecha6(date);
@@ -330,8 +336,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 			//date_ficha6 !== default_fecha &&
-			date_ficha6 >= date_ficha5 &&
-			date_ficha6 < fechaFinal
+			isDatesHigherEqual(date_ficha6 , date_ficha5) &&
+			isDatesHigher(date_ficha6 , fechaFinal)
 		) {
 			validar_fecha(date_ficha6, Mitema6, date_ficha6, numUnidad);
 		} else {
@@ -344,7 +350,7 @@ export default function CustomizedTables() {
 	const Mitema7 = 'Tema 7';
 	const actualizar_fecha_tema7 = (date) => {
 		//tema4-----------------------------########
-		if (date >= date_ficha6 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha6) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema7);
 			setChectema7(false); //canbiar checked a false
 			setDate_fecha7(date);
@@ -362,8 +368,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 			//date_ficha7 !== default_fecha &&
-			date_ficha7 >= date_ficha6 &&
-			date_ficha7 < fechaFinal
+			isDatesHigherEqual(date_ficha7 , date_ficha6) &&
+			isDatesHigher(date_ficha7 , fechaFinal)
 		) {
 			validar_fecha(date_ficha7, Mitema7, date_ficha7, numUnidad);
 		} else {
@@ -376,7 +382,7 @@ export default function CustomizedTables() {
 	const Mitema8 = 'Tema 8';
 	const actualizar_fecha_tema8 = (date) => {
 		//tema8-----------------------------########
-		if (date >= date_ficha7 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha7) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema8);
 			setChectema8(false); //canbiar checked a false
 			setDate_fecha8(date);
@@ -391,12 +397,11 @@ export default function CustomizedTables() {
 		const numUnidad = 8;
 		const valor_chek = teman8.target.checked;
 		setChectema8(valor_chek);
-
 		if (
 			valor_chek === true &&
 			//date_ficha8 !== default_fecha &&
-			date_ficha8 >= date_ficha7 &&
-			date_ficha8 < fechaFinal
+			isDatesHigherEqual(date_ficha8 , date_ficha7) &&
+			isDatesHigher(date_ficha8 , fechaFinal)
 		) {
 			validar_fecha(date_ficha8, Mitema8, date_ficha8, numUnidad);
 		} else {
@@ -409,7 +414,7 @@ export default function CustomizedTables() {
 	const Mitema9 = 'Tema 9';
 	const actualizar_fecha_tema9 = (date) => {
 		//tema9-----------------------------########
-		if (date >= date_ficha8 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha8) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema9);
 			setChectema9(false); //canbiar checked a false
 			setDate_fecha9(date);
@@ -427,8 +432,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 			//date_ficha9 !== default_fecha &&
-			date_ficha9 >= date_ficha8 &&
-			date_ficha9 < fechaFinal
+			isDatesHigherEqual(date_ficha9 , date_ficha8) &&
+			isDatesHigher(date_ficha9 , fechaFinal)
 		) {
 			validar_fecha(date_ficha9, Mitema9, date_ficha9, numUnidad);
 		} else {
@@ -441,7 +446,7 @@ export default function CustomizedTables() {
 	const Mitema10 = 'Tema 10';
 	const actualizar_fecha_tema10 = (date) => {
 		//tema10-----------------------------########
-		if (date >= date_ficha9 && date < fechaFinal && date !== fecha1 && date !== fecha2 && date !== fecha3) {
+		if (isDatesHigherEqual(date , date_ficha9) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema10);
 			setChectema10(false); //canbiar checked a false
 			setDate_fecha10(date);
@@ -459,8 +464,8 @@ export default function CustomizedTables() {
 		if (
 			valor_chek === true &&
 			//date_ficha10 !== default_fecha &&
-			date_ficha10 >= date_ficha9 &&
-			date_ficha10 < fechaFinal
+			isDatesHigherEqual(date_ficha10 , date_ficha9) &&
+			isDatesHigher(date_ficha10 , fechaFinal)
 		) {
 			validar_fecha(date_ficha10, Mitema10, date_ficha10, numUnidad);
 		} else {
@@ -511,6 +516,9 @@ export default function CustomizedTables() {
 		}
 	}; // eliminar fecha
 
+
+	
+
 	const validar_fecha = (fechaTema, temaActual, fechaLimite, numUnidad) => {
 		// inicio validar fecha
 		var data_value = {
@@ -523,28 +531,28 @@ export default function CustomizedTables() {
 			numUnidad
 		};
 
-		if (fechaTema <= fecha1 || fechaTema <= fechaFinal) {
+		if (menorIgual(fechaTema , fecha1) || menorIgual(fechaTema , fechaFinal)) {
 			//paso1
-			if (fechaTema <= fecha1) {
+			if (menorIgual(fechaTema , fecha1)) {
 				//###########################
 
 				setEleccion_temas({ ...eleccion_temas, data: eleccion_temas.data.concat(data_value) }); //actualiar el estado de la tabla tmas
 				data_value = {};
 			} else {
 				//fin ffecha 1 true
-				if (fechaTema > fecha1 && fechaTema < fecha2) {
+				if (dateMayor(fechaTema , fecha1) && dateMenor(fechaTema , fecha2)) {
 					//#####################
 					//  var data_value = { id_Materias:resul_state[0].idMateria, periodo:resul_state[0].idnomenclaturaPeriodo, grupo_id:resul_state[0].idGrupos, tema1_nombre: temaActual }
 					setEleccion_temas({ ...eleccion_temas, data: eleccion_temas.data.concat(data_value) }); //actualiar el estado de la tabla tmas
 					data_value = {};
 				} else {
-					if (fechaTema > fecha2 && fechaTema < fecha3) {
+					if (dateMayor(fechaTema , fecha2) && dateMenor( fechaTema , fecha3)) {
 						//###############
 
 						setEleccion_temas({ ...eleccion_temas, data: eleccion_temas.data.concat(data_value) }); //actualiar el estado de la tabla tmas
 						data_value = {};
 					} else {
-						if (fechaTema > fecha3 && fechaTema < fechaFinal) {
+						if (dateMayor(fechaTema, fecha3) && dateMenor(fechaTema , fechaFinal)) {
 							setEleccion_temas({ ...eleccion_temas, data: eleccion_temas.data.concat(data_value) }); //actualiar el estado de la tabla tmas
 							data_value = {};
 						} else {
@@ -573,7 +581,7 @@ export default function CustomizedTables() {
 				onChange={tema_1}
 			/>,
 			'Tema 1',
-			<FechaDate id="tema1" setValue={date_ficha1} onGuardar={actualizar_fecha_tema1} />
+			<FechaDate  id="tema1" setValue={date_ficha1} onGuardar={actualizar_fecha_tema1} />
 		),
 		createDatatemas(
 			<Checkbox

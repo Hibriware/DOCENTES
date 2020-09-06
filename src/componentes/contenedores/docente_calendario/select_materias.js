@@ -16,7 +16,7 @@ export const SelectMaterias = React.memo((data) => {
 
 
     return (
-            <FormControl variant="outlined" margin="none" size="small" className={classes.formControl}>
+            <FormControl fullWidth variant="outlined" margin="none" size="small" className={classes.formControl}>
                 <InputLabel id="InputLabel">Materia</InputLabel>
                 <Select
                     labelId="demo-simple-select-outlined"

@@ -9,11 +9,14 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useStyles } from './dialogos';
-
+import {
+  dateMayor,
+  dateMenor,
+  menorIgual
+} from './date/isDate';
 
 export const TablaVerTemas =React.memo(({eleccion_temas,fecha1,fecha2,fecha3,fechaFinal}:any) =>{
     const classes = useStyles();
-
     return(
         <React.Fragment>
  <TableContainer  component={Paper}>
@@ -30,11 +33,11 @@ export const TablaVerTemas =React.memo(({eleccion_temas,fecha1,fecha2,fecha3,fec
                 {eleccion_temas.data.map((row:any, i:number) => (
                   <TableRow key={i}>
                     <TableCell component="th" scope="row">
-                      {row.fecha_limite <= fecha1 ? row.tema1_nombre : '--'}
+                      {menorIgual(row.fecha_limite , fecha1) ? row.tema1_nombre : '--'}
                     </TableCell>
-                    <TableCell align="right">{row.fecha_limite > fecha1 && row.fecha_limite <= fecha2 ? row.tema1_nombre : '--'}</TableCell>
-                    <TableCell align="right">{row.fecha_limite > fecha2 && row.fecha_limite <= fecha3 ? row.tema1_nombre : '--'}</TableCell>
-                    <TableCell align="right">{row.fecha_limite > fecha3 && row.fecha_limite < fechaFinal ? row.tema1_nombre : '--'}</TableCell>
+                    <TableCell align="right">{dateMayor(row.fecha_limite , fecha1) && menorIgual(row.fecha_limite , fecha2) ? row.tema1_nombre : '--'}</TableCell>
+                    <TableCell align="right">{dateMayor(row.fecha_limite , fecha2) && menorIgual(row.fecha_limite , fecha3) ? row.tema1_nombre : '--'}</TableCell>
+                    <TableCell align="right">{dateMayor(row.fecha_limite , fecha3) && dateMenor(row.fecha_limite , fechaFinal) ? row.tema1_nombre : '--'}</TableCell>
 
                   </TableRow>
                 ))}

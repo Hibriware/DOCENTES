@@ -2,7 +2,7 @@ import moment from 'moment';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import sweetAlert from 'sweetalert';
-import Itsr from '../../../img/Logo-Tec.png';
+import {img} from '../../../boletasCalificacion/pdf/img/index';
 import {
 	getReporteHorariosAdmin,
 	getReporteParcialAdmin,
@@ -433,8 +433,7 @@ const pdfParcial = (
 	const Grupo = dataReportHorario[0].grupo;
 	const Semestre = dataReportHorario[0].semestre;
 //console.log(dataReportHorario,"dataReportHorario")
-	var img = new Image();
-	img.src = Itsr;
+
 
 	const pdf = new jsPDF('p', 'pt', 'letter');
 	//body
@@ -535,8 +534,7 @@ const pdActaFinal = (
 	const Grupo = dataReportHorario[0].grupo;
 	const Semestre = dataReportHorario[0].semestre;
 
-	var img = new Image();
-	img.src = Itsr;
+	
 
 	const pdf = new jsPDF('p', 'pt', 'letter');
 	//body

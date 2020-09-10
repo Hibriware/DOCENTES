@@ -169,11 +169,25 @@ export async function getTemas(idMateria, minimo, cierre,materiaDocenteId) {
 		});
 }
 
-export async function getTemasReportes(idMateria) {
+export async function getTemasReportes(idMateria,materiaDocenteId) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 	let datos = await axios
-		.get(`${urlApi}/api/reporte/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}`, TOKEN_USUARIO)
+		.get(`${urlApi}/api/reporte/consultarTema/${ID_USUARIO}/${idMateria}/${PERIODO_ACTUAL}/${materiaDocenteId}`, TOKEN_USUARIO)
+		.then((res) => res.data)
+		.catch(function(error) {
+			console.log(error);
+			return false;
+		});
+
+	return datos;
+}
+
+export async function getTemasReportesAdmin(idMateria,materiaDocenteId,periodo,idUsuario) {
+	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+	let datos = await axios
+		.get(`${urlApi}/api/reporte/consultarTema/${idUsuario}/${idMateria}/${periodo}/${materiaDocenteId}`, TOKEN_USUARIO)
 		.then((res) => res.data)
 		.catch(function(error) {
 			console.log(error);
@@ -401,6 +415,25 @@ export async function getReporteHorarios(periodo, idMateria, grupo,materiaDocent
 	}
 }
 
+export async function getReporteHorariosAdmin(periodo, idMateria, grupo,materiaDocenteId,idUsuario) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+		await axios
+			.get(
+				`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${idUsuario}/${grupo}/${materiaDocenteId}`,
+				TOKEN_USUARIO
+			)
+			.then((res) => (dataReportHorario = res.data))
+			.catch(function(error) {
+				console.log(error)
+				swal('error al buscar los horarios!', 'Verifique su conexión a internet', 'warning');
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export async function getReportSchedule(periodo, idMateria, grupo,materiaDocenteId,idPersonal) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
@@ -594,18 +627,39 @@ export async function getStatusPeriodo() {
 
 //periodo materia personal grupo
 
-export async function getReporteParcial(materia, grupo) {
+export async function getReporteParcial(materia, grupo,idMateriaDocente) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
 		await axios
 			.get(
-				`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}`,
+				`${urlApi}/api/reporte/consultar/parciales/${PERIODO_ACTUAL}/${materia}/${ID_USUARIO}/${grupo}/${idMateriaDocente}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => {
 				dataReporteParciales = res.data;
-				console.log(res);
+			})
+			.catch(function(error) {
+				swal('', 'sin conexión', 'warning');
+				console.log(error);
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+
+export async function getReporteParcialAdmin(materia, grupo,periodo,idUsuario,idMateriaDocente) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
+		await axios
+			.get(
+				`${urlApi}/api/reporte/consultar/parciales/${periodo}/${materia}/${idUsuario}/${grupo}/${idMateriaDocente}`,
+				TOKEN_USUARIO
+			)
+			.then((res) => {
+				dataReporteParciales = res.data;
 			})
 			.catch(function(error) {
 				swal('', 'sin conexión', 'warning');

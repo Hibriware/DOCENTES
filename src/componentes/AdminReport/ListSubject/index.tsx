@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     Grid,
     Container
@@ -10,6 +10,9 @@ import {TablaVerTemas} from '../../contenedores/docente_calendario/tabla_lista_t
 import {list_date,All_List_Date} from '../constants/end-points';
 import Axios from 'axios';
 import moment from 'moment';
+import {ReportParciales} from '../reportes/parciales/parciales';
+import {ActaFinal} from '../reportes/actaFinal/acta';;
+
 
 
 interface IntePeriod{
@@ -98,6 +101,13 @@ function ListSubject() {
             fechaFinal={fechaFinal}
             />
         </Grid>
+        <Grid item xs={6}>
+        <ReportParciales idMateriaD={idMateriaD} idPeriodo={idPeriodo} idPersonal={idPersonal} infoTeacher={infoTeacher}/>
+        </Grid>
+        <Grid item xs={6}>
+        <ActaFinal idMateriaD={idMateriaD} idPeriodo={idPeriodo} idPersonal={idPersonal} infoTeacher={infoTeacher} />
+        </Grid>
+
       </Grid>
       </Container>
     )

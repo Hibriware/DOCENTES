@@ -2,16 +2,14 @@ import moment from 'moment';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import sweetAlert from 'sweetalert';
-import Itsr from '../../../../img/Logo-Tec.png';
-import { dataMateria } from '../../../../../home';
+import Itsr from '../../../img/Logo-Tec.png';
 import {
-	getReporteHorarios,
-	getReporteParcial,
+	getReporteHorariosAdmin,
+	getReporteParcialAdmin,
 	dataReportHorario,
-	dataPeriodo,
 	dataReporteParciales,
-	getTemasReportes
-} from '../../../../servicios/api';
+	getTemasReportesAdmin
+} from '../../../servicios/api';
 import {
 	columns,
 	columnsAprobacion,
@@ -26,28 +24,32 @@ var arrayAprobacion = [];
 var listaActa = [];
 var LISTA_DE_TEMAS_POR_MATERIAS = [];
 
-export const infPdf = async (pamrs) => {
+export const infPdf = async (pamrs,idMateriaD ,idPeriodo, idPersonal,infoTeacher) => {
+
+	const[infoTeachers]=infoTeacher;
+
 	// paso 1 PAMRS: PARCIAL O ACTA
 	try {
-		const DOCENTE_ACTUAL = dataMateria[0].nameDocente;
-		for (let index = 0; index < dataMateria.length; index++) {
-			const ID_MATERIA = dataMateria[index].idMateria;
-			const PERIODO = dataMateria[index].idnomenclaturaPeriodo;
-			const GRUPO = dataMateria[index].idGrupos;
-			const Materia = dataMateria[index].nombre;
-			const ClaveMateria = dataMateria[index].clave_materia;
-			const ClavePersonal = dataMateria[index].clavePersonal;
-			const ClavePlan = dataMateria[index].plan;
-			const nombreCarrera = dataMateria[index].nombreCorto;
-			const claveCarrera = dataMateria[index].clave;
-			const materiaDocenteId = dataMateria[index].materiaDocenteId;
-			LISTA_DE_TEMAS_POR_MATERIAS = await getTemasReportes(ID_MATERIA,materiaDocenteId);
+		const DOCENTE_ACTUAL = idPersonal.label;
+			const ID_MATERIA = idMateriaD.idmaterias;
+			const PERIODO = idPeriodo.idnomenclaturaPeriodo;
+			const GRUPO = idMateriaD.asignacionGrupo_idgrupo;
+			const Materia = idMateriaD.nomcorto;
+			const ClaveMateria = idMateriaD.clave;
+			const ClavePersonal = infoTeachers.clavePersonal;
+			const ClavePlan = "";
+			const nombreCarrera = idMateriaD.carrera;
+			const claveCarrera = "";
+			const materiaDocenteId = idMateriaD.materiaDocenteId;
+			const idDocente = idPersonal.value;
+
+			LISTA_DE_TEMAS_POR_MATERIAS = await getTemasReportesAdmin(ID_MATERIA,materiaDocenteId,PERIODO,idDocente);
 
 			if (LISTA_DE_TEMAS_POR_MATERIAS.length) {
 				//periodo materia personal grupo
 				await Promise.all([
-					getReporteHorarios(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId),
-					getReporteParcial(ID_MATERIA, GRUPO,materiaDocenteId)
+					getReporteHorariosAdmin(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId,idDocente),
+					getReporteParcialAdmin(ID_MATERIA, GRUPO,PERIODO,idDocente,materiaDocenteId)
 				]);
 				await lista(pamrs);
 				if (pamrs === 'parcial') {
@@ -59,6 +61,7 @@ export const infPdf = async (pamrs) => {
 						ClavePlan,
 						nombreCarrera,
 						claveCarrera
+						,idPeriodo
 					);
 				} else {
 					await pdActaFinal(
@@ -68,7 +71,8 @@ export const infPdf = async (pamrs) => {
 						ClavePersonal,
 						ClavePlan,
 						nombreCarrera,
-						claveCarrera
+						claveCarrera,
+						idPeriodo
 					);
 				}
 
@@ -79,7 +83,6 @@ export const infPdf = async (pamrs) => {
 			} else {
 				sweetAlert('No se encontraron TEMAS finalizados');
 			}
-		}
 	} catch (error) {
 		sweetAlert('No se encontraron TEMAS finalizados');
 		console.log(error);
@@ -423,12 +426,13 @@ const pdfParcial = (
 	ClavePersonal,
 	ClavePlan,
 	nombreCarrera,
-	claveCarrera
+	claveCarrera,
+	idPeriodo
 ) => {
 	const Horas_clases = dataReportHorario[0].semanas;
 	const Grupo = dataReportHorario[0].grupo;
 	const Semestre = dataReportHorario[0].semestre;
-
+//console.log(dataReportHorario,"dataReportHorario")
 	var img = new Image();
 	img.src = Itsr;
 
@@ -485,7 +489,7 @@ const pdfParcial = (
 		pdf.setFontSize(8);
 		pdf.text(100, 40, `MATERIA: ${ClaveMateria} ${nomMateria}`);
 		pdf.setFontSize(8);
-		pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
+		pdf.text(500, 31, `PERIODO: ${idPeriodo.rango}`);
 		pdf.setFontSize(8);
 		pdf.text(500, 40, `FECHA: ${moment(new Date()).format('DD/MM/YYYY')}`);
 		pdf.setFontSize(7);
@@ -524,7 +528,8 @@ const pdActaFinal = (
 	ClavePersonal,
 	ClavePlan,
 	nombreCarrera,
-	claveCarrera
+	claveCarrera,
+	idPeriodo
 ) => {
 	const Horas_clases = dataReportHorario[0].semanas;
 	const Grupo = dataReportHorario[0].grupo;
@@ -580,7 +585,7 @@ const pdActaFinal = (
 		pdf.setFontSize(8);
 		pdf.text(100, 40, `MATERIA: ${ClaveMateria}  ${nomMateria}  ${ClavePlan}`);
 		pdf.setFontSize(8);
-		pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango}`);
+		pdf.text(500, 31, `PERIODO: ${idPeriodo.rango}`);
 		pdf.setFontSize(8);
 		pdf.text(500, 40, `FECHA: ${moment(new Date()).format('DD/MM/YYYY')}`);
 		pdf.setFontSize(7);

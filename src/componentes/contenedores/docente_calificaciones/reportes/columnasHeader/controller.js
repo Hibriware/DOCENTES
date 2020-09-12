@@ -92,17 +92,28 @@ const lista = async (pamrs) => {
 	var nm = 1;
 	for (let index2 = 0; index2 < dataReporteParciales.length; index2++) {
 		// repite segun el numro de alumnos terminados
+		const getTemas1 = parseInt(dataReporteParciales[index2].tema1 || 0);
+		const getTemas2 = parseInt(dataReporteParciales[index2].tema2 || 0);
+		const getTemas3 = parseInt(dataReporteParciales[index2].tema3 || 0);
+		const getTemas4 = parseInt(dataReporteParciales[index2].tema4 || 0);
+		const getTemas5 = parseInt(dataReporteParciales[index2].tema5 || 0);
+		const getTemas6 = parseInt(dataReporteParciales[index2].tema6 || 0);
+		const getTemas7 = parseInt(dataReporteParciales[index2].tema7 || 0);
+		const getTemas8 = parseInt(dataReporteParciales[index2].tema8 || 0);
+		const getTemas9 = parseInt(dataReporteParciales[index2].tema9 || 0);
+		const getTemas10 = parseInt(dataReporteParciales[index2].tema10 || 0);
 
-		let tema1 = parseInt(dataReporteParciales[index2].tema1 || 0),
-			tema2 = parseInt(dataReporteParciales[index2].tema2 || 0),
-			tema3 = parseInt(dataReporteParciales[index2].tema3 || 0),
-			tema4 = parseInt(dataReporteParciales[index2].tema4 || 0),
-			tema5 = parseInt(dataReporteParciales[index2].tema5 || 0),
-			tema6 = parseInt(dataReporteParciales[index2].tema6 || 0),
-			tema7 = parseInt(dataReporteParciales[index2].tema7 || 0),
-			tema8 = parseInt(dataReporteParciales[index2].tema8 || 0),
-			tema9 = parseInt(dataReporteParciales[index2].tema9 || 0),
-			tema10 = parseInt(dataReporteParciales[index2].tema10 || 0),
+
+		let tema1 =getTemas1 >= 70 ? getTemas1:0,
+			tema2 = getTemas2 >= 70 ? getTemas2:0,
+			tema3 = getTemas3 >= 70 ? getTemas3:0,
+			tema4 = getTemas4 >= 70 ? getTemas4:0,
+			tema5 = getTemas5 >= 70 ? getTemas5:0,
+			tema6 = getTemas6 >= 70 ? getTemas6:0,
+			tema7 = getTemas7 >= 70 ? getTemas7:0,
+			tema8 = getTemas8 >= 70 ? getTemas8:0,
+			tema9 = getTemas9 >= 70 ? getTemas9:0,
+			tema10 = getTemas10 >= 70 ? getTemas10:0,
 			opcion1 = dataReporteParciales[index2].opcion1,
 			opcion2 = dataReporteParciales[index2].opcion2,
 			opcion3 = dataReporteParciales[index2].opcion3,
@@ -128,7 +139,6 @@ const lista = async (pamrs) => {
 		];
 		var promediar = eliminar.filter(function(n) {
 			// numero divicion sin 0
-
 			return n.n !== 0;
 		});
 
@@ -136,7 +146,6 @@ const lista = async (pamrs) => {
 			(tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) /
 				LISTA_DE_TEMAS_POR_MATERIAS.length || 0
 		);
-
 		//nueva lista de alumnos con resultado promedio
 		newListaParciales[index2] = {
 			// amacen de todos los resultados de unidades por tema general y  el de temas total
@@ -163,7 +172,7 @@ const lista = async (pamrs) => {
 			opcion8: opcion8,
 			opcion9: opcion9,
 			opcion10: opcion10,
-			Total: TOTAL
+			Total: TOTAL >= 70 ? TOTAL:'NA'
 		};
 		nm++;
 	} //fin for
@@ -227,21 +236,8 @@ const lista = async (pamrs) => {
 	} //FIN ACTA DE CALIFICACION FINAL
 
 	var calcularTemas = promediar.length;
-	// aprobacion y reprobacion
 	await aprobacion(calcularTemas); // inicar paso 3
-	/*
-        console.log('______filtro LISTA ACTA CALIFICACION_______*')
-        console.log(listaActa)
-    
-        console.log('______filtro LISTA NEW_______*')
-    
-        console.log(newListaParciales)
-    
-    
-        console.log('______filtro aprobacion_______*')
-    
-        console.log(arrayAprobacion)
-    */
+
 }; //fin paso 2
 
 const aprobacion = async (calcularTemas) => {
@@ -271,25 +267,24 @@ const aprobacion = async (calcularTemas) => {
 
 	var cont = 1;
 	for (let index = 0; index < 10; index++) {
-		var sumaTema = 0;
+		//var sumaTema = 0;
 
 		//pasar al array
 		switch (cont) {
 			case 1:
 				var temaTotal = newListaParciales.filter(function(tem) {
-					//<<<<<<<<<<<<<<<<<<<<<<<<<
-					sumaTema = sumaTema + tem.tema1;
+					//sumaTema = sumaTema + (tem.tema1 >= 70 ? tem.tema1:0);
 					return tem.tema1 >= 70;
 				});
 				//aprobacionTema1 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
-				aprobacionTema1 = Math.round(100 / dataReporteParciales.length * temaTotal.length);
+				const proemedioAprobacion = (Math.round(100 / dataReporteParciales.length * temaTotal.length))
+				aprobacionTema1 = proemedioAprobacion;
 				reprobacionTema1 = 100 - aprobacionTema1;
-
 				// reprobacionTema1 = Math.round(((sumaTema) / temaTotal.length) - 100)
 				break;
 			case 2:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema2;
+					//sumaTema = sumaTema + tem.tema2;
 					return tem.tema2 >= 70;
 				});
 				//aprobacionTema2 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
@@ -299,7 +294,7 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 3:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema3;
+					//sumaTema = sumaTema + tem.tema3;
 					return tem.tema3 >= 70;
 				});
 
@@ -309,7 +304,7 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 4:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema4;
+					//sumaTema = sumaTema + tem.tema4;
 					return tem.tema4 >= 70;
 				});
 				//aprobacionTema4 = Math.round((temaTotal.length / dataReporteParciales.length)*100)
@@ -318,7 +313,7 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 5:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema5;
+					//sumaTema = sumaTema + tem.tema5;
 					return tem.tema5 >= 70;
 				});
 
@@ -327,7 +322,7 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 6:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema6;
+					//sumaTema = sumaTema + tem.tema6;
 					return tem.tema6 >= 70;
 				});
 				aprobacionTema6 = Math.round(100 / dataReporteParciales.length * temaTotal.length);
@@ -336,7 +331,7 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 7:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema7;
+					//sumaTema = sumaTema + tem.tema7;
 					return tem.tema7 >= 70;
 				});
 				aprobacionTema7 = Math.round(100 / dataReporteParciales.length * temaTotal.length);
@@ -345,7 +340,7 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 8:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema8;
+					//sumaTema = sumaTema + tem.tema8;
 					return tem.tema8 >= 70;
 				});
 				aprobacionTema8 = Math.round(100 / dataReporteParciales.length * temaTotal.length);
@@ -354,16 +349,16 @@ const aprobacion = async (calcularTemas) => {
 				break;
 			case 9:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema9;
-					return tem.tema9 > 70;
+					//sumaTema = sumaTema + tem.tema9;
+					return tem.tema9 >= 70;
 				});
 				aprobacionTema9 = Math.round(100 / dataReporteParciales.length * temaTotal.length);
 				reprobacionTema9 = 100 - aprobacionTema9;
 				break;
 			case 10:
 				temaTotal = newListaParciales.filter(function(tem) {
-					sumaTema = sumaTema + tem.tema10;
-					return tem.tema10 > 70;
+					//sumaTema = sumaTema + tem.tema10;
+					return tem.tema10 >= 70;
 				});
 				aprobacionTema10 = Math.round(100 / dataReporteParciales.length * temaTotal.length);
 				reprobacionTema10 = 100 - aprobacionTema10;
@@ -375,15 +370,18 @@ const aprobacion = async (calcularTemas) => {
 	}
 	//calcular aprobacion LISTA_DE_TEMAS_POR_MATERIAS.length
 	var aprobacionTotal = 0,
-		reprobacionTotal = 0,
-		sumaTemas = 0;
+		reprobacionTotal = 0;
+		//sumaTemas = 0;
 	var temaTotals = await newListaParciales.filter(function(tem) {
-		sumaTemas = sumaTemas + tem.Total;
+		//sumaTemas = sumaTemas + tem.Total;
 		return tem.Total >= 70;
 	});
 
 	aprobacionTotal = Math.round(100 / dataReporteParciales.length * temaTotals.length);
 	reprobacionTotal = 100 - aprobacionTotal;
+
+	console.log(aprobacionTotal,"aprobacionTotal");
+	console.log(reprobacionTotal,"reprobacionTotal")
 
 	arrayAprobacion[0] = {
 		// lista con la aprobacion y reprobacion

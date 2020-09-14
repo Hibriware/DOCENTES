@@ -1,23 +1,21 @@
+import Axios from 'axios';
 import swal from 'sweetalert';
-import {
-    getListaCarreras,
-    getCalificaciones,
-    getCatalogoCarrera,
+/*import {
     getListaControlesCarrera,
     getSearchMatter,
-    getMatterRatings
-} from '../servicios/api';
+} from '../servicios/api';*/
 import {boletacarrera} from './pdfCarreras';
+import {LIST_BOLETAS_URL} from './constant';
 
-Array.prototype.groupBy = function (prop) {
+/*Array.prototype.groupBy = function (prop) {
     return this.reduce(function (groups, item) {
         const val = item[prop]
         groups[val] = groups[val] || []
         groups[val].push(item)
         return groups
     }, {})
-}
-
+}*/
+/*
 export async function main(PERIODO, ID_CARRERA, SEMESTRE) {
 
 
@@ -239,4 +237,22 @@ export async function main(PERIODO, ID_CARRERA, SEMESTRE) {
 
 
 
+}*/
+
+export async function list_boletas(PERIODO, ID_CARRERA, SEMESTRE){
+  await  Axios.get(LIST_BOLETAS_URL,{
+        params:{
+            PERIODO,
+            ID_CARRERA:ID_CARRERA?.value,
+            SEMESTRE
+        }
+    }).then((res)=>{
+if(res.data.length === 0 || Object.entries(res.data).length === 0){
+    swal('', `No se encontraron calificaciones.`, 'warning');
+    return null
+}
+const{TODOS_LOS_PDF:TODOS_LOS_PDF,TODOS_LOS_PDF_INFORMACION:TODOS_LOS_PDF_INFORMACION,NOMBRE_CARRERA_ASPIRANTES:NOMBRE_CARRERA_ASPIRANTES} = res.data;
+boletacarrera(TODOS_LOS_PDF,TODOS_LOS_PDF_INFORMACION,NOMBRE_CARRERA_ASPIRANTES)
+
+    }).catch(error=>console.log(error))
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { makeStyles } from '@material-ui/core/styles';
-import { main } from './pdf/finalRatings';
+import { main ,list_boletas} from './pdf/finalRatings';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -20,7 +20,7 @@ function BttonCarrereas({ semestres, periodo, idDcarreras , setLoader}) {
     	setLoader(true)
 		if (semestres && periodo && idDcarreras) {
 			console.time("main")
-			await main(periodo, idDcarreras, semestres); //PERIODO, ID_CARRERA,SEMESTRE)
+			await list_boletas(periodo, idDcarreras, semestres); //PERIODO, ID_CARRERA,SEMESTRE)
 			console.timeEnd("main")
 		}else{
       alert(" Elija una carrera, periodo y semestre ")

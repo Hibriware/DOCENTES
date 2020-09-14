@@ -119,9 +119,7 @@ import swal from 'sweetalert';
         var ASPIRANTE_RANGO_PERIODO =  DATOSCARRERA_ASPIRENTES[0].rangoPeriodo;
         var ASPIRANTE_NUMERO_PERIODO = DATOSCARRERA_ASPIRENTES[0].semestre;
 
-// ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO
 
-      //catalogo/carrera/1/137/7/19 SEMESTRE - FOLIO - PERIODO - IDCARRERA (semestre, folio,periodo,idcarrera)
       console.time("DATOS_CARRERAS_3")
             DATOS_CARRERAS =  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
       console.timeEnd("DATOS_CARRERAS_3")
@@ -136,17 +134,13 @@ console.time("DATOS_CALIFICACIONES_4")
                 DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
                      
                      console.timeEnd("DATOS_CALIFICACIONES_4")
-                     //console.log(DATOS_CARRERAS[index].nombre)
-                     //console.log(DATOS_CALIFICACIONES)
-                     //CLAVE - MATERIA/DOCENTE - CREDITOS - CALIFICACION_FINAL - OPCION
                         let CLAVE = DATOS_CARRERAS[index].claveMateria;
                         let MATERIA = DATOS_CARRERAS[index].nomcorto;
                         let DOCENTES_NOMBRE = DATOS_CARRERAS[index].nombres;
                         let DOCENTES_PATERNO = DATOS_CARRERAS[index].apellidoPaterno;
                         let DOCENTES_MATERNO = DATOS_CARRERAS[index].apellidoMaterno;
                         let CREDITOS = DATOS_CARRERAS[index].creditos;
-                       // var OPCION = [];
-                            //CALIFICACIONES CALCULO
+
                      if(DATOS_CALIFICACIONES.length > 0){
                             var PROMEDIOS_SUMAS = 0;
                             var PROMEDIOFINAL = 0 ;
@@ -174,9 +168,6 @@ console.time("DATOS_CALIFICACIONES_4")
                                 PROMEDIOFINAL = 0
                                 message = "NO ACREDITADA"
                             }
-                                // 1opcion = 0 , 2 opcion > 0 , nocursado ===11
-                                //console.log("promedio")
-                              //  console.log(PROMEDIOFINAL)
 
                                 DATOS_BOLETA_FINAL[index]={
                                     clave:CLAVE,
@@ -186,12 +177,8 @@ console.time("DATOS_CALIFICACIONES_4")
                                     calificacion:PROMEDIOFINAL,
                                     opcion:message
                                 }
-
-                               // console.log(DATOS_BOLETA_FINAL)
-
             }
 
-  //  }// fin 
 
     let PROMEDIO_SUMA = 0;
     var CREDITOS_SUMA = 0;
@@ -207,18 +194,12 @@ console.time("DATOS_CALIFICACIONES_4")
                 if(DATOS_BOLETA_FINAL[i].calificacion >= 70){
                     MATERIAS_REPROBADAS_CONTADOR++;
                     CREDITOS_REPROBADOS=CREDITOS_REPROBADOS + DATOS_BOLETA_FINAL[i].creditos
-                   // console.log(CREDITOS_REPROBADOS)
                 }
             }
             
             var PROMEDIO = Math.round(PROMEDIO_SUMA/DATOS_BOLETA_FINAL.length)
             MATERIAS_REPROBADAS = (DATOS_BOLETA_FINAL.length - MATERIAS_REPROBADAS_CONTADOR)
-            //console.log('DATOS_BOLETA_FINAL')
-            //console.log(DATOS_BOLETA_FINAL)
-            //console.log('DATOSCARRERA_ASPIRENTES')
-            //console.log(DATOSCARRERA_ASPIRENTES)
-            //console.log(PROMEDIO)
-          //  console.log(CREDITOS_SUMA)
+ 
              
             for (let x = 0; x < DATOS_BOLETA_FINAL.length; x++) {
                 //PDF[x].calificacion = (DATOS_BOLETA_FINAL[x].calificacion >= 70) ? DATOS_BOLETA_FINAL[x].calificacion:DATOS_BOLETA_FINAL[x].calificacion
@@ -243,30 +224,7 @@ console.time("DATOS_CALIFICACIONES_4")
 
             TODOS_LOS_PDF.push({"alumno":PDF})//guardar boletas
             TODOS_LOS_PDF_INFORMACION.push({"alumno":INFORMACIONASPIRANTE})
-            //GUARDAR PROMEDIOS
-                         /* let INFORMACIONASPIRANTE = [{
-                             nomeroControl:'',
-                             numeroPeriodo:'',
-                             rangoPeriodo:'',
-                              nombrecCarrera:'',
-                              nombreAspirante:'',
-                               promedio:'',
-                               materiasReprobadas:'',
-                               totelCreditos:'',
-                                   creditosAprobados:''
         
-                                 }]*/
-        
-
-            
-           // console.log(TODOS_LOS_PDF)
-            //console.log(TODOS_LOS_PDF_INFORMACION)
-
-            
-
-
-//PASAR DATOS AL PDF BOLETAS FINAL
-//boletaAlumno(TODOS_LOS_PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS)
 
  }// fin 
  else{

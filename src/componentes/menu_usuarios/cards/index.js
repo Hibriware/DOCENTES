@@ -2,8 +2,9 @@ import React from 'react';
 import Cardss from './cards';
 import  {dataMateria} from '../../../home';
 import BinveniAdmi from '../../administrador/bienvenida'
-
 const Cards = () =>{
+const [{nombreRol}] = JSON.parse(sessionStorage.getItem("resul"))
+
 if(dataMateria){
     return(
         <>
@@ -26,8 +27,10 @@ if(dataMateria){
         </ul>
         </>
         );
+}else if(nombreRol==='Jefe académico' || nombreRol==='Jefe academico'){
+    return <BinveniAdmi ruta="/admin/report"/>
 }else{
-    return <BinveniAdmi/>
+    return <BinveniAdmi ruta="/inicio"/>
 }
 
 }

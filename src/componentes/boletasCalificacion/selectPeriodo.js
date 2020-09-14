@@ -3,12 +3,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { useStyles } from './styles';
 import { getListaPeriodo } from '../servicios/api';
 
 function SelectPeriodo({setPeriodo,idPeriodo}) {
-	const classes = useStyles();
-
 	const [ periodos, setPeriodos ] = React.useState([]);
 
 	useEffect(() => {
@@ -29,7 +26,7 @@ function SelectPeriodo({setPeriodo,idPeriodo}) {
 
 
 	return (
-		<FormControl size="small" variant="outlined" className={classes.formControl}>
+		<FormControl fullWidth size="small" variant="outlined" >
 			<InputLabel id="demo-simple-select-outlined-labelp">Periodo</InputLabel>
 			<Select labelId="demo-simple-select-outlined-labelp" id="demo-simple-select-outlinedp" value={idPeriodo} onChange={_handleChange} label="Periodo">
 				{periodos.map((PERIODO, index) => (

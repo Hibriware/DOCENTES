@@ -49,6 +49,23 @@ export async function treeApi(datas) {
 	}
 }
 
+export async function saveListSubject(list_all_subject) {
+	try {
+		await axios({
+			method: 'POST',
+			url: `${urlApi}/api/aspirante/save-subject`,
+			data: list_all_subject
+		})
+			.then(() => swal('', 'Los temas se registraron correctamente', 'success'))
+			.catch(function(error) {
+				console.log(error);
+				swal('error!', 'Verifique su conexion a internet!', 'warning');
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export async function crearCalificacion(datas, unidad, id_criterios) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 	//crear calificacion alumno

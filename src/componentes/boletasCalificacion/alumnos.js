@@ -38,10 +38,10 @@ function Alumno({setLoader}) {
 			<Grid container spacing={3}>
 				<Grid item xs={12} sm={4}>
 					<Paper component={'div'} className={classes.paper} elevation={0} >
-					<TextField size="small" id="outlined-basic" value={control.control} onChange={hanledChange} label="NºControl" variant="outlined" />
-						</Paper>
+					<TextField fullWidth size="small" id="outlined-basic" value={control.control} onChange={hanledChange} label="NºControl" variant="outlined" />
+					</Paper>
 				</Grid>
-				<Grid item xs={12} sm={4}>
+				<Grid item xs={12} sm={4} >
 					<Paper component={'div'} className={classes.paper} elevation={0}>
 					<Periodo setPeriodo={setPeriodo} idPeriodo={periodo}/>
 					</Paper>
@@ -54,7 +54,6 @@ function Alumno({setLoader}) {
 				<Grid item xs={6} >
 					<Paper component={'div'} className={classes.paper} elevation={0}>
 					<ButtonPdf setLoader={setLoader} idPeriodo={periodo} idControl={control.control} semestres={semestres} />
-
 					</Paper>
 				</Grid>
 			</Grid>

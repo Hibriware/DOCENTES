@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
-//import 'date-fns';
 import { format} from 'date-fns'
 
 import Grid from '@material-ui/core/Grid';
-import swal from 'sweetalert';
 import moment from 'moment';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
@@ -13,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { dataMaterias, dataMateria } from '../../../home';
 
 import { useStyles } from './dialogos';
-import { dataStatusTemas, getAdmiFechas, dataFechasCierre, treeApi, getStatus_temas,FECHA_ACTUAL } from '../../servicios/api';
+import { dataStatusTemas, getAdmiFechas, dataFechasCierre, getStatus_temas,FECHA_ACTUAL,saveListSubject } from '../../servicios/api';
 import { ID_USUARIO } from '../../../home';
 import { Confirmacion } from './Confirmacion';
 import { SelectMaterias } from './select_materias';
@@ -150,7 +148,6 @@ export default function CustomizedTables() {
 	//paso despues de validar materia
 	const Mitema1 = 'Tema 1';
 	const actualizar_fecha_tema1 = async (date) => {
-		//tema1 seleccionar fecha para el tema-----------------------------@#######
 		if (isDatesHigher(date , fecha1)) {
 			removerTema(Mitema1); //eliminar estado
 			setChectema1(false);
@@ -163,7 +160,6 @@ export default function CustomizedTables() {
 	}; //fin
 
 	const tema_1 = async (teman) => {
-		//tema1 activar el tema o no
 		const numUnidad = 1;
 		const valor_chek = teman.target.checked;
 		setChectema1(valor_chek);
@@ -171,7 +167,6 @@ export default function CustomizedTables() {
 			validar_fecha(date_ficha1, Mitema1, date_ficha1, numUnidad);
 			setDisablesdCheck(false);
 		} else {
-			//setDate_fecha1(default_fecha)
 			setChectema1(false);
 			await removerTema(Mitema1); // eliminar estado
 			toastr.warning('El TEMA 1, no puede ser mayor a la primera entrega', 'nota');
@@ -181,7 +176,6 @@ export default function CustomizedTables() {
 	//tema 2 configuracion
 	const Mitema2 = 'Tema 2';
 	const actualizar_fecha_tema2 = (date) => {
-		//tema1-----------------------------····#####3
 		if (isDatesHigherEqual(date, date_ficha1) && isDatesHigher(date ,fechaFinal) && isDatesDifferent(date,fecha2) && isDatesDifferent(date, fecha3)) {
 			removerTema(Mitema2);
 			setChectema2(false); //cambiar checked a false
@@ -200,7 +194,6 @@ export default function CustomizedTables() {
 		setChectema2(valor_chek);
 		if (
 			valor_chek === true &&
-			//date_ficha2 !== default_fecha &&
 			isDatesHigherEqual(date_ficha2, date_ficha1) &&
 			isDatesHigher(date_ficha2 , fechaFinal)
 		) {
@@ -216,7 +209,6 @@ export default function CustomizedTables() {
 
 	const Mitema3 = 'Tema 3';
 	const actualizar_fecha_tema3 = (date) => {
-		//tema3-----------------------------########
 		if (isDatesHigherEqual(date , date_ficha2) && isDatesHigher(date , fechaFinal) && isDatesDifferent(date , fecha1) && isDatesDifferent(date , fecha2) && isDatesDifferent(date , fecha3)) {
 			removerTema(Mitema3);
 			setChectema3(false); //canbiar checked a false
@@ -476,19 +468,9 @@ export default function CustomizedTables() {
 	}; //fin tema10
 
 	const guardar = async () => {
-		// inicio guardar temas y fechas seleccionadas
-		//llamar dialogo de confirmacion
 		setLoad(true);
-		//activar load..
-		//paticion para el api
-		for (let index = 0; index < eleccion_temas.data.length; index++) {
-			const element = eleccion_temas.data[index];
-			await treeApi(element); //enviar datos al api
-			//setChectema1(false);
-		}
-
+		await saveListSubject(eleccion_temas.data)
 		await dataMaterias(); //actualizar db
-
 		setEleccion_temas({ data: [] }); //limpiar tabla
 		setActivo('none');
 		setLoad(false);
@@ -503,7 +485,6 @@ export default function CustomizedTables() {
 		setChectema9(false);
 		setChectema10(false);
 		setBtn(true);
-		swal('Correcto!', 'Temas Guardados!', 'success');
 	}; // fin guardar temas y fechas seleccionadas
 
 	const removerTema = async (temaRemu) => {

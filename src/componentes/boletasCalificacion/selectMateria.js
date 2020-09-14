@@ -322,7 +322,6 @@ useEffect(() => {
   async function cargarCarreras() {
     try {
       let datos = await  getListaCarreras()
-  console.log(datos)
   if(datos){
     setCarreras(datos)
   }

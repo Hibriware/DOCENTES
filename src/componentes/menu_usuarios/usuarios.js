@@ -26,11 +26,11 @@ import {
 } from "react-router-dom";
 import Chip from "@material-ui/core/Chip";
 import FaceIcon from "@material-ui/icons/Face";
+import PersonIcon from '@material-ui/icons/Person';
 //iconos
 import HomeIcon from "@material-ui/icons/Home";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import DescriptionIcon from "@material-ui/icons/Description";
-import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import PaymentIcon from '@material-ui/icons/Payment';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import { useStyles } from "./styles";
@@ -85,11 +85,11 @@ class Menus extends Component {
     const userType = this.AuthService.getUserAccess();
     const sections =
       userType === "Administrador"
-        ? ["Inicio", "Admin", , "Pagos","Reinscripcion","Reportes"]
+        ? ["Inicio", "Administrador", , "Pagos","Reinscripcion","Reportes"]
         : userType === "administradorse"
-        ? ["Inicio", "Admin", , "Pagos",,"Reportes"]
+        ? ["Inicio", "Administrador", , "Pagos",,"Reportes"]
         : userType === "Gestión Escolar"
-        ? ["Inicio", "Admin", , "Pagos","Reinscripcion","Reportes"]
+        ? ["Inicio", "Administrador", , "Pagos","Reinscripcion","Reportes"]
         : userType === "Docente"? ["Inicio", ,"Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,, "Reinscripcion","Reportes"]: ["Inicio",,,,,"Reportes"];
 
     return (
@@ -124,7 +124,7 @@ class Menus extends Component {
                 label={userType}
                 color="primary"
                 size="small"
-                icon={<FaceIcon />}
+                icon={<PersonIcon />}
               />
               <IconButton
                 title="cerrar la sesión"

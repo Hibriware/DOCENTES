@@ -60,8 +60,8 @@ export async function putConcepto(id, costo) {
 				},
 				TOKEN_USUARIO
 			)
-			.then(function(response) {
-				console.log("");
+			.then(function() {
+				console.log("ok");
 			})
 			.catch(function(error) {
 				console.log(error);

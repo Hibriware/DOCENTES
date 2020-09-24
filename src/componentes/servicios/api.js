@@ -49,13 +49,28 @@ export async function treeApi(datas) {
 	}
 }
 
-export async function saveListSubject(list_all_subject) {
+/*export async function saveListSubject(list_all_subject) {
 	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		await axios({
 			method: 'POST',
 			url: `${urlApi}/api/aspirante/save-subject`,
 			data: list_all_subject
-		})
+		},TOKEN_USUARIO)
+			.then(() => swal('', 'Los temas se registraron correctamente', 'success'))
+			.catch(function(error) {
+				console.log(error);
+				swal('error!', 'Verifique su conexion a internet!', 'warning');
+			});
+	} catch (error) {
+		console.log(error);
+	}
+}*/
+
+export async function saveListSubject(list_all_subject) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		await axios.post(`${urlApi}/api/aspirante/save-subject`,list_all_subject,TOKEN_USUARIO)
 			.then(() => swal('', 'Los temas se registraron correctamente', 'success'))
 			.catch(function(error) {
 				console.log(error);
@@ -92,6 +107,7 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 				opcion: datas.opcion || 1
 			},
 			TOKEN_USUARIO
+
 		)
 		.then((res) => console.log(res.data))
 		.catch(function(error) {
@@ -150,23 +166,7 @@ export async function getListaCarreras() {
 }
 
 
-export async function getListaPeriodo() {
-	try {
-		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
-		let respon = await axios
-			.get(`${urlApi}/api/administrador/lista/periodo`, TOKEN_USUARIO)
-			.then((res) => res.data)
-			.catch(function(error) {
-				swal('!', `${error}`, 'warning');
-				return [];
-			});
-
-		return respon;
-	} catch (error) {
-		console.log(error);
-	}
-}
 
 export async function getTemas(idMateria, minimo, cierre,materiaDocenteId) {
 	let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
@@ -518,11 +518,29 @@ export function borrer(id) {
 	return request(`/materias/${id}`, 'DELETE');
 }
 
-//data administrador
-export async function crearRegistrosfechas(datas) {
+
+//data administrador _____________________________________________
+export async function getListaPeriodo() {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
+		let respon = await axios
+			.get(`${urlApi}/api/administrador/lista/periodo`, TOKEN_USUARIO)
+			.then((res) => res.data)
+			.catch(function(error) {
+				swal('!', `${error}`, 'warning');
+				return [];
+			});
+
+		return respon;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export async function crearRegistrosfechas(datas) {
+	try {
+		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		await axios
 			.post(
 				`${urlApi}/api/administrador/fechas/registrar`,
@@ -540,7 +558,7 @@ export async function crearRegistrosfechas(datas) {
 			.then((res) => swal('', `FECHAS REGISTRADAS`, 'success'))
 			.catch(function(error) {
 				console.log(error);
-				swal('error!', 'Verifique su conexion a internet!', 'warning');
+				swal('error!', 'Ocurrió un error al intentar guardar las fechas de entrega.!', 'warning');
 			});
 	} catch (error) {
 		console.log(error);
@@ -548,7 +566,7 @@ export async function crearRegistrosfechas(datas) {
 	//crear calificacion alumno
 }
 
-//data administrador
+
 export async function updateRegistrosfechas(datas) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
@@ -577,7 +595,7 @@ export async function updateRegistrosfechas(datas) {
 	}
 }
 
-export async function getAdmiFechas(periodo) {
+export async function getAdmiFechas(periodo) {//administrador
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 
@@ -588,7 +606,8 @@ export async function getAdmiFechas(periodo) {
 				return true;
 			})
 			.catch(function(error) {
-				swal('', 'Probablemente el administrador no ha asignado las fechas de cierre ', 'warning');
+				console.log(error)
+				swal('', 'Intente más tarde, servicio no disponible', 'warning');
 				return false;
 			});
 		return respon;

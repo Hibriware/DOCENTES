@@ -32,44 +32,13 @@ const Entregas = () => {
 	const [ entregaFinal, setFinal ] = React.useState(fecha_Defaul);
 	const [ periodos, setPeriodos ] = React.useState(false);
 	const [ temas, setActivaTemas ] = React.useState({temas:false,disabled:true});
-
-
 	const [ recargar, setRecargar ] = React.useState(false);
 	const [ status, setStatus ] = React.useState(false);
 	const [ save, setSave ] = React.useState(false);
 	const [ isperiodo, setIsperiodo ] = React.useState(false);
 	const [ isStatus, setIsStatus ] = React.useState(false);
-
-
 	const [ PERIODO, setPeriodo ] = React.useState(false);
 
-	/*useEffect(() => {
-		async function statusDate() {
-			if (EXISTNCIA_ACTA) {
-				setStatus(true);
-				if(dataFechasCierre.length === 0){
-					await getAdmiFechas()
-				}
-			setEntrega1(dataFechasCierre[0].primera_entrega)
-			setEntrega2(dataFechasCierre[0].segunda_entrega)
-			setEntrega3(dataFechasCierre[0].tercera_entrega)
-			setFinal(dataFechasCierre[0].entrega_final)
-			console.log(dataFechasCierre)
-			}
-		}
-		async function getPeri() {
-			try {
-				await getPeriodo();
-				setPeriodo(dataPeriodo[0].rango);
-			} catch (error) {
-				setStatus(true);
-				console.log(error);
-			}
-		}
-
-		statusDate();
-		getPeri();
-	}, [recargar]);*/
 
 	useEffect(
 		() => {

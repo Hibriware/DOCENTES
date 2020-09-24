@@ -7,7 +7,7 @@ import ListTeacher from '../../Reportes/ListTeacher';
 import ListPeriodo from '../../Reportes/Periodo';
 import Subject from '../../Reportes/listSubject';
 import {TablaVerTemas} from '../../contenedores/docente_calendario/tabla_lista_temas';
-import {list_date,All_List_Date} from '../constants/end-points';
+import {list_date,All_List_Date,getToken} from '../constants/end-points';
 import Axios from 'axios';
 import moment from 'moment';
 import {ReportParciales} from '../reportes/parciales/parciales';
@@ -52,7 +52,7 @@ function ListSubject() {
     
 
     const listDate = React.useMemo(()=>{
-         idPeriodo && idMateriaD && idPersonal && Axios.get(`${list_date}/${idPeriodo?.idnomenclaturaPeriodo}`).then((res)=>{
+         idPeriodo && idMateriaD && idPersonal && Axios.get(`${list_date}/${idPeriodo?.idnomenclaturaPeriodo}`,getToken()).then((res)=>{
             const[DATES]=res.data;
             setFecha1(DATES?.primera_entrega)
             setFecha2(DATES?.segunda_entrega)

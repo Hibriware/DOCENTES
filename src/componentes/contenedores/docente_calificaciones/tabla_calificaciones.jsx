@@ -264,13 +264,13 @@ export const MaterialTableDemo = () => {//inicio del componente
 
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
     columns: [
-      { title: 'Nª', field: 'nm', editable: 'never', defaultSort: 'asc' },
+      //{ title: 'Nª', field: 'nma', editable: 'never', defaultSort: 'asc' },
       {
         title: 'Control', field: 'control', editable: 'never', disablePadding: true, minWidth: 10,sorting:false ,
         cellStyle: {  textAlign: "left", paddingTop: 2, paddingBottom: 0 }
 
       },
-      { title: 'Nombre', field: 'nameAlumno', editable: 'never', disablePadding: true,sorting:false },
+      { title: 'Nombre', field: 'nameAlumno', editable: 'never', defaultSort: 'asc' },
       { title: 'Curso', field: 'curso', editable: 'never', disablePadding: true, minWidth: 10,sorting:false },
       { title: 'Opcion', field: 'opcion', disablePadding: true, minWidth: 10, lookup: { 1:'1RA', 2: '2DA' },sorting:false },
       { title: 'C1', field: 'calR1' , editComponent: props => (

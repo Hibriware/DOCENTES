@@ -70,11 +70,17 @@ export default function CustomizedTables() {
 	const [ checTema9, setChectema9 ] = React.useState(false);
 	const [ checTema10, setChectema10 ] = React.useState(false);
 	//fechas cieere de acta actual
-	const fecha_Defaul = moment(new Date(FECHA_ACTUAL)).format('DD-MM-YYYY');
+	const fecha_Defaul = moment(new Date()).format('DD-MM-YYYY');
 	const [ fecha1, setFecha1 ] = React.useState(fecha_Defaul);
 	const [ fecha2, setFecha2 ] = React.useState(fecha_Defaul);
 	const [ fecha3, setFecha3 ] = React.useState(fecha_Defaul);
 	const [ fechaFinal, setFechafinal ] = React.useState(fecha_Defaul);
+
+	const [ Dfecha1, setDFecha1 ] = React.useState(fecha_Defaul);
+	const [ Dfecha2, setDFecha2 ] = React.useState(fecha_Defaul);
+	const [ Dfecha3, setDFecha3 ] = React.useState(fecha_Defaul);
+	const [ DfechaFinal, setDFechafinal ] = React.useState(fecha_Defaul);
+
 	const [ disablesd, setDisablesd ] = React.useState(false);
 	const [ disablesdCheck, setDisablesdCheck ] = React.useState(true);
 
@@ -92,6 +98,11 @@ export default function CustomizedTables() {
 					setFecha2(format(new Date(dataFechasCierre[0].segunda_entrega), 'MM/dd/yyyy'));
 					setFecha3(format(new Date(dataFechasCierre[0].tercera_entrega), 'MM/dd/yyyy'));
 					setFechafinal(format(new Date(dataFechasCierre[0].entrega_final), 'MM/dd/yyyy'));
+
+					setDFecha1(dataFechasCierre[0].primera_entrega);
+					setDFecha2(dataFechasCierre[0].segunda_entrega);
+					setDFecha3(dataFechasCierre[0].tercera_entrega);
+					setDFechafinal(dataFechasCierre[0].entrega_final);
 
 					if ((format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')) === fecha1 && (format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')) === fecha2) {
 						setDisablesd(true);
@@ -699,10 +710,10 @@ export default function CustomizedTables() {
 					<h3>DOCENTE: {dataMateria[0].nameDocente}</h3>
 					<TablaVerTemas
 						eleccion_temas={eleccion_temas}
-						fecha1={fecha1}
-						fecha2={fecha2}
-						fecha3={fecha3}
-						fechaFinal={fechaFinal}
+						fecha1={Dfecha1}
+						fecha2={Dfecha2}
+						fecha3={Dfecha3}
+						fechaFinal={DfechaFinal}
 					/>
 					<Button
 						style={{ marginTop: '5px' }}

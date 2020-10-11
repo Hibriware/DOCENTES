@@ -94,10 +94,15 @@ export default function CustomizedTables() {
 					if (dataFechasCierre.length === 0) {
 						await getAdmiFechas(); //moment().format('DD-MM-YYYY')
 					}//format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')  moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD')
-					setFecha1(format(new Date(dataFechasCierre[0].primera_entrega), 'MM/dd/yyyy'));
+					/*setFecha1(format(new Date(dataFechasCierre[0].primera_entrega), 'MM/dd/yyyy'));
 					setFecha2(format(new Date(dataFechasCierre[0].segunda_entrega), 'MM/dd/yyyy'));
 					setFecha3(format(new Date(dataFechasCierre[0].tercera_entrega), 'MM/dd/yyyy'));
-					setFechafinal(format(new Date(dataFechasCierre[0].entrega_final), 'MM/dd/yyyy'));
+					setFechafinal(format(new Date(dataFechasCierre[0].entrega_final), 'MM/dd/yyyy'));*/
+
+					setFecha1(dataFechasCierre[0].primera_entrega);
+					setFecha2(dataFechasCierre[0].segunda_entrega);
+					setFecha3(dataFechasCierre[0].tercera_entrega);
+					setFechafinal(dataFechasCierre[0].entrega_final);
 
 					setDFecha1(dataFechasCierre[0].primera_entrega);
 					setDFecha2(dataFechasCierre[0].segunda_entrega);

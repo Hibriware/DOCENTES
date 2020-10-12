@@ -85,11 +85,11 @@ class Menus extends Component {
     const userType = this.AuthService.getUserAccess();
     const sections =
       userType === "Administrador"
-        ? ["Inicio", "Administrador", , "Pagos","Reinscripcion","Reportes"]
+        ? ["Inicio", "Administrador", , "Pagos","Materias(Bajas/Altas)","Reportes"]
         : userType === "administradorse"
         ? ["Inicio", "Administrador", , "Pagos",,"Reportes"]
         : userType === "Gestión Escolar"
-        ? ["Inicio", "Administrador", , "Pagos","Reinscripcion","Reportes"]
+        ? ["Inicio", "Administrador", , "Pagos","Materias(Bajas/Altas)","Reportes"]
         : userType === "Docente"? ["Inicio", ,"Docente"]:(userType === "Jefe académico" && this.state.statusJefeAcademico)? ["Inicio",,,, "Reinscripcion","Reportes"]: ["Inicio",,,,,"Reportes"];
 
     return (

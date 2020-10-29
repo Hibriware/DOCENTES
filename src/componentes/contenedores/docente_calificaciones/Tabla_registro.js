@@ -20,33 +20,37 @@ export const TablaCapturaCalificaciones = (datas) => {
 
 	const guardarPromedio = async (datos) => {
 		//inicio  enviar el promedio asignado en la tabla captura_calificacion
+try {
+	let bandera = datos.materiaDocente_id;
+	let idcalificacion = datos.idcalificaciones;
 
-		let bandera = datos.materiaDocente_id;
-		let idcalificacion = datos.idcalificaciones;
-
-		if (bandera) {
-			if (datos.calR1 === null && datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
-				datos.calR1 = 0;
-				datos.calR2 = 0;
-				datos.calR3 = 0;
-				datos.calR4 = 0;
-			} else if (datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
-				datos.calR2 = 0;
-				datos.calR3 = 0;
-				datos.calR4 = 0;
-			} else if (datos.calR3 === null && datos.calR4 === null) {
-				datos.calR3 = 0;
-				datos.calR4 = 0;
-			} else if (datos.calR4 === null) {
-				datos.calR4 = 0;
-			}
-			await updateCalificaion(idcalificacion, datos);
-		} else {
-			//crear registro para el alumno en registro calificacion
-			await crearCalificacion(datos, unidadCalificacion, id_criterios);
-			await getAlumnos(datos.idMateria, unidadCalificacion,group, MateriaDocente); //LISTA DE ALUMNOS
-			await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
+	if (bandera) {
+		if (datos.calR1 === null && datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
+			datos.calR1 = 0;
+			datos.calR2 = 0;
+			datos.calR3 = 0;
+			datos.calR4 = 0;
+		} else if (datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
+			datos.calR2 = 0;
+			datos.calR3 = 0;
+			datos.calR4 = 0;
+		} else if (datos.calR3 === null && datos.calR4 === null) {
+			datos.calR3 = 0;
+			datos.calR4 = 0;
+		} else if (datos.calR4 === null) {
+			datos.calR4 = 0;
 		}
+		await updateCalificaion(idcalificacion, datos);
+	} else {
+		//crear registro para el alumno en registro calificacion
+		await crearCalificacion(datos, unidadCalificacion, id_criterios);
+		await getAlumnos(datos.idMateria, unidadCalificacion,group, MateriaDocente); //LISTA DE ALUMNOS
+		await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
+	}
+}catch (e) {
+	alert("El proceso no pudo ser completado.")
+}
+
 	}; //fin
 
 	const handleClickOpen = () => {

@@ -70,14 +70,14 @@ export const ButtonPdf =  (data) =>{
     { title: "C", dataKey: "modalidad" },
     ];
 
-    let newlist = await dataReportLista.filter((list,index) => list.estatus !==null)
+    //let newlist = await dataReportLista.filter((list,index) => list.estatus !==null)
     let contador = 1;
-    for (let x = 0; x < newlist.length; x++) {
-      newlist[x].nm = contador
+    for (let x = 0; x < dataReportLista.length; x++) {
+      dataReportLista[x].nm = contador
       contador++
     }
 
-    pdf.autoTable(columns,newlist,
+    pdf.autoTable(columns,dataReportLista,
       {
         margin: { top: 75 },
         styles: { halign:'center',cellPadding: 0.5, fontSize: 7 },

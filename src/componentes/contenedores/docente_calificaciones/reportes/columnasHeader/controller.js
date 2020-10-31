@@ -380,9 +380,6 @@ const aprobacion = async (calcularTemas) => {
 	aprobacionTotal = Math.round(100 / dataReporteParciales.length * temaTotals.length);
 	reprobacionTotal = 100 - aprobacionTotal;
 
-	console.log(aprobacionTotal,"aprobacionTotal");
-	console.log(reprobacionTotal,"reprobacionTotal")
-
 	arrayAprobacion[0] = {
 		// lista con la aprobacion y reprobacion
 		aprobacionTema1: aprobacionTema1,
@@ -396,7 +393,7 @@ const aprobacion = async (calcularTemas) => {
 		aprobacionTema9: aprobacionTema9,
 		aprobacionTema10: aprobacionTema10,
 		aprobacionTotal: aprobacionTotal,
-		etiquetaAprobacion: '%Aprobacion:',
+		etiquetaAprobacion: '%Aprobación:',
 
 		reprobacionTema1: Math.abs(reprobacionTema1) === 0 ? 100 : Math.abs(reprobacionTema1),
 		reprobacionTema2: Math.abs(reprobacionTema2) === 0 ? 100 : Math.abs(reprobacionTema2),
@@ -409,7 +406,7 @@ const aprobacion = async (calcularTemas) => {
 		reprobacionTema9: Math.abs(reprobacionTema9) === 0 ? 100 : Math.abs(reprobacionTema9),
 		reprobacionTema10: Math.abs(reprobacionTema10) === 0 ? 100 : Math.abs(reprobacionTema10),
 		reprobacionTotal: Math.abs(reprobacionTotal) === 0 ? 100 : Math.abs(reprobacionTotal),
-		etiquetaReprobacion: '%Reprobacion:'
+		etiquetaReprobacion: '%Reprobación:'
 	};
 	// arrayAprobacionOrdenado=[{aprobacionTema1:arrayAprobacion[0]}]
 }; //fin paso 3
@@ -478,7 +475,7 @@ const pdfParcial = (
 		pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS');
 		pdf.line(100, 17, 500, 17); // horizontal line
 		pdf.setFontSize(8);
-		pdf.text(262, 26, 'PRELISTA CON PARCIALES');
+		pdf.text(262, 26, 'LISTA CON PARCIALES');
 		pdf.roundedRect(102, 45, 400, 12, 3, 3);
 		pdf.setFontSize(8);
 		pdf.text(100, 40, `MATERIA: ${ClaveMateria} ${nomMateria}`);
@@ -573,7 +570,7 @@ const pdActaFinal = (
 		pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS');
 		pdf.line(100, 17, 500, 17); // horizontal line
 		pdf.setFontSize(8);
-		pdf.text(262, 26, 'ACTA DE CALIFICACION');
+		pdf.text(262, 26, 'ACTA DE CALIFICACIÓN');
 		pdf.roundedRect(102, 45, 400, 12, 3, 3);
 		pdf.setFontSize(8);
 		pdf.text(100, 40, `MATERIA: ${ClaveMateria}  ${nomMateria}  ${ClavePlan}`);

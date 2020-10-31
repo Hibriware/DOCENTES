@@ -96,7 +96,7 @@ export const ButtonPdf =  (data) =>{
     pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS')
     pdf.line(100, 17, 500, 17) // horizontal line
     pdf.setFontSize(7)
-    pdf.text(262, 25, "PRELISTA");
+    pdf.text(262, 25, " LISTA DE ALUMNOS INSCRITOS");
     pdf.roundedRect(102, 45, 400, 12, 3, 3)
     pdf.setFontSize(8)
     pdf.text(100, 32, `CARRERA: ${Nombre_Carrera}`);

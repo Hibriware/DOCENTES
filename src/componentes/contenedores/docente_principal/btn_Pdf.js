@@ -36,7 +36,7 @@ export const ButtonPdf =  (data) =>{
     }
   }
 
-  const pdfAsistencia = (nomMateria, docente_actual,Nombre_Carrera,Clave_Materia) => {
+  const pdfAsistencia = async (nomMateria, docente_actual,Nombre_Carrera,Clave_Materia) => {
     const Horas_clases = dataReportHorario[0].semanas;
     const Grupo = dataReportHorario[0].grupo;
     const Semestre = dataReportHorario[0].semestre;
@@ -70,13 +70,14 @@ export const ButtonPdf =  (data) =>{
     { title: "C", dataKey: "modalidad" },
     ];
 
+    //let newlist = await dataReportLista.filter((list,index) => list.estatus !==null)
     let contador = 1;
     for (let x = 0; x < dataReportLista.length; x++) {
       dataReportLista[x].nm = contador
       contador++
     }
 
-    pdf.autoTable(columns,dataReportLista, 
+    pdf.autoTable(columns,dataReportLista,
       {
         margin: { top: 75 },
         styles: { halign:'center',cellPadding: 0.5, fontSize: 7 },
@@ -95,7 +96,7 @@ export const ButtonPdf =  (data) =>{
     pdf.text(130, 15, 'INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS')
     pdf.line(100, 17, 500, 17) // horizontal line
     pdf.setFontSize(7)
-    pdf.text(262, 25, "PRELISTA");
+    pdf.text(262, 25, " LISTA DE ALUMNOS INSCRITOS");
     pdf.roundedRect(102, 45, 400, 12, 3, 3)
     pdf.setFontSize(8)
     pdf.text(100, 32, `CARRERA: ${Nombre_Carrera}`);

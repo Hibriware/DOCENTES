@@ -241,9 +241,11 @@ export async function getAlumnos(idMateria, unidad, group, materiaDocente_id) {
 				`${urlApi}/api/aspirante/consultarAlumnos/${idMateria}/${PERIODO_ACTUAL}/${ID_USUARIO}/${unidad}/${group}/${materiaDocente_id}`,
 				TOKEN_USUARIO
 			)
-			.then((res) => (datalistaAlumnos = res.data))
+			.then((res) => {
+				return datalistaAlumnos=res.data;
+			})
 			.catch(function(error) {
-				swal('Error', 'Verifique su conexion a internet!', 'warning');
+				swal('Error', 'No se encontró información!', 'warning');
 			});
 	}
 

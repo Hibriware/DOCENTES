@@ -18,7 +18,7 @@ export var columns = [
 
 export var columnsAprobacion = [
 
-    { title: "% APROBACION", dataKey: "", },
+    { title: "% APROBACIÓN", dataKey: "", },
     { title: "01", dataKey: "aprobacionTema1" },
     { title: "02", dataKey: "aprobacionTema2" },
     { title: "03", dataKey: "aprobacionTema3" },
@@ -34,7 +34,7 @@ export var columnsAprobacion = [
 ];
  export var columnsReprobacion = [
 
-    { title: "% REPROBACION", dataKey: "", },
+    { title: "% REPROBACIÓN", dataKey: "", },
     { title: "01", dataKey: "reprobacionTema1" },
     { title: "02", dataKey: "reprobacionTema2" },
     { title: "03", dataKey: "reprobacionTema3" },

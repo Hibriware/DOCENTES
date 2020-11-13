@@ -4,11 +4,11 @@ const axios = require('axios');
 
 
 
-export async function getListaCarreras(periodo, numeroNuntrol,semestre) {
+export async function getListaCarreras(periodo, numeroNuntrol) {
 	try {
 		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		const response = await axios
-			.get(`${urlApi}/api/reporte/consultar/carrera/alumno/${periodo}/${numeroNuntrol}/${semestre}`, TOKEN_USUARIO)
+			.get(`${urlApi}/api/reporte/consultar/carrera/alumno/${periodo}/${numeroNuntrol}`, TOKEN_USUARIO)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');

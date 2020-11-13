@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 
 
 //BUSCAR ASPIRANTE, CAREERA, PERIODO
- export async function main(PERIODO, NUMERO_CONTROL,SEMESTRE) {
+ export async function main(PERIODO, NUMERO_CONTROL) {
 
     try {
         
@@ -80,11 +80,11 @@ import swal from 'sweetalert';
     
     //variables
     
-    DATOSCARRERA_ASPIRENTES = await getListaCarreras(PERIODO,NUMERO_CONTROL,SEMESTRE)
+    DATOSCARRERA_ASPIRENTES = await getListaCarreras(PERIODO,NUMERO_CONTROL)
 
     if(DATOSCARRERA_ASPIRENTES.length > 0){
         let BOLETA_ID_CARRERA =  DATOSCARRERA_ASPIRENTES[0].idCarrera;
-        let BOLETA_SEMESTRE = SEMESTRE
+        let BOLETA_SEMESTRE = DATOSCARRERA_ASPIRENTES[0].semestre
         let BOLETA_FOLIO = DATOSCARRERA_ASPIRENTES[0].Folio;
         let BOLETA_PERIODO = DATOSCARRERA_ASPIRENTES[0].idcat_RanPer;
 
@@ -217,7 +217,7 @@ boletaAlumno(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIR
 
  }// fin 
  else{
-    swal('', `El número de control: ${NUMERO_CONTROL}  , no se encontró en el semestre: ${SEMESTRE}`, 'warning');
+    swal('', `El número de control: ${NUMERO_CONTROL}  , no se encontró;`, 'warning');
  }
 
 } catch (error) {

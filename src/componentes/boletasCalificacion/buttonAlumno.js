@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function ButtonAlumno({idPeriodo, idControl, semestres,setLoader}) {
+function ButtonAlumno({idPeriodo, idControl, setLoader}) {
     const classes = useStyles();
     const [activo,setActivo] = React.useState(false)
 
     async function _imprimir() {
       setActivo(true)
-        if(idPeriodo && idControl && semestres){
+        if(idPeriodo && idControl){
           setLoader(true)
-         await main(idPeriodo,idControl,semestres)
+         await main(idPeriodo,idControl)
           setLoader(false)
 
         }else{

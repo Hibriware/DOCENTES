@@ -1,0 +1,25 @@
+
+.box-agregar-servicio {
+    display: flex;
+    flex-direction: column;
+}
+
+.box-cardAgregar{
+    padding: 2px;
+}
+
+.box-cardEditar{
+    margin: 2px;
+    padding: 2px;
+}
+
+
+@media (max-width: 1093px) {
+    .box-agregar-servicio {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+    }
+}

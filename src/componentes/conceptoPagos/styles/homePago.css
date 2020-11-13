@@ -1,0 +1,33 @@
+.box-home-pagos{
+    display: flex;
+    justify-content: space-between;
+}
+
+.box-card-servicios{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.box-card-tabla{
+    display: flex;
+    justify-content: center;
+    padding: 23px;
+    width: 100%;
+}
+
+
+@media (max-width: 1093px) {
+    .box-home-pagos{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 900px;
+
+    }
+    .box-card-servicios{
+
+    }
+
+
+}

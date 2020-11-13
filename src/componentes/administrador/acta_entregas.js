@@ -42,15 +42,14 @@ const Entregas = () => {
 
 	useEffect(
 		() => {
-			async function actualizar() {
-			let RANGO_PERIODO = await getStatusPeriodo();
+			async function actualizar() {let RANGO_PERIODO = await getStatusPeriodo();
 				setPeriodo(RANGO_PERIODO)
 				if(RANGO_PERIODO.periodo){
-				await	buscar_cierre_de_acta(RANGO_PERIODO.periodo)
+					await buscar_cierre_de_acta(RANGO_PERIODO.periodo)
 					setActivaTemas({...temas,disabled:true})
 				}else{
-			
-				await buscar_cierre_de_acta(periodos)
+
+					await buscar_cierre_de_acta(periodos)
 				}
 			}
 
@@ -60,13 +59,13 @@ const Entregas = () => {
 	);
 
 	const handleChange = event => {
-        setActivaTemas({...temas, temas:event})
-	  }
-	  const handleDisables = event => {
-        
-        setActivaTemas({...temas,disabled:event })
-	  }
-	  
+		setActivaTemas({...temas, temas:event})
+	}
+	const handleDisables = event => {
+
+		setActivaTemas({...temas,disabled:event })
+	}
+
 	const buscar_cierre_de_acta = async (evt) => {
 		await getAdmiFechas(evt);
 		setPeriodos(evt);
@@ -97,10 +96,10 @@ const Entregas = () => {
 
 	return (
 		<div>
-			  <Chip size="small" icon={<ErrorIcon />} label="El periodo activo será asignado al sistema de alumnos" color="secondary" />
+			<Chip size="small" icon={<ErrorIcon />} label="El periodo activo será asignado al sistema de alumnos" color="secondary" />
 			<h3 style={{ textAlign: 'center' }}>CALENDARIO DE ENTREGA DE CALIFICACIONES</h3>
 			<h4 style={{ textAlign: 'center' }}>PERIODO ACTIVO:{PERIODO ? PERIODO.rango + PERIODO.anio: 'NO DISPONIBLE'}</h4>
-					<ActivarTemas disabled={temas.disabled} isTemas={temas.temas} handleChange={handleChange} />
+			<ActivarTemas disabled={temas.disabled} isTemas={temas.temas} handleChange={handleChange} />
 			<div className={classes.root}>
 				<Card elevation={3}>
 					<CssBaseline />
@@ -166,7 +165,7 @@ const Entregas = () => {
 							<Grid item xs={4}>
 								<Paper className={classes.paper} elevation={0}>
 									<Lista_Periodos onBuscar={buscar_cierre_de_acta} />
-									
+
 								</Paper>
 							</Grid>
 							<Grid item xs={4}>

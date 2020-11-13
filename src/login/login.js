@@ -21,17 +21,17 @@ import *as toastr from 'toastr';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import FormControl from '@material-ui/core/FormControl';
-import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { usuario: '', password: '', showPassword: false };
+		this.state = { usuario: '', password: '', showPassword: false ,loading:false};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.authService = new AuthService();
@@ -52,17 +52,21 @@ class Login extends React.Component {
   }
   
 	handleSubmit() {
+   	this.setState({loading: true})
    if(this.state.usuario.length && this.state.password.length){
 	this.authService.login(this.state.usuario,this.state.password).then(() => {
+		this.setState({loading: false})
 		this.props.history.replace('/')
 		this.props.onAuthChange();
 	  }).catch(() =>{
+	  	this.setState({loading: false})
 		toastr.error("No se encontró el servicio ", null)
 	  })
    }else{
+	   this.setState({loading: false})
 		toastr.warning("Ingrese su usuario y contraseña", null)
    }
-  }
+	}
 
 	render() {
     const {classes} = this.props;
@@ -101,20 +105,6 @@ class Login extends React.Component {
 											//	autoFocus
 												onChange={this.handleChange}
 											/>
-											{/*<TextField
-												variant="outlined"
-												margin="normal"
-												required
-												fullWidth
-												value={this.state.password}
-												name="password"
-												label="Ingrese su contraseña"
-												type="password"
-												id="password"
-												autoComplete="current-password"
-												onChange={this.handleChange}
-											/>*/}
-
 											<FormControl variant="outlined" fullWidth>
 											<InputLabel htmlFor="outlined-adornment-password">Ingrese su contraseña</InputLabel>
 											<OutlinedInput
@@ -142,12 +132,13 @@ class Login extends React.Component {
 											</FormControl>
 
 											<Button style={{marginTop:'3rem'}}
+												disabled={this.state.loading}
 												fullWidth
 												variant="contained"
 												color="primary"
 												className={classes.submit}
 												onClick={this.handleSubmit}
-												endIcon={<ArrowRightAltIcon />}
+												endIcon={this.state.loading?<MoreHorizIcon/>:<ArrowRightAltIcon />}
 											>
 												Iniciar
 											</Button>

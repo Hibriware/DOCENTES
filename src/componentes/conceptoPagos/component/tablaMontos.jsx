@@ -12,12 +12,12 @@ import { getListaConcepto } from "../servicios";
 
 const columns = [
   { id: "claveconcepto", label: "Clave", align: "center", minWidth: 170 },
-  { id: "nombreconcepto", label: "Nombre", align: "center", minWidth: 100 },
+  { id: "nombreconcepto", label: "Nombre", align: "left", minWidth: 100 },
   {
     id: "costo",
     label: "$Costo",
     minWidth: 170,
-    align: "right",
+    align: "left",
     format: (value) => '$'+value.toFixed(2),
   },
 ];

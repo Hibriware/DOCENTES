@@ -421,7 +421,7 @@ export async function getReporteHorarios(periodo, idMateria, grupo,materiaDocent
 
 		await axios
 			.get(
-				`${urlApi}/api/reporte/consultar/reporte/horarios/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}/${materiaDocenteId}`,
+				`${urlApi}/api/reporte/consultar/reporte/time/${periodo}/${idMateria}/${ID_USUARIO}/${grupo}/${materiaDocenteId}`,
 				TOKEN_USUARIO
 			)
 			.then((res) => (dataReportHorario = res.data))

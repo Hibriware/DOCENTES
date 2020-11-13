@@ -70,8 +70,10 @@ export default function SimpleCard({actualizar, setActualizar, concepto,setLoade
         >
           Editar
         </Typography>
+      <div style={{padding:'4px'}} >
         <SelectConcepto setState={setState} state={state}  concepto={concepto} setCosto={setCosto}/>
-    <Card className={classes.root} variant="">
+      </div>
+    <Card className={classes.root} variant="elevation">
       <CardContent>
         <Grid container direction="column" justify="center" alignItems="center">
           <Grid item xs={12}>

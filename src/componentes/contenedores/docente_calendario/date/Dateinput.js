@@ -22,6 +22,7 @@ export const FechaDate = (data) => {
 				<KeyboardDatePicker
 					disabled={data.disabled}
 					//  variant="inline"
+					label={info}
 					size="small"
 					format="dd/MM/yyyy"
 					margin="none"

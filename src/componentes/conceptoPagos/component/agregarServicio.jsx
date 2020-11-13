@@ -1,38 +1,19 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import CardAgregar from './cardAgregar';
 import CardEditar from './cardEditar';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 3,
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
-}));
+import './agregarServicio.css';
 
 function AgregarServicio({setActualizar,actualizar,concepto, setLoader}) {
-  const classes = useStyles();
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-      spacing={2}
-    >
-      <Grid item xs={4} spacing={2}>
+    <div className='box-agregar-servicio'>
+      <div className='box-cardAgregar' >
       <CardAgregar actualizar ={actualizar} setActualizar={setActualizar} concepto={concepto} setLoader={setLoader} />
-      </Grid>
-      <Grid item xs={4} spacing={2}>
+      </div>
+      <div className='box-cardEditar'>
       <CardEditar actualizar ={actualizar} setActualizar={setActualizar}  concepto={concepto} setLoader={setLoader} />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }
 

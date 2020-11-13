@@ -123,20 +123,6 @@ export default function SimpleCard({
           </Grid>
           <Grid item xs={12}>
           <InputNumeros _handlenChange={handlenChange} costo={state.costo}/>
-
-            {/*<TextField
-              type="number"
-              name="costo"
-              id="standard-basic"
-              label="$Costo"
-              value={state.costo}
-              onInput={(e) => {
-                e.target.value = Math.max(0, parseInt(e.target.value, 10 || 0))
-                  .toString()
-                  .slice(0, 20);
-              }}
-              onChange={handlenChange}
-            />*/}
           </Grid>
           <Grid item xs={12}>
             <TextField

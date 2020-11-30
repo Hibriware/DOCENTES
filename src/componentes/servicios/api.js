@@ -104,7 +104,8 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 				criterios_idcat_Unidad: id_criterios,
 				aspirante_Folio: datas.folioAspirante,
 				periodo: datas.idnomenclaturaPeriodo,
-				opcion: datas.opcion || 1
+				opcion: datas.opcion || 1,
+				curso:datas.curso || 1,
 			},
 			TOKEN_USUARIO
 

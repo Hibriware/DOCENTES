@@ -122,7 +122,6 @@ import swal from 'sweetalert';
 
       console.time("DATOS_CARRERAS_3")
             DATOS_CARRERAS =  await getCatalogoCarrera(BOLETA_SEMESTRE,BOLETA_FOLIO,BOLETA_PERIODO,BOLETA_ID_CARRERA)
-      console.timeEnd("DATOS_CARRERAS_3")
 
             //console.log(DATOS_CARRERAS)
 
@@ -130,7 +129,6 @@ import swal from 'sweetalert';
                  let CARRERA_PERIODO = DATOS_CARRERAS[index].idnomenclaturaPeriodo;
                  let CARRERA_FOLIO =  DATOS_CARRERAS[index].aspirante_Folio;
                  let CARRERA_IDMATERIA = DATOS_CARRERAS[index].idmaterias
-console.time("DATOS_CALIFICACIONES_4")
                 DATOS_CALIFICACIONES = await getCalificaciones(CARRERA_PERIODO,CARRERA_FOLIO,CARRERA_IDMATERIA) //periodo, folio,idmateria
                      
                      console.timeEnd("DATOS_CALIFICACIONES_4")

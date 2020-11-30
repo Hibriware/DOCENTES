@@ -114,7 +114,8 @@ try {
 												parseInt(newData.calCriterio3) +
 												parseInt(newData.calCriterio4))
 										);
-										//console.log(newData)//estado fila modificado
+										//console.log(newData,"ver el estado de la inf")
+										// estado fila modificado
 										async function save() {
                       					await guardarPromedio(newData);
                       					setLoad(false)

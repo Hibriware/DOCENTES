@@ -9,7 +9,6 @@ import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista
 import Itsr from '../../img/Logo-Tec.png';
 
 export const ButtonPdf =  (data) =>{
-  console.log('memo button')
   const [activo, setActio] = React.useState(false)
     
   const informacionPdf = async () => {//http://localhost:4000/api/personal/consultar/reporte/lista/7/403/251/11

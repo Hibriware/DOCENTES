@@ -172,7 +172,8 @@ const lista = async (pamrs) => {
 			opcion8: opcion8,
 			opcion9: opcion9,
 			opcion10: opcion10,
-			Total: TOTAL >= 70 ? TOTAL:'NA'
+			Total: TOTAL >= 70 ? TOTAL:'NA',
+			modalidad:dataReporteParciales[index2]?.modalidad
 		};
 		nm++;
 	} //fin for
@@ -219,7 +220,8 @@ const lista = async (pamrs) => {
 					numeroControl: newListaParciales[nx].numeroControl,
 					opcion: newListaParciales[nx].opcion,
 					primera: newListaParciales[nx].Total,
-					segunta: '-'
+					segunta: '-',
+					modalidad:newListaParciales[nx].modalidad
 				};
 			} else if (Resul.length > 0) {
 				listaActa[nx] = {
@@ -228,7 +230,8 @@ const lista = async (pamrs) => {
 					numeroControl: newListaParciales[nx].numeroControl,
 					opcion: newListaParciales[nx].opcion,
 					primera: '-',
-					segunda: newListaParciales[nx].Total
+					segunda: newListaParciales[nx].Total,
+					modalidad:newListaParciales[nx].modalidad
 				};
 			}
 			nmx++;
@@ -429,7 +432,7 @@ const pdfParcial = (
 
 	const pdf = new jsPDF('p', 'pt', 'letter');
 	//body
-
+console.log(newListaParciales,"search modali")
 	pdf.autoTable(columns, newListaParciales, {
 		margin: { top: 78 },
 		styles: { halign: 'center', cellPadding: 0.5, fontSize: 7 },

@@ -110,7 +110,7 @@ export async function crearCalificacion(datas, unidad, id_criterios) {
 			TOKEN_USUARIO
 
 		)
-		.then((res) => console.log(res.data))
+		.then((res) => console.log('ok'))
 		.catch(function(error) {
 			console.log(error);
 			swal('error!', 'Verifique su conexion a internet!', 'warning');

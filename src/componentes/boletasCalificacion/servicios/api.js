@@ -6,9 +6,9 @@ const axios = require('axios');
 
 export async function getListaCarreras(periodo, numeroNuntrol) {
 	try {
-		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+		//let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		const response = await axios
-			.get(`${urlApi}/api/reporte/consultar/carrera/alumno/${periodo}/${numeroNuntrol}`, TOKEN_USUARIO)
+			.get(`/api/reporte/consultar/carrera/alumno/${periodo}/${numeroNuntrol}/${1}`)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
@@ -40,9 +40,9 @@ export async function getCalificaciones(periodo, folio,idmateria) {
 //http://localhost:4001/api/reporte/consultar/carrera/catalogo/carrera/1/137/7/19
 export async function getCatalogoCarrera(semestre, folio,periodo,idcarrera) {
 	try {
-		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
+
 		const response = await axios
-			.get(`${urlApi}/api/reporte/consultar/carrera/catalogo/carrera/${semestre}/${folio}/${periodo}/${idcarrera}`, TOKEN_USUARIO)
+			.get(`/api/reporte/consultar/carrera/catalogo/carrera/${semestre}/${folio}/${periodo}/${idcarrera}`)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
@@ -56,9 +56,8 @@ export async function getCatalogoCarrera(semestre, folio,periodo,idcarrera) {
 
 export async function getListaControlesCarrera(periodo, semestre,idcarrera) {
 	try {
-		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		const response = await axios
-			.get(`${urlApi}/api/reporte/consultar/lista/carreras/${periodo}/${semestre}/${idcarrera}`, TOKEN_USUARIO)
+			.get(`/api/reporte/consultar/lista/carreras/${periodo}/${semestre}/${idcarrera}`)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
@@ -74,9 +73,8 @@ export async function getListaControlesCarrera(periodo, semestre,idcarrera) {
 
 export async function getCatalogoSemestre() {
 	try {
-		let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		const response = await axios
-			.get(`${urlApi}/api/reporte/consultar/carreras/semestre`, TOKEN_USUARIO)
+			.get(`/api/reporte/consultar/carreras/semestre`)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');

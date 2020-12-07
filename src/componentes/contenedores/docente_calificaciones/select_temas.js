@@ -1,14 +1,16 @@
-import React,{useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { datalistaAlumnos, dataCriterios, getAlumnos } from '../../servicios/api';
 import { useStyles } from './dialogos_calificacion';
+import {PeriodoMateriasContext} from "../../Context/PeriodoMateria/ContextPeriodosMateria";
 export var unidadCalificacion, id_criterios;
 
 export const SelectTemas = React.memo((data) => {
     //const [unidad, setUnidad] = React.useState('');
+    const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
     const estilos = useStyles();
     useEffect(() => {
         
@@ -19,7 +21,7 @@ export const SelectTemas = React.memo((data) => {
         data.setOpen(true)
         let numTemas = tem.target.value;
         data.setUnidad(numTemas);
-        await getAlumnos(data.MATERIA_ID, numTemas,data.group,data.MateriaDocente);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
+        await getAlumnos(data.MATERIA_ID, numTemas,data.group,data.MateriaDocente,statePeriodoMateria?.data[0].periodo);//LISTA DE ALUMNOS  Pendiene mandar unidad que es el tema #
         await data.setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
         await data.updates(data.MATERIA_ID, numTemas,data.MateriaDocente)
         data.setOpen(false)

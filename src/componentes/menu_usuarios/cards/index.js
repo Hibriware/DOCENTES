@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Cardss from './cards';
-import  {dataMateria} from '../../../home';
+//import  {dataMateria} from '../../../home';
 import BinveniAdmi from '../../administrador/bienvenida'
+import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias";
 const Cards = () =>{
+    const {stateMateria} =useContext(MateriasContext);
 const [{nombreRol}] = JSON.parse(sessionStorage.getItem("resul"))
 
-if(dataMateria){
+if(stateMateria.length){
     return(
         <>
 
         <ul  style={{display:'flex'}}>
-            {dataMateria.map((data , index) =>(
+            {stateMateria.map((data , index) =>(
                 <li  key={index} style={{display:'inline', marginRight:'3rem'}}>
                     <Cardss 
                     clave_materia={data.clave_materia} 

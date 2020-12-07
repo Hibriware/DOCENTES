@@ -7,9 +7,6 @@ import swal from 'sweetalert';
  export async function main(PERIODO, NUMERO_CONTROL) {
 
     try {
-        
-  
-
     //variables
     var DATOSCARRERA_ASPIRENTES = [];
     var DATOS_CALIFICACIONES = [];

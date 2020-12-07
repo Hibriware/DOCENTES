@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import MaterialTable from 'material-table';
 import MenuCreterios from './establecerCriterios';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -9,8 +9,10 @@ import * as toastr from 'toastr';
 import { crearCalificacion, updateCalificaion, getAlumnos, datalistaAlumnos } from '../../servicios/api';
 import './calificaciones.css';
 import { id_criterios, unidadCalificacion } from './select_temas';
+import {PeriodoMateriasContext} from "../../Context/PeriodoMateria/ContextPeriodosMateria";
 
 export const TablaCapturaCalificaciones = (datas) => {
+	const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
   const [ open, setOpen ] = React.useState(false);
 	const [ load, setLoad ] = React.useState(false);
   const estilos = useStyles();
@@ -44,7 +46,7 @@ try {
 	} else {
 		//crear registro para el alumno en registro calificacion
 		await crearCalificacion(datos, unidadCalificacion, id_criterios);
-		await getAlumnos(datos.idMateria, unidadCalificacion,group, MateriaDocente); //LISTA DE ALUMNOS
+		await getAlumnos(datos.idMateria, unidadCalificacion,group, MateriaDocente,statePeriodoMateria?.data[0].periodo); //LISTA DE ALUMNOS
 		await setcalificaciones({ datalistaAlumnos: datalistaAlumnos });
 	}
 }catch (e) {
@@ -121,7 +123,7 @@ try {
                       					setLoad(false)
 											return true;
 										}
-										save().then((res) => console.log('listo'));
+										save().then((res) => console.log(''));
 										datalistaAlumnos[datalistaAlumnos.indexOf(oldData)] = newData;
 										return { ...prevState, datalistaAlumnos };
 									}, resolve());

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import moment from 'moment';
 
 import Table from '@material-ui/core/Table';
@@ -15,7 +15,9 @@ import {
   menorIgual
 } from './date/isDate';
 
+
 export const TablaVerTemas =React.memo(({eleccion_temas,fecha1,fecha2,fecha3,fechaFinal}:any) =>{
+
     const classes = useStyles();
     return(
         <React.Fragment>

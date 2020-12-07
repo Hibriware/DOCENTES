@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +9,7 @@ import Slide from '@material-ui/core/Slide';
 import ValidarCriterios from './validarCriterios';
 import LoaderCriterios from './reportes/cargando';
 import {EnviarCriterios} from './cont_criterios';
+import {PeriodoMateriasContext} from "../../Context/PeriodoMateria/ContextPeriodosMateria";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -20,6 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 function MenuCriterios({open,handleClose,updates }){
+  const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
 
   const[isBtn,setIsBtn]=React.useState(true);
   const [openLoad, setOpenLoad] = React.useState(false);
@@ -45,10 +47,11 @@ function MenuCriterios({open,handleClose,updates }){
     }
 
 async function gurardarcriterios() {
-  await EnviarCriterios(1, TODOS_LOS_CRITERIOS.c1, "sin descripcion" );
-  await EnviarCriterios(2, TODOS_LOS_CRITERIOS.c2, "sin descripcion" );
-  await EnviarCriterios(3, TODOS_LOS_CRITERIOS.c3, "sin descripcion" );
-  await EnviarCriterios(4, TODOS_LOS_CRITERIOS.c4, "sin descripcion", updates);
+    const PERIODO = statePeriodoMateria?.data[0].periodo;
+  await EnviarCriterios(1, TODOS_LOS_CRITERIOS.c1, "sin descripcion",PERIODO );
+  await EnviarCriterios(2, TODOS_LOS_CRITERIOS.c2, "sin descripcion",PERIODO );
+  await EnviarCriterios(3, TODOS_LOS_CRITERIOS.c3, "sin descripcion",PERIODO );
+  await EnviarCriterios(4, TODOS_LOS_CRITERIOS.c4, "sin descripcion",PERIODO, updates);
   setIsComfirmar(!isComfirmar)
   setOpenLoad(false)
 }

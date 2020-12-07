@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import { format} from 'date-fns'
 
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +11,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { dataMaterias, dataMateria } from '../../../home';
 
 import { useStyles } from './dialogos';
-import { dataStatusTemas, getAdmiFechas, dataFechasCierre, getStatus_temas,FECHA_ACTUAL,saveListSubject } from '../../servicios/api';
+import {
+	dataStatusTemas,
+	getAdmiFechas,
+	dataFechasCierre,
+	getStatus_temas,
+	saveListSubject,
+	urlApi
+} from '../../servicios/api';
 import { ID_USUARIO } from '../../../home';
 import { Confirmacion } from './Confirmacion';
 import { SelectMaterias } from './select_materias';
@@ -27,6 +34,10 @@ import {
 	dateMenor,
 	menorIgual
 } from './date/isDate';
+import {PeriodoMateriasContext} from '../../Context/PeriodoMateria/ContextPeriodosMateria';
+import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias";
+import axios from "axios";
+
 
 var resultado,
 	descri = 'Seleccione una fecha correcta',
@@ -37,6 +48,9 @@ function createDatatemas(save, tema, fecha) {
 }
 
 export default function CustomizedTables() {
+
+	const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
+	const {stateMateria,setStateMateria} =useContext(MateriasContext);
 	//constante tablas
 	//estado de la table tema
 	const [ eleccion_temas, setEleccion_temas ] = React.useState({ data: [] });
@@ -47,7 +61,7 @@ export default function CustomizedTables() {
 	const [ btn, setBtn ] = React.useState(true);
 	//format(new Date(e), 'MM/dd/yyyy')
 	//var default_fecha = moment(new Date(FECHA_ACTUAL)).format('YYYY-MM-DD');//pasar data server
-	const default_fecha = format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy') ;
+	const default_fecha = format(new Date(statePeriodoMateria?.fechaActual), 'MM/dd/yyyy') ;
 	const [ date_ficha1, setDate_fecha1 ] = React.useState(default_fecha);
 	const [ date_ficha2, setDate_fecha2 ] = React.useState(default_fecha);
 	const [ date_ficha3, setDate_fecha3 ] = React.useState(default_fecha);
@@ -92,7 +106,8 @@ export default function CustomizedTables() {
 			async function fechas() {
 				try {
 					if (dataFechasCierre.length === 0) {
-						await getAdmiFechas(); //moment().format('DD-MM-YYYY')
+						await getAdmiFechas(statePeriodoMateria.data[0].periodo); //moment().format('DD-MM-YYYY')
+
 					}//format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')  moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD')
 					/*setFecha1(format(new Date(dataFechasCierre[0].primera_entrega), 'MM/dd/yyyy'));
 					setFecha2(format(new Date(dataFechasCierre[0].segunda_entrega), 'MM/dd/yyyy'));
@@ -109,10 +124,11 @@ export default function CustomizedTables() {
 					setDFecha3(dataFechasCierre[0].tercera_entrega);
 					setDFechafinal(dataFechasCierre[0].entrega_final);
 
-					if ((format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')) === fecha1 && (format(new Date(FECHA_ACTUAL), 'MM/dd/yyyy')) === fecha2) {
+					if ((format(new Date(statePeriodoMateria?.fechaActual), 'MM/dd/yyyy')) === fecha1 && (format(new Date(statePeriodoMateria?.fechaActual), 'MM/dd/yyyy')) === fecha2) {
 						setDisablesd(true);
 					}
 				} catch (error) {
+					console.log(error)
 					setDisablesd(true);
 				}
 			}
@@ -142,7 +158,7 @@ export default function CustomizedTables() {
 		var MateriaDocente = materiaid.target.value.materiaDocenteId;
 		setMateria(id);
 		//var materia_grupo = id.split(" "); // separa los datos del arry
-		resultado = await dataMateria.filter(
+		resultado = await stateMateria.filter(
 			(idMateria) => idMateria.idMateria === materia && idMateria.idGrupos === grupo
 		);
 		setResul(resultado);
@@ -154,7 +170,7 @@ export default function CustomizedTables() {
 			setActivo('none');
 			setBtn(true);
 			//listar staus de temas periodo , id personal , id materia
-			await getStatus_temas(ID_USUARIO, materia,MateriaDocente);
+			await getStatus_temas(ID_USUARIO, materia,MateriaDocente,statePeriodoMateria?.data[0].periodo);
 			await setEleccion_temas({ data: dataStatusTemas });
 		}
 	}; //  fin get datos materias- para el select dataStatusTemas
@@ -486,7 +502,16 @@ export default function CustomizedTables() {
 	const guardar = async () => {
 		setLoad(true);
 		await saveListSubject(eleccion_temas.data)
-		await dataMaterias(); //actualizar db
+		//get api
+		await axios.get(`${urlApi}/api/aspirante/consultar/lista-materia-docentes`,{
+			params:{
+				personalId:ID_USUARIO,
+				periodo:statePeriodoMateria?.data[0]?.periodo
+			}
+		}).then((res)=>{
+			setStateMateria(res.data?.datas)
+		}).catch((error)=>console.log(error))
+		//await dataMaterias(statePeriodoMateria?.data[0].periodo); //actualizar db
 		setEleccion_temas({ data: [] }); //limpiar tabla
 		setActivo('none');
 		setLoad(false);
@@ -712,7 +737,7 @@ export default function CustomizedTables() {
 					</div>
 				</Grid>
 				<Grid item xs={12} sm={6}>
-					<h3>DOCENTE: {dataMateria[0].nameDocente}</h3>
+					<h3>DOCENTE: {stateMateria.length ? stateMateria[0]?.nameDocente:''}</h3>
 					<TablaVerTemas
 						eleccion_temas={eleccion_temas}
 						fecha1={Dfecha1}

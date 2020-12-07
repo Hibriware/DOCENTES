@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, {useEffect, useRef, useCallback, useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import './calificaciones.css';
 import { useStyles } from './dialogos_calificacion';
-import { dataPeriodo, getAdmiFechas } from '../../servicios/api';
+import { getAdmiFechas } from '../../servicios/api';
 import { datalistaAlumnos, getCriterios, dataCriterios, } from '../../servicios/api';
 import { dataFechasCierre,FECHA_ACTUAL } from '../../servicios/api';
 import { SelecMaterias } from './select_materia';
@@ -15,7 +15,9 @@ import { SelectTemas } from './select_temas';
 import { TablaCapturaCalificaciones } from './Tabla_registro';
 import {ReportParciales} from './reportes/parciales/parciales';
 import {ActaFinal} from './reportes/actaFinal/acta';
-export var unidad_Tema;
+import {PeriodoMateriasContext} from "../../Context/PeriodoMateria/ContextPeriodosMateria";
+//import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias";
+//export var unidad_Tema;
 //unidadCalificacion, id_criterios
 var ccx1 = 0, ccx2 = 0, ccx3 = 0, ccx4 = 0;
  //var crt1 = 'Criterio 1', crt2 = 'Criterio 2', crt3 = 'Criterio 3', crt4 = 'Criterio 4';
@@ -27,6 +29,8 @@ const funtions = new Set();
 
 
 export const MaterialTableDemo = () => {//inicio del componente
+  const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
+  //const {stateMateria ,setStateMateria} =useContext(MateriasContext);
 
   const estilos = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -68,7 +72,7 @@ export const MaterialTableDemo = () => {//inicio del componente
     async function fechasGet() {//establese el cieere de acta de acuerdo la fecha actual
       try {
         if (dataFechasCierre.length === 0) {
-          await getAdmiFechas()
+          await getAdmiFechas(statePeriodoMateria?.data[0].periodo)
         }
 
         var primera = moment(dataFechasCierre[0].primera_entrega).format('YYYY-MM-DD');
@@ -120,40 +124,18 @@ export const MaterialTableDemo = () => {//inicio del componente
     BC2.current.value = 0
     BC3.current.value = 0
     BC4.current.value = 0
-
-    /* 
-    setC1('')
-    setC2('')
-    setC3('')
-    setC4('')
-*/
   },[MATERIA_ID])
 
-  /*useEffect(() => {
-
-      setInputCalificaciones({
-        ...inputCalificacion,
-        inputCalificaion1:(ccx41 > 0) ? 'onUpdate':'never',
-        inputCalificaion2:(ccx31 > 0) ? false:true,
-        inputCalificaion3:(ccx21 > 0) ? false:true,
-        inputCalificaion4:(ccx11 > 0) ? false:true
-      })
-
-  }, [ccx41])*/
 
   const updates = useCallback(async (m, u,idMateria_docente) => {//actualiza los griterios despues de incertar en la db m:materia u:unidad
     try {
-      await getCriterios(m, u,idMateria_docente);// LISTA DE CRITERIO getTem
+      await getCriterios(m, u,idMateria_docente,statePeriodoMateria?.data[0].periodo);// LISTA DE CRITERIO getTem
       await Promise.all([
       ccx1 = dataCriterios[0].porcentageC1,
       ccx2 = dataCriterios[0].porcentageC2,
       ccx3 = dataCriterios[0].porcentageC3,
       ccx4 = dataCriterios[0].porcentageC4,
-     // crt1 = dataCriterios[0].criterio1,
-      //crt2 = dataCriterios[0].criterio2,
-      //crt3 = dataCriterios[0].criterio3,
-    //  crt4 = dataCriterios[0].criterio4
-    ]);
+     ]);
     setCcx4(ccx4)
     setCcx3(ccx3)
     setCcx2(ccx2)
@@ -169,10 +151,6 @@ export const MaterialTableDemo = () => {//inicio del componente
     BC3.current.style.display = 'block'
     BC4.current.style.display = 'block'
 
-   /* setC1(crt1)
-    setC2(crt2)
-    setC3(crt3)
-    setC4(crt4)*/
     return true
     } catch (error) {
       console.log(error)
@@ -181,86 +159,8 @@ export const MaterialTableDemo = () => {//inicio del componente
   }, [])
 
 
-  /*const guardarPorcentaje_c1 = useCallback(async () => {//inicio
-
-    var input = document.getElementById('porcentajeC1');
-    input.addEventListener('input', function () {
-      if (this.value.length > 2)
-        this.value = this.value.slice(0, 2);
-    })
-    if (input.value <= 100) {
-      if (input.value.length === 2) {
-        
-              //enviar porcentage y comentario   
-              EnviarCriterios(1, input.value, "sin descripcion", updates).then(res => { toastr.success('Guardado', 'Porcentaje 1') })
-      }
-    } else {
-      toastr.warning('No puede exeder de 100 %', 'Porcentaje 1')
-    }
-  }, [])//fin*/
-
-
-  /*const guardarPorcentaje_c2 = useCallback((e) => {//inicio
-    console.log('hook porcentaje 2')
-
-    var input2 = document.getElementById('porcentajeC2');//inicio 1
-    input2.addEventListener('input', function () {
-      if (this.value.length > 2)
-        this.value = this.value.slice(0, 2);
-    })
-    if (input2.value <= 100) {
-      if (input2.value.length === 2) {
-        //ejecutar metodo de guardar
-              EnviarCriterios(2, input2.value, 'sin descri', updates).then(res => { toastr.success('Guardado', 'Porcentaje 2') })
-      }
-    } else {
-      alert("No puede exeder de 100 %")
-    }
-  }, [])//fin*/
-
-
-
-  /*const guardarPorcentaje_c3 = useCallback((e) => {//inicio
-    console.log('hook porcentaje 3')
-
-    var input3 = document.getElementById('porcentajeC3');//inicio 1
-    input3.addEventListener('input', function () {
-      if (this.value.length > 2)
-        this.value = this.value.slice(0, 2);
-    })
-    if (input3.value <= 100) {
-      if (input3.value.length === 2) {
-              EnviarCriterios(3, input3.value, 'sin comentario', updates).then(res => { toastr.success('Guardado', 'Porcentaje 3') })
-      }
-    } else {
-      alert("No puede exeder de 100 %")
-    }
-  }, [])//fin*/
-
-
-  /*const guardarPorcentaje_c4 = useCallback((e) => {//inicio
-    console.log('hook porcentaje 4')
-
-    var input4 = document.getElementById('porcentajeC4');//inicio 1
-    input4.addEventListener('input', function () {
-      if (this.value.length > 2)
-        this.value = this.value.slice(0, 2);
-    })
-    if (input4.value <= 100) {
-      if (input4.value.length === 2) {
-              EnviarCriterios(4, input4.value, 'comentario', updates).then(res => { toastr.success('Guardado', 'Porcentaje 4') })
-      }
-    } else {
-      alert("No puede exeder de 100 %")
-    }
-  }, [])//fin*/
-
   funtions.add(updates)
 
-  //funtions.add(guardarPorcentaje_c1)
-  //funtions.add(guardarPorcentaje_c2)
-  //funtions.add(guardarPorcentaje_c3)
-  //funtions.add(guardarPorcentaje_c4)
 
   const [alumnos, setAlumnos] = React.useState({// datos de la tabla calificacion
     columns: [
@@ -336,16 +236,13 @@ export const MaterialTableDemo = () => {//inicio del componente
           <h3 style={{textAlign:'center'}}>INSTITUTO TECNOLÓGICO SUPERIOR DE LOS RÍOS</h3>
         </Grid>
         <Grid item xs={6} sm={3}>
-          <Paper elevation={0} className={estilos.paperperiodos}><strong>PERIODO:</strong>{dataPeriodo[0].rango+-+dataPeriodo[0].anio}</Paper>
+          <Paper elevation={0} className={estilos.paperperiodos}><strong>PERIODO:</strong>{`${statePeriodoMateria.data[0].rango}-${statePeriodoMateria.data[0].anio}`}</Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Paper elevation={0} className={estilos.paperperiodos}><strong>CIERRE DE ACTA: </strong>{moment(cierre).format('DD-MM-YYYY')}</Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper className={estilos.paperAvatar} elevation={0} >
-            {/*<ChipCriterios
-              ccx1={ccx1} ccx2={ccx2} ccx3={ccx3} ccx4={ccx4}
-              c1={c1} c2={c2} c3={c3} c4={c4} />*/}
           </Paper>
         </Grid>
         <Grid item xs={6} sm={3}>
@@ -365,7 +262,6 @@ export const MaterialTableDemo = () => {//inicio del componente
               MATERIA_ID={MATERIA_ID}
               MateriaDocente={MateriaDocente}
               group={group} />
-            {/*<SelectTemas unidad={unidad} lisTemas={obtenerTema}  listasTemas={listasTemas}/>*/}
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -387,14 +283,6 @@ export const MaterialTableDemo = () => {//inicio del componente
         <ReportParciales/>
         <ActaFinal/>
         </div>
-        
-         {/*<Button
-            variant="contained"
-            color="primary"
-            size="small"
-            startIcon={<SaveIcon />}>
-            Descargar Reporte de Calificaciones
-          </Button>*/} 
         </Grid>
       </Grid>
     </div>

@@ -1,29 +1,33 @@
-import  React from 'react';
+import React, {useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import moment from 'moment';
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
-import { dataMateria } from '../../../home';
-import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista, dataPeriodo} from '../../servicios/api';
+//import { dataMateria } from '../../../home';
+import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista} from '../../servicios/api';
 import Itsr from '../../img/Logo-Tec.png';
+import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias";
+import {PeriodoMateriasContext} from "../../Context/PeriodoMateria/ContextPeriodosMateria";
 
 export const ButtonPdf =  (data) =>{
+  const {stateMateria,setStateMateria} =useContext(MateriasContext);
+  const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
   const [activo, setActio] = React.useState(false)
     
   const informacionPdf = async () => {//http://localhost:4000/api/personal/consultar/reporte/lista/7/403/251/11
     try {
       setActio(true)
-      const DOCENTE_ACTUAL = dataMateria[0].nameDocente;
-      for (let index = 0; index < dataMateria.length; index++) {
-        const ID_MATERIA = dataMateria[index].idMateria;
-        const PERIODO = dataMateria[index].idnomenclaturaPeriodo;
-        const GRUPO = dataMateria[index].idGrupos;
-        const Materia = dataMateria[index].nombre;
-        const Nombre_Carrera = dataMateria[index].nombreCorto.toUpperCase() ;
-        const Clave_Materia = dataMateria[index].clave_materia
+      const DOCENTE_ACTUAL = stateMateria[0].nameDocente;
+      for (let index = 0; index < stateMateria.length; index++) {
+        const ID_MATERIA = stateMateria[index].idMateria;
+        const PERIODO = stateMateria[index].idnomenclaturaPeriodo;
+        const GRUPO = stateMateria[index].idGrupos;
+        const Materia = stateMateria[index].nombre;
+        const Nombre_Carrera = stateMateria[index].nombreCorto.toUpperCase() ;
+        const Clave_Materia = stateMateria[index].clave_materia
 
-        const materiaDocenteId = dataMateria[index].materiaDocenteId
+        const materiaDocenteId = stateMateria[index].materiaDocenteId
 
         await Promise.all([getReporteHorarios(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId), getReporteLista(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId)])
 
@@ -102,7 +106,7 @@ export const ButtonPdf =  (data) =>{
     pdf.setFontSize(8)
     pdf.text(100, 42, `MATERIA: ${Clave_Materia} - ${nomMateria}`);
     pdf.setFontSize(8)
-    pdf.text(500, 31, `PERIODO: ${dataPeriodo[0].rango} ${dataPeriodo[0].anio}`);
+    pdf.text(500, 31, `PERIODO: ${statePeriodoMateria?.data[0].rango} ${statePeriodoMateria?.data[0].anio}`);
     pdf.setFontSize(8)
     pdf.text(500, 40, `FECHA: ${moment().format('DD/MM/YYYY')}`);
     pdf.setFontSize(7)

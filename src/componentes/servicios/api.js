@@ -534,7 +534,7 @@ export async function updateRegistrosfechas(datas) {
 export async function getAdmiFechas(periodo) {//administrador
 	try {
 		let respon = await axios
-			.get(`/api/administrador/fechas/${periodo || PERIODO_ACTUAL}`)
+			.get(`/api/administrador/fechas/${periodo}`)
 			.then((res) => {
 				dataFechasCierre = res.data;
 				return true;

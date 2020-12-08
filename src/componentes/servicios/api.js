@@ -143,7 +143,7 @@ export async function getPeriodos() {//getPeriodo verificar-------------
 export async function getListaCarreras() {
 	try {
 		const response = await axios
-			.get(`${urlApi}/api/reporte/consultar/carreras`)
+			.get(`/api/reporte/consultar/carreras`)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
@@ -160,7 +160,7 @@ export async function getListaCarreras() {
 
 export async function getTemas(idMateria, minimo, cierre,materiaDocenteId,periodo) {
 		await axios
-		.get(`${urlApi}/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${periodo}/${minimo}/${cierre}/${materiaDocenteId}`)
+		.get(`/api/aspirante/consultarTema/${ID_USUARIO}/${idMateria}/${periodo}/${minimo}/${cierre}/${materiaDocenteId}`)
 		.then((res) => (datalista = res.data))
 		.catch(function(error) {
 			swal(
@@ -467,11 +467,13 @@ export function borrer(id) {
 export async function getListaPeriodo() {
 	try {
 		let respon = await axios
-			.get(`/api/administrador/lista/periodo`)
+			.get(`/api/administrador/lista/periodo`,)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
+				console.log(error)
 				return [];
+
 			});
 		return respon;
 	} catch (error) {

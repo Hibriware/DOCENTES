@@ -147,6 +147,10 @@ class Home extends Component {
 		this.state = {};
 	}
 
+	componentDidMount() {
+	this.AuthService.setTokenUser();
+	}
+
 	render() {
 		const n = this.AuthService.getUser();
 		return (

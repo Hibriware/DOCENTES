@@ -1,5 +1,6 @@
 import decode from 'jwt-decode';
 import * as toastr from 'toastr';
+import axios from "axios";
 
 
 export default class AuthService {
@@ -10,7 +11,16 @@ export default class AuthService {
 		this.login = this.login.bind(this);
 		this.logout = this.logout.bind(this);
 		this.getProfile = this.getProfile.bind(this);
+		this.setTokenUser=this.setTokenUser.bind(this)
 	}
+
+
+
+	setTokenUser(){
+		const MeToken = this.getToken();
+		axios.defaults.headers.common['token']= MeToken;
+	}
+
 	login(usuario, password) {
 		try {
 			return this.requestFetch('/api/login/verificar', {
@@ -22,6 +32,8 @@ export default class AuthService {
 				} else if(response.user.length) {
 					this.setToken(response.token);
 					this.setUser(response.user);
+					this.setTokenUser()
+
 					return Promise.resolve(response);
 				}else{
 					return Promise.resolve("No Autorizado");

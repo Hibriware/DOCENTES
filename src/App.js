@@ -8,9 +8,7 @@ import {PeridoMateriasProvider} from "./componentes/Context/PeriodoMateria/Conte
 import {MateriasProvider} from './componentes/Context/ListaMateriaDocente/ContextMaterias';
 import axios from 'axios';
 import {urlApi} from '../src/componentes/servicios/api';
-let TOKEN_USUARIO = `${sessionStorage.getItem('token_id')}`;
 axios.defaults.baseURL=urlApi;
-axios.defaults.headers.common['token']=TOKEN_USUARIO
 
 class App extends Component{
   constructor(props){

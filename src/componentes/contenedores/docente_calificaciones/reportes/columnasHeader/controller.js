@@ -27,6 +27,7 @@ var listaActa = [];
 var LISTA_DE_TEMAS_POR_MATERIAS = [];
 
 export const infPdf = async (pamrs,stateMateria,periodo) => {
+	
 	// paso 1 PAMRS: PARCIAL O ACTA
 	try {
 		const DOCENTE_ACTUAL = stateMateria[0].nameDocente;
@@ -77,6 +78,8 @@ export const infPdf = async (pamrs,stateMateria,periodo) => {
 				//limpiar
 				newListaParciales = [];
 				arrayAprobacion = [];
+				
+				listaActa=[];
 				//dataReporteParciales = []
 			} else {
 				sweetAlert('No se encontraron TEMAS finalizados');
@@ -518,7 +521,7 @@ const pdfParcial = (
 };
 
 //pdf acta final
-const pdActaFinal = (
+const pdActaFinal = async(
 	nomMateria,
 	docente_actual,
 	ClaveMateria,
@@ -608,5 +611,9 @@ const pdActaFinal = (
 		pdf.text(413, 767, 'FIRMA DOCENTE');
 		pdf.text(20, 770, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, 'right');
 	}
-	pdf.save(`Acta final ${nomMateria}.pdf`);
+	await pdf.save(`Acta final ${nomMateria}.pdf`);
+	listaActa=[];
+	newListaParciales = [];
+	arrayAprobacion = [];
+
 };

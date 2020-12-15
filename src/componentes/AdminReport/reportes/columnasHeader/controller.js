@@ -19,6 +19,7 @@ import {
 	ActacolumnsReprobacion
 } from '../columnasHeader/heders';
 
+
 var newListaParciales = [];
 var arrayAprobacion = [];
 var listaActa = [];
@@ -79,12 +80,16 @@ export const infPdf = async (pamrs,idMateriaD ,idPeriodo, idPersonal,infoTeacher
 				//limpiar
 				newListaParciales = [];
 				arrayAprobacion = [];
+				dataReporteParciales=[];
+				dataReportHorario=[];
+				listaActa=[];
+
 				//dataReporteParciales = []
 			} else {
 				sweetAlert('No se encontraron TEMAS finalizados');
 			}
 	} catch (error) {
-		sweetAlert('No se encontraron TEMAS finalizados');
+		//sweetAlert('No se encontraron TEMAS finalizados');
 		console.log(error);
 	}
 }; //fin paso 1
@@ -143,7 +148,6 @@ const lista = async (pamrs) => {
 		];
 		var promediar = eliminar.filter(function(n) {
 			// numero divicion sin 0
-
 			return n.n !== 0;
 		});
 
@@ -417,7 +421,7 @@ const aprobacion = async (calcularTemas) => {
 	// arrayAprobacionOrdenado=[{aprobacionTema1:arrayAprobacion[0]}]
 }; //fin paso 3
 
-const pdfParcial = (
+const pdfParcial  = async (
 	nomMateria,
 	docente_actual,
 	ClaveMateria,
@@ -514,11 +518,11 @@ const pdfParcial = (
 		pdf.text(413, 767, 'FIRMA DOCENTE');
 		pdf.text(550, 785, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, 'right');
 	}
-	pdf.save(`PARCIALES ${nomMateria}.pdf`);
+	await pdf.save(`PARCIALES ${nomMateria}.pdf`);
 };
 
 //pdf acta final
-const pdActaFinal = (
+const pdActaFinal = async(
 	nomMateria,
 	docente_actual,
 	ClaveMateria,
@@ -607,5 +611,6 @@ const pdActaFinal = (
 		pdf.text(413, 767, 'FIRMA DOCENTE');
 		pdf.text(20, 770, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, 'right');
 	}
-	pdf.save(`Acta final ${nomMateria}.pdf`);
+	await pdf.save(`Acta final ${nomMateria}.pdf`);
+				listaActa=[]
 };

@@ -90,31 +90,31 @@ try {
 									setcalificaciones((prevState) => {
 										const datalistaAlumnos = [ ...prevState.datalistaAlumnos ]; //obtenr data
 										console.log(
-											(newData.calCriterio1 = Math.round(
-												parseInt(newData.calR1 || 0) * (ccx1 / 100)
-											))
+											(newData.calCriterio1 =
+												parseFloat(newData.calR1 || 0) * (ccx1 / 100)
+											)
 										);
 										console.log(
-											(newData.calCriterio2 = Math.round(
-												parseInt(newData.calR2 || 0) * (ccx2 / 100)
-											))
+											(newData.calCriterio2 =
+												parseFloat(newData.calR2 || 0) * (ccx2 / 100)
+											)
 										);
 										console.log(
-											(newData.calCriterio3 = Math.round(
-												parseInt(newData.calR3 || 0) * (ccx3 / 100)
-											))
+											(newData.calCriterio3 =
+												parseFloat(newData.calR3 || 0) * (ccx3 / 100)
+											)
 										);
 										console.log(
-											(newData.calCriterio4 = Math.round(
-												parseInt(newData.calR4 || 0) * (ccx4 / 100)
-											))
+											(newData.calCriterio4 =
+												parseFloat(newData.calR4 || 0) * (ccx4 / 100)
+											)
 										);
 										console.log(
-											(newData.calificaciontotal =
-												parseInt(newData.calCriterio1) +
-												parseInt(newData.calCriterio2) +
-												parseInt(newData.calCriterio3) +
-												parseInt(newData.calCriterio4))
+											(newData.calificaciontotal =Math.round(
+												parseFloat(newData.calCriterio1) +
+												parseFloat(newData.calCriterio2) +
+												parseFloat(newData.calCriterio3) +
+												parseFloat(newData.calCriterio4)))
 										);
 										//console.log(newData,"ver el estado de la inf")
 										// estado fila modificado

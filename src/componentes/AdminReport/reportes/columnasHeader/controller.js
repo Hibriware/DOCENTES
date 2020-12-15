@@ -181,7 +181,7 @@ const lista = async (pamrs) => {
 			Total: TOTAL >= 70 ? TOTAL:'NA'
 		};
 		nm++;
-	} //fin for
+	} //fin
 
 	if (pamrs === 'acta') {
 		//SOLO ACTA DE CALIFICACION FINAL

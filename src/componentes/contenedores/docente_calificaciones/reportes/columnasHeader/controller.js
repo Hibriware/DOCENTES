@@ -403,19 +403,21 @@ const aprobacion = async (calcularTemas) => {
 		aprobacionTotal: aprobacionTotal,
 		etiquetaAprobacion: '%Aprobación:',
 
-		reprobacionTema1: Math.abs(reprobacionTema1) === 0 ? 100 : Math.abs(reprobacionTema1),
-		reprobacionTema2: Math.abs(reprobacionTema2) === 0 ? 100 : Math.abs(reprobacionTema2),
-		reprobacionTema3: Math.abs(reprobacionTema3) === 0 ? 100 : Math.abs(reprobacionTema3),
-		reprobacionTema4: Math.abs(reprobacionTema4) === 0 ? 100 : Math.abs(reprobacionTema4),
-		reprobacionTema5: Math.abs(reprobacionTema5) === 0 ? 100 : Math.abs(reprobacionTema5),
-		reprobacionTema6: Math.abs(reprobacionTema6) === 0 ? 100 : Math.abs(reprobacionTema6),
-		reprobacionTema7: Math.abs(reprobacionTema7) === 0 ? 100 : Math.abs(reprobacionTema7),
-		reprobacionTema8: Math.abs(reprobacionTema8) === 0 ? 100 : Math.abs(reprobacionTema8),
-		reprobacionTema9: Math.abs(reprobacionTema9) === 0 ? 100 : Math.abs(reprobacionTema9),
-		reprobacionTema10: Math.abs(reprobacionTema10) === 0 ? 100 : Math.abs(reprobacionTema10),
-		reprobacionTotal: Math.abs(reprobacionTotal) === 0 ? 100 : Math.abs(reprobacionTotal),
+		reprobacionTema1:  Math.abs(reprobacionTema1),
+		reprobacionTema2:  Math.abs(reprobacionTema2),
+		reprobacionTema3:  Math.abs(reprobacionTema3),
+		reprobacionTema4:  Math.abs(reprobacionTema4),
+		reprobacionTema5:  Math.abs(reprobacionTema5),
+		reprobacionTema6:  Math.abs(reprobacionTema6),
+		reprobacionTema7:  Math.abs(reprobacionTema7),
+		reprobacionTema8:  Math.abs(reprobacionTema8),
+		reprobacionTema9:  Math.abs(reprobacionTema9),
+		reprobacionTema10: Math.abs(reprobacionTema10),
+		reprobacionTotal:  Math.abs(reprobacionTotal),
 		etiquetaReprobacion: '%Reprobación:'
 	};
+	//reprobacionTema1: Math.abs(reprobacionTema1) === 0 ? 100 : Math.abs(reprobacionTema1),
+
 	// arrayAprobacionOrdenado=[{aprobacionTema1:arrayAprobacion[0]}]
 }; //fin paso 3
 

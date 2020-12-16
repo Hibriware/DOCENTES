@@ -6,7 +6,7 @@ import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias
 const Cards = () =>{
     const {stateMateria} =useContext(MateriasContext);
 const [{nombreRol}] = JSON.parse(sessionStorage.getItem("resul"))
-
+console.log(stateMateria)
 if(stateMateria.length){
     return(
         <>

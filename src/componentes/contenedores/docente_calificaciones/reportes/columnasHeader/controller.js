@@ -519,7 +519,7 @@ const pdfParcial = (
 		pdf.text(413, 767, 'FIRMA DOCENTE');
 		pdf.text(550, 785, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, 'right');
 	}
-	pdf.save(`PARCIALES ${nomMateria}.pdf`);
+	pdf.save(`PARC (${Semestre} ${Grupo}) ${nomMateria}.pdf`);
 };
 
 //pdf acta final
@@ -613,7 +613,7 @@ const pdActaFinal = async(
 		pdf.text(413, 767, 'FIRMA DOCENTE');
 		pdf.text(20, 770, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, 'right');
 	}
-	await pdf.save(`Acta final ${nomMateria}.pdf`);
+	await pdf.save(`Acta (${Semestre} ${Grupo}) ${nomMateria}.pdf`);
 	listaActa=[];
 	newListaParciales = [];
 	arrayAprobacion = [];

@@ -1,4 +1,6 @@
 import React, {useContext} from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import Button from '@material-ui/core/Button';
 import {MateriasContext} from "../../../../Context/ListaMateriaDocente/ContextMaterias";
 import {PeriodoMateriasContext} from "../../../../Context/PeriodoMateria/ContextPeriodosMateria";
@@ -18,8 +20,10 @@ export const Buttons = ({ texto = "btn", color = "secondary", onGenerar, ids="en
     }
 
     return (
+        <Tooltip title={'Se descargarán todas las listas.'}>
         <Button size="small" disabled={activo} variant="contained" onClick={ejecu} color={color}>
             {texto}
         </Button>
+        </Tooltip>
     )
 }

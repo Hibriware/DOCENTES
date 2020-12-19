@@ -6,6 +6,6 @@ export const ActaFinal = () =>{
 
 
     return(
-        <Buttons ids="acta" texto = "Acta de calificaciones" color="secondary" onGenerar={infPdf} />
+        <Buttons title={"sss"} ids="acta" texto = "Acta de calificaciones" color="secondary" onGenerar={infPdf} />
     )
 }

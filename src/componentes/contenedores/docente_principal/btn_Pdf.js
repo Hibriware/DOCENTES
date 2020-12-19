@@ -125,7 +125,7 @@ export const ButtonPdf =  (data) =>{
       pdf.text(413, 767, "FIRMA DOCENTE");
       pdf.text(20, 770, 'Pagina' + String(i) + ' de ' + String(pageCount), null, null, null, null, "right");
     }
-    pdf.save(nomMateria + '.pdf');
+    pdf.save(`${Semestre} ${Grupo}) ${nomMateria}.pdf`);
   }
   
 

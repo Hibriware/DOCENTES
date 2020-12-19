@@ -125,7 +125,7 @@ import swal from 'sweetalert';
                           
 
                                 for (let index2 = 0; index2 < DATOS_CALIFICACIONES.length; index2++) {
-                                    let calificaciontotal = (parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal || 0) < 70 ? -1000:parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal))
+                                    let calificaciontotal = (parseFloat(DATOS_CALIFICACIONES[index2].calificaciontotal || 0) < 70 ? -1000:parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal))
                                    // OPCION = parseInt(DATOS_CALIFICACIONES[index2].opcion || 0)
                                     PROMEDIOS_SUMAS = PROMEDIOS_SUMAS+calificaciontotal;
                                    
@@ -183,7 +183,7 @@ import swal from 'sweetalert';
                 }
             }
             
-            let PROMEDIO = Math.round(PROMEDIO_SUMA/DATOS_BOLETA_FINAL.length)
+            let PROMEDIO = PROMEDIO_SUMA/DATOS_BOLETA_FINAL.length
             MATERIAS_REPROBADAS = (DATOS_BOLETA_FINAL.length - MATERIAS_REPROBADAS_CONTADOR)
             //console.log('DATOS_BOLETA_FINAL')
             //console.log(DATOS_BOLETA_FINAL)

@@ -45,13 +45,16 @@ export const infPdf = async (pamrs,idMateriaD ,idPeriodo, idPersonal,infoTeacher
 			const idDocente = idPersonal.value;
 
 			LISTA_DE_TEMAS_POR_MATERIAS = await getTemasReportesAdmin(ID_MATERIA,materiaDocenteId,PERIODO,idDocente);
-
+console.log(LISTA_DE_TEMAS_POR_MATERIAS)
 			if (LISTA_DE_TEMAS_POR_MATERIAS.length) {
 				//periodo materia personal grupo
 				await Promise.all([
 					getReporteHorariosAdmin(PERIODO, ID_MATERIA, GRUPO,materiaDocenteId,idDocente),
 					getReporteParcialAdmin(ID_MATERIA, GRUPO,PERIODO,idDocente,materiaDocenteId)
 				]);
+				console.log("dataReporteParciales",dataReporteParciales)
+				console.log("dataReportHorario",dataReportHorario)
+
 				await lista(pamrs);
 				if (pamrs === 'parcial') {
 					await pdfParcial(
@@ -80,8 +83,8 @@ export const infPdf = async (pamrs,idMateriaD ,idPeriodo, idPersonal,infoTeacher
 				//limpiar
 				newListaParciales = [];
 				arrayAprobacion = [];
-				dataReporteParciales=[];
-				dataReportHorario=[];
+				//dataReporteParciales=[];
+				//dataReportHorario=[];
 				listaActa=[];
 
 				//dataReporteParciales = []
@@ -245,9 +248,9 @@ const lista = async (pamrs) => {
 		} // fin for
 	} //FIN ACTA DE CALIFICACION FINAL
 
-	var calcularTemas = promediar.length;
+	//var calcularTemas = promediar.length;
 	// aprobacion y reprobacion
-	await aprobacion(calcularTemas); // inicar paso 3
+	await aprobacion(); // inicar paso 3
 }; //fin paso 2
 
 const aprobacion = async (calcularTemas) => {

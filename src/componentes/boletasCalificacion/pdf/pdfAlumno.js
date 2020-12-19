@@ -25,7 +25,7 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.setFontSize(8);
 	doc.text(90, 54, "CARRERA:");
 	doc.setFontSize(8);
-	doc.text(140, 54,`${ASPIRANTE_CARRERA}`);
+	doc.text(140, 54,`${ASPIRANTE_CARRERA}`.toUpperCase() || '');
 
 	doc.setFontSize(8);
 	doc.text(500, 31, `PERIODO: ${ASPIRANTE_RANGO_PERIODO}`);
@@ -44,7 +44,7 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
     //PROMEDO GENERL Y GREDITOS
      doc.setFontSize(8);//informacion jefe scolar
      doc.text(251, 328, `PROMEDIO:`);
-     doc.text(320, 327,`${PROMEDIO}` );
+     doc.text(320, 327,`${PROMEDIO}`.substring(0,4) );
      doc.text(242, 340, `MAT.REPROB:`);
      doc.text(320, 340, `${MATERIAS_REPROBADAS}`);
      doc.text(253, 357, `CREDITOS:`);
@@ -70,8 +70,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 125, `${DATOS_BOLETA_FINAL[0].clave}`); ///clave
 		doc.setFontSize(8);
 	doc.text(140, 118, `${DATOS_BOLETA_FINAL[0].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 128, `${DATOS_BOLETA_FINAL[0].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 128, `${DATOS_BOLETA_FINAL[0].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 125, `${DATOS_BOLETA_FINAL[0].creditos}`);//credito
 		doc.setFontSize(10);
@@ -83,8 +83,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 140, `${DATOS_BOLETA_FINAL[1].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 138,`${DATOS_BOLETA_FINAL[1].materia}` );//materia
-		doc.setFontSize(8);
-	doc.text(140, 148, `${DATOS_BOLETA_FINAL[1].docente}`);//doncente
+		doc.setFontSize(7);
+	doc.text(140, 148, `${DATOS_BOLETA_FINAL[1].docente}`.toUpperCase() || '');//doncente
 	doc.setFontSize(9);
 	doc.text(365, 145, `${DATOS_BOLETA_FINAL[1].creditos}`);//credito
 		doc.setFontSize(10);
@@ -96,8 +96,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 160, `${DATOS_BOLETA_FINAL[2].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 158,`${DATOS_BOLETA_FINAL[2].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 168, `${DATOS_BOLETA_FINAL[2].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 168, `${DATOS_BOLETA_FINAL[2].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 165,`${DATOS_BOLETA_FINAL[2].creditos}`);//creditos
 		doc.setFontSize(10);
@@ -109,8 +109,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 180, `${DATOS_BOLETA_FINAL[3].clave}`);//clav
 		doc.setFontSize(8);
 	doc.text(140, 178, `${DATOS_BOLETA_FINAL[3].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 188, `${DATOS_BOLETA_FINAL[3].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 188, `${DATOS_BOLETA_FINAL[3].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 185, `${DATOS_BOLETA_FINAL[3].creditos}`);//creditos
 		doc.setFontSize(10);
@@ -122,8 +122,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 200, `${DATOS_BOLETA_FINAL[4].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 198,`${ DATOS_BOLETA_FINAL[4].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 208,`${DATOS_BOLETA_FINAL[4].docente}` );//docente
+		doc.setFontSize(7);
+	doc.text(140, 208,`${DATOS_BOLETA_FINAL[4].docente}`.toUpperCase() || '' );//docente
 	doc.setFontSize(9);
 	doc.text(365, 205,`${DATOS_BOLETA_FINAL[4].creditos}`) ;//creditos
 		doc.setFontSize(10);
@@ -135,8 +135,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 220, `${DATOS_BOLETA_FINAL[5].clave}` );//clave
 		doc.setFontSize(8);
 	doc.text(140, 218, `${DATOS_BOLETA_FINAL[5].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 228, `${DATOS_BOLETA_FINAL[5].docente}` );//docente
+		doc.setFontSize(7);
+	doc.text(140, 228, `${DATOS_BOLETA_FINAL[5].docente}`.toUpperCase() || '' );//docente
 	doc.setFontSize(9);
 	doc.text(365, 225,`${DATOS_BOLETA_FINAL[5].creditos}` );//credito
 		doc.setFontSize(10);
@@ -149,8 +149,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 240,`${DATOS_BOLETA_FINAL[6].clave}` );//clave
 		doc.setFontSize(8);
 	doc.text(140, 238,`${DATOS_BOLETA_FINAL[6].materia}`);//maeria
-		doc.setFontSize(8);
-	doc.text(140, 248,`${DATOS_BOLETA_FINAL[6].docente}`);// docente
+		doc.setFontSize(7);
+	doc.text(140, 248,`${DATOS_BOLETA_FINAL[6].docente}`.toUpperCase() || '');// docente
 	doc.setFontSize(9);
 	doc.text(365, 245, `${DATOS_BOLETA_FINAL[6].creditos}`);//creditos
 		doc.setFontSize(10);
@@ -163,8 +163,8 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.text(74, 260, `${DATOS_BOLETA_FINAL[7].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 258, `${DATOS_BOLETA_FINAL[7].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 268,`${DATOS_BOLETA_FINAL[7].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 268,`${DATOS_BOLETA_FINAL[7].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 265,`${DATOS_BOLETA_FINAL[7].creditos}`);//credito
 		doc.setFontSize(10);
@@ -245,7 +245,7 @@ doc.setFontSize(14); //encabezado
       //PROMEDO GENERL Y GREDITOS
      doc.setFontSize(8);//informacion jefe scolar
     doc.text(251, 728, `PROMEDIO:`);
-    doc.text(320, 727,`${PROMEDIO}`);
+    doc.text(320, 727,`${PROMEDIO}`.substring(0,4));
     doc.text(242, 740, `MAT.REPROB:`);
     doc.text(320, 741,  `${MATERIAS_REPROBADAS}`);
     doc.text(253, 757, `CREDITOS:`);
@@ -273,8 +273,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 525, `${DATOS_BOLETA_FINAL[0].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 518, `${DATOS_BOLETA_FINAL[0].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 528, `${DATOS_BOLETA_FINAL[0].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 528, `${DATOS_BOLETA_FINAL[0].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 525, `${DATOS_BOLETA_FINAL[0].creditos}`);//critero
 		doc.setFontSize(10);
@@ -286,8 +286,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 540, `${DATOS_BOLETA_FINAL[1].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 538,`${DATOS_BOLETA_FINAL[1].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 548, `${DATOS_BOLETA_FINAL[1].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 548, `${DATOS_BOLETA_FINAL[1].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 545, `${DATOS_BOLETA_FINAL[1].creditos}`);//criterio
 		doc.setFontSize(10);
@@ -299,8 +299,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 560, `${DATOS_BOLETA_FINAL[2].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 558, `${DATOS_BOLETA_FINAL[2].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 568, `${DATOS_BOLETA_FINAL[2].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 568, `${DATOS_BOLETA_FINAL[2].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 565, `${DATOS_BOLETA_FINAL[2].creditos}`);//criterio
 		doc.setFontSize(10);
@@ -312,8 +312,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 580, `${DATOS_BOLETA_FINAL[3].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 578, `${DATOS_BOLETA_FINAL[3].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 588, `${DATOS_BOLETA_FINAL[3].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 588, `${DATOS_BOLETA_FINAL[3].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 585, `${DATOS_BOLETA_FINAL[3].creditos}`);//criterio
 		doc.setFontSize(10);
@@ -325,8 +325,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 600, `${DATOS_BOLETA_FINAL[4].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 598, `${DATOS_BOLETA_FINAL[4].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 608, `${DATOS_BOLETA_FINAL[4].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 608, `${DATOS_BOLETA_FINAL[4].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 605, `${DATOS_BOLETA_FINAL[4].creditos}`);//criterio
 		doc.setFontSize(10);
@@ -338,8 +338,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 620, `${DATOS_BOLETA_FINAL[5].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 618,`${DATOS_BOLETA_FINAL[5].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 628,`${DATOS_BOLETA_FINAL[5].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 628,`${DATOS_BOLETA_FINAL[5].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 625, `${DATOS_BOLETA_FINAL[5].creditos}`);//credito
 		doc.setFontSize(10);
@@ -352,8 +352,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 640, `${DATOS_BOLETA_FINAL[6].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 638, `${DATOS_BOLETA_FINAL[6].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 648, `${DATOS_BOLETA_FINAL[6].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 648, `${DATOS_BOLETA_FINAL[6].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 645,`${DATOS_BOLETA_FINAL[6].creditos}`);//criterio
 		doc.setFontSize(10);
@@ -366,8 +366,8 @@ doc.setFontSize(14); //encabezado
 	doc.text(74, 660, `${DATOS_BOLETA_FINAL[7].clave}`);//clave
 		doc.setFontSize(8);
 	doc.text(140, 658,`${DATOS_BOLETA_FINAL[7].materia}`);//materia
-		doc.setFontSize(8);
-	doc.text(140, 668, `${DATOS_BOLETA_FINAL[7].docente}`);//docente
+		doc.setFontSize(7);
+	doc.text(140, 668, `${DATOS_BOLETA_FINAL[7].docente}`.toUpperCase() || '');//docente
 	doc.setFontSize(9);
 	doc.text(365, 665,`${DATOS_BOLETA_FINAL[7].creditos}`);//criterio
 		doc.setFontSize(10);

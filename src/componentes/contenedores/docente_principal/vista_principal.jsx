@@ -1,10 +1,8 @@
 import React, {useContext} from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import {dataPeriodo} from '../../servicios/api';
-import { dataMateria } from '../../../home';
+import {Typography,Container,Avatar} from '@material-ui/core';
+//import {dataPeriodo} from '../../servicios/api';
+//import { dataMateria } from '../../../home';
 import { useStyles } from './dialogos_principal';
 import 'jspdf-autotable';
 import { ButtonPdf } from './btn_Pdf';

@@ -11,11 +11,11 @@ import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias
 import {PeriodoMateriasContext} from "../../Context/PeriodoMateria/ContextPeriodosMateria";
 
 export const ButtonPdf =  (data) =>{
-  const {stateMateria,setStateMateria} =useContext(MateriasContext);
+  const {stateMateria,setStateMateria} = useContext(MateriasContext);
   const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
   const [activo, setActio] = React.useState(false)
     
-  const informacionPdf = async () => {//http://localhost:4000/api/personal/consultar/reporte/lista/7/403/251/11
+  const informacionPdf = async () => {
     try {
       setActio(true)
       const DOCENTE_ACTUAL = stateMateria[0].nameDocente;

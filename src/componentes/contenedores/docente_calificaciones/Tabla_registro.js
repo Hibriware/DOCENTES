@@ -149,6 +149,11 @@ try {
 						onClick: (event) => handleClickOpen()
 					}
 				]}
+				localization={{
+					pagination:{labelRowsSelect:"paginas",labelDisplayedRows:"{from}-{to} de {count}"},
+					body:{editTooltip:"Agregar calificaciones",editRow:{saveTooltip:"Guardar",cancelTooltip:"Cancelar"},emptyDataSourceMessage:"Seleccione algún tema primero."},
+					toolbar:{searchPlaceholder:"Buscar alumno"}
+				}}
 			/>
 		</div>
 	);

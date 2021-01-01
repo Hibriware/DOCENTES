@@ -63,10 +63,10 @@ NumberFormatCustom.propTypes = {
 
  function FormattedInputs({_handlenChange, costo}) {
   const classes = useStyles();
-  const [values, setValues] = React.useState({
+  /*const [values, setValues] = React.useState({
     textmask: '(1  )    -    ',
     costo: '',
-  });
+  });*/
 
   const handleChange = (event) => {
     _handlenChange(event)

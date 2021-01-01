@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { getListaCarreras} from '../servicios/api'
+//import { getListaCarreras} from '../servicios/api'
 import {list_teacher} from './constants/end-points';
 import Axios from 'axios';
 
@@ -326,7 +326,7 @@ useEffect(() => {
         alert("No se encontró una lista valida")})
 }, [])
 
-const dataUpdateSubject=React.useMemo(()=>{
+React.useMemo(()=>{
   const teacherFilter = teacher.filter(data=>data?.idPersonal === idPersonal?.value)
   setInfoTeacher(teacherFilter)
 },[idPersonal])

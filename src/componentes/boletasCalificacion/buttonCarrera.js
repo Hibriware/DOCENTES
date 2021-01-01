@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { makeStyles } from '@material-ui/core/styles';
-import { main ,list_boletas} from './pdf/finalRatings';
+import {list_boletas} from './pdf/finalRatings';
 
 const useStyles = makeStyles((theme) => ({
 	button: {

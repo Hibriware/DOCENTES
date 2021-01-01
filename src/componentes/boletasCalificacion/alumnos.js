@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Periodo from './selectPeriodo';
 import TextField from '@material-ui/core/TextField';
 import ButtonPdf from './buttonAlumno';
-import Semestre from './selectSemestre';
+//import Semestre from './selectSemestre';
 
 const useStyles = makeStyles((theme) => ({
 	root: {

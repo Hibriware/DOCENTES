@@ -1,7 +1,7 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Img from '../../img/admin-min.png';
-import {BrowserRouter as Router,Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import './img.css';
 

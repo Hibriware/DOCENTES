@@ -4,7 +4,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {useStyles} from './styles';
 import Imgs from '../../img/blob-shape.svg';
 import Imgs1 from '../../img/blob-shape2.svg';
@@ -15,8 +15,6 @@ const StoreImg =[{n:Imgs},{n:Imgs1},{n:Imgs2},{n:Imgs3}]
 
 const Cards =  ({clave_materia , nombre,modalidad, semestre,plan,carrera,grupo}) =>{
 const classes = useStyles();
-
-
     return(
 <>
 <Card elevation={5} style={{backgroundColor:'whitesmoke',backgroundPosition: 'left', marginTop:4 ,width:400,textAlign:'center',backgroundImage:"url("+StoreImg[Math.floor(Math.random() * (4 - 0)) + 0].n+")"}} className={classes.root}>

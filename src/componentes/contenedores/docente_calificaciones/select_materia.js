@@ -1,10 +1,10 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { getTemas, datalista } from '../../servicios/api';
-import { dataMateria } from '../../../home'
+//import { dataMateria } from '../../../home'
 
 import { useStyles } from './dialogos_calificacion';
 import {MateriasContext} from "../../Context/ListaMateriaDocente/ContextMaterias";

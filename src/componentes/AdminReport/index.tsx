@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 import Boletas from '../boletasCalificacion/boletas';
 import ListSubject from '../Reportes';
 import ListTemas from './ListSubject';
+import ReprobacionTable from "./TableReprobacion";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -73,6 +74,7 @@ export default function ScrollableTabsButtonAuto() {
           <Tab label="Boletas de calificaciones" {...a11yProps(0)} />
           <Tab label="Listas de asistencias" {...a11yProps(1)} />
           <Tab label="Calificaciones docentes" {...a11yProps(2)} />
+          <Tab label="Reprobacion" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -84,6 +86,9 @@ export default function ScrollableTabsButtonAuto() {
       <TabPanel value={value} index={2}>
         <ListTemas/>
       </TabPanel>
+        <TabPanel value={value} index={3}>
+            <ReprobacionTable/>
+        </TabPanel>
     </div>
   );
 }

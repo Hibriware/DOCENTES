@@ -150,7 +150,7 @@ try {
 					}
 				]}
 				localization={{
-					pagination:{labelRowsSelect:"paginas",labelDisplayedRows:"{from}-{to} de {count}"},
+					pagination:{labelRowsSelect:"filas",labelDisplayedRows:"{from}-{to} de {count}"},
 					body:{editTooltip:"Agregar calificaciones",editRow:{saveTooltip:"Guardar",cancelTooltip:"Cancelar"},emptyDataSourceMessage:"Seleccione algún tema primero."},
 					toolbar:{searchPlaceholder:"Buscar alumno"}
 				}}

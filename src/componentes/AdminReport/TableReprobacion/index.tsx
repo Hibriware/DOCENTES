@@ -1,7 +1,9 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useMemo, useState} from "react";
 import axios from'axios';
-import MaterialTable from "material-table";
+import MaterialTable,{ MTableToolbar } from "material-table";
 import Periodos from "./Periodos";
+import {Chip, TableRow,TableCell} from '@material-ui/core';
+import {StyledTableCell} from "../../contenedores/docente_calendario/dialogos";
 
 const ReprobacionTable =()=>{
     const [listaPeriodo,setListaPeriodo]=useState('');
@@ -68,7 +70,7 @@ function MaterialTables({dataAlumnos}:any) {
                     cellStyle: {
                         backgroundColor: '#ee9797',
                         color: '#ffffff',
-                        textAlign: "left"
+                        textAlign: "center"
                     },  headerStyle: {
                         paddingTop: 0, paddingBottom: 0,
                         textAlign:"center"
@@ -103,8 +105,10 @@ function MaterialTables({dataAlumnos}:any) {
                 search:false,
                 sorting:false
             }}
-
-
+            localization={{
+                pagination:{labelRowsSelect:"filas",labelDisplayedRows:"{from}-{to} de {count}"},
+                body:{emptyDataSourceMessage:"Seleccione algún periodo"},
+            }}
         />
     )
 }

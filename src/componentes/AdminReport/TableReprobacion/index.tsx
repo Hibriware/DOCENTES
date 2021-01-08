@@ -1,9 +1,10 @@
 import React, { useMemo, useState} from "react";
 import axios from'axios';
-import MaterialTable,{ MTableToolbar } from "material-table";
+import MaterialTable from "material-table";
 import Periodos from "./Periodos";
-import {Chip, TableRow,TableCell} from '@material-ui/core';
-import {StyledTableCell} from "../../contenedores/docente_calendario/dialogos";
+import TablaReprobacionDocente from "./component/ReprobacionDocente";
+import './component/ReprobacionDocente/styles/index.css';
+
 
 const ReprobacionTable =()=>{
     const [listaPeriodo,setListaPeriodo]=useState('');
@@ -101,9 +102,11 @@ function MaterialTables({dataAlumnos}:any) {
                     backgroundColor: '#01579b',
                     color: '#FFF'
                 },
-                exportButton:true,
+                exportButton:true
+                ,
                 search:false,
-                sorting:false
+                sorting:false,
+                //exportDelimiter:"; "
             }}
             localization={{
                 pagination:{labelRowsSelect:"filas",labelDisplayedRows:"{from}-{to} de {count}"},
@@ -113,8 +116,36 @@ function MaterialTables({dataAlumnos}:any) {
     )
 }
 
+const viewComponent=(index:number)=>{
+    switch (index) {
+        case 0:
+            return <ReprobacionTable/>
+            break;
+        case 1:
+            return <TablaReprobacionDocente/>
+        break;
+
+    }
+}
+
+const homeReprobacion=()=>{
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [optiones,setOptiones] = React.useState(0);
 
 
-export default ReprobacionTable;
+    return(<div>
+        <section>
+            <button className={"btn-reprobacion"} onClick={()=>setOptiones(0)}>Reprobación carrera</button>
+            <button className={"btn-reprobacion"} onClick={()=>setOptiones(1)}>Reprobación docente</button>
+
+        </section>
+        <section>
+            {viewComponent(optiones)}
+        </section>
+    </div>)
+}
+
+
+export default homeReprobacion;
 
 

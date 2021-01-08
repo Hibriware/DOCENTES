@@ -1,0 +1,13 @@
+.btn-reprobacion{
+    color: white;
+    background: cornflowerblue;
+    border: none;
+    padding: 3px;
+    border-radius: 2px;
+    margin: 5px 0 5px 12px;
+    outline: none;
+    cursor: pointer;
+}
+.btn-reprobacion:hover{
+    background: steelblue;
+}

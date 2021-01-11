@@ -3,7 +3,7 @@ import moment from 'moment';
 import {img} from './img';
 
 
-export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_PATERNO,ASPIRANTE_MATERNO,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
+export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS) {
 
 	var doc = new jsPDF('p', 'pt', 'letter');
 	
@@ -21,7 +21,7 @@ export function boletaAlumno(DATOS_BOLETA_FINAL,PROMEDIO,CREDITOS_SUMA,ASPIRANTE
 	doc.setFontSize(8);
 	doc.text(90, 42, `${ASPIRANTE_CONTROL}`);
 	doc.setFontSize(8);
-	doc.text(140, 42,`${ASPIRANTE_NOMBRE} ${ASPIRANTE_PATERNO} ${ASPIRANTE_MATERNO}`);
+	doc.text(140, 42,`${ASPIRANTE_NOMBRE}`);
 	doc.setFontSize(8);
 	doc.text(90, 54, "CARRERA:");
 	doc.setFontSize(8);
@@ -223,7 +223,7 @@ doc.setFontSize(14); //encabezado
 	doc.setFontSize(8);
 	doc.text(90, 454, `${ASPIRANTE_CONTROL}`);
 	doc.setFontSize(8);
-	doc.text(140, 454,`${ASPIRANTE_NOMBRE} ${ASPIRANTE_PATERNO} ${ASPIRANTE_MATERNO}`);
+	doc.text(140, 454,`${ASPIRANTE_NOMBRE}`);
 	doc.setFontSize(8);
 	doc.text(90, 464, "CARRERA:");
 	doc.setFontSize(8);

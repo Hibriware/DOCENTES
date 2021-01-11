@@ -467,13 +467,12 @@ export function borrer(id) {
 export async function getListaPeriodo() {
 	try {
 		let respon = await axios
-			.get(`/api/administrador/lista/periodo`,)
+			.get(`/api/administrador/lista/periodo`)
 			.then((res) => res.data)
 			.catch(function(error) {
 				swal('!', `${error}`, 'warning');
 				console.log(error)
 				return [];
-
 			});
 		return respon;
 	} catch (error) {

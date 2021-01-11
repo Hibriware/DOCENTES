@@ -102,7 +102,7 @@ function MaterialTablesReprobacionDocente({dataAlumnos}:any) {
                         paddingTop: 0, paddingBottom: 0,
                         textAlign:"center"
                     }},
-                { title: 'Tot. Hom.', field: 'totalHombre', type: 'numeric',
+                { title: 'Tot.', field: 'totalHM', type: 'numeric',
                     cellStyle: {textAlign: "center"},
                     headerStyle: {
                         paddingTop: 0, paddingBottom: 0,

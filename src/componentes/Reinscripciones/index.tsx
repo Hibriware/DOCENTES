@@ -122,10 +122,7 @@ const ReEnrollmentPage: React.FC = () => {
   const [hoursCruse, setHoursCruse] = useState(false);
   const [isLoaders, setLoaders] = useState(false)
   const [isButton, setIsButton] = useState(true)
-
-
-  
-
+  const [availableChange,setAvailableChange]=useState(true);
   // selected subjects by student
   const [selectedChargeByStudent, setSelectedChargeByStudent] = useState<SelectedCharge[]>([])
 
@@ -142,12 +139,12 @@ const ReEnrollmentPage: React.FC = () => {
         // TODO: Handle error messsage
       });
     }
-  }, [student]);
+  }, [student?.folio,availableChange]);
 
   const fetchAvailableSubjects = useCallback(() => {
     setLoading(true);
     setSubjects([])
-    if (student?.folio) {
+    if (student?.folio && student.career.id && periodos ) {
       axios.get(AVAILABLE_SUBJECTS_URL, {
         params: {
           period: periodos,
@@ -159,13 +156,13 @@ const ReEnrollmentPage: React.FC = () => {
       })
         .finally(() => setLoading(false));
     }
-  }, [student, setLoading]);
+  }, [student, setLoading,periodos]);
 
 
   const fetchAvailableSubjectsAcademic = useCallback(() => {
     setLoading(true);
     //setSubjects([])
-    if (student?.folio) {
+    if (student?.folio && periodos) {
       axios.get(ACADEMIC_CHARGE_ADMIN_URL, {
         params: {
           folio: student?.folio,
@@ -181,11 +178,10 @@ const ReEnrollmentPage: React.FC = () => {
           }else{
             setIsButton(true)
           }
-
       })
         .finally(() => setLoading(false));
     }
-  }, [student, setLoading]);
+  }, [student, setLoading,periodos]);
 
 
   useEffect(() => {
@@ -290,7 +286,7 @@ const ReEnrollmentPage: React.FC = () => {
     return availableSubjects.filter(({subject}) => {
         return !studiedSubjects.some(studiedSubject => {
           return (studiedSubject.clave === subject.clave) &&
-            (+studiedSubject.promedio >= 70)
+            (+studiedSubject.promedio >= 70 && studiedSubject.total_unidades===studiedSubject.unidades_evaluadas)
         })
       }
     ).map(availableSubject => {
@@ -352,7 +348,7 @@ const ReEnrollmentPage: React.FC = () => {
         }
       }
     });
-  }, [studiedSubjects, availableSubjects, enrolledSubjectsOnPeriod]);
+  }, [studiedSubjects, availableSubjects, enrolledSubjectsOnPeriod,subjects,availableChange]);
 
   useEffect(() => {
     setCargaAcademica(filteredSubjects.map(value => {
@@ -367,7 +363,7 @@ const ReEnrollmentPage: React.FC = () => {
         }
       }
     }))
-  }, [filteredSubjects, selectedChargeByStudent]);
+  }, [filteredSubjects, selectedChargeByStudent,periodos]);
 
   useEffect(() => {
     handleSelection(cargarAcademica);
@@ -648,6 +644,8 @@ const ReEnrollmentPage: React.FC = () => {
                       BuscaNumeroControl={BuscaNumeroControl}
                       setBuscarNumeroControl={setBuscarNumeroControl}
                       clear={handleClearOnSearch}
+                      setAvailableChange={setAvailableChange}
+                      availableChange={availableChange}
                     />
                   </Grid>
                 </Grid>

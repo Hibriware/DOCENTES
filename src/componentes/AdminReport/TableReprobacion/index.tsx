@@ -124,6 +124,9 @@ const viewComponent=(index:number)=>{
         case 1:
             return <TablaReprobacionDocente/>
         break;
+        case 2:
+            return <TablaReprobacionDocente/>
+            break;
 
     }
 }
@@ -137,7 +140,7 @@ const homeReprobacion=()=>{
         <section>
             <button className={"btn-reprobacion"} onClick={()=>setOptiones(0)}>Reprobación carrera</button>
             <button className={"btn-reprobacion"} onClick={()=>setOptiones(1)}>Reprobación docente</button>
-
+            <button style={{background:'red'}} disabled className={"btn-reprobacion"} onClick={()=>setOptiones(2)}>Reprobación departamento</button>
         </section>
         <section>
             {viewComponent(optiones)}

@@ -45,7 +45,9 @@ function Carrera({setLoader}) {
 				</Grid>
 				<Grid item xs={6}>
 					<Paper elevation={0} className={classes.paper}>
-						<Button periodo={periodo} idDcarreras={idDcarreras} semestres={semestres} setLoader={setLoader}/>
+						No disponible
+						{/*<Button periodo={periodo} idDcarreras={idDcarreras} semestres={semestres}
+								 setLoader={setLoader}/>*/}
 					</Paper>
 				</Grid>
 			</Grid>

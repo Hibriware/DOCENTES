@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {useMemo, useState} from "react";
 import ListDocentes from "./ListDocentes";
 import Periodos from "../../Periodos";
 import MaterialTablesReprobacionDocente from "./ReprobacionTable";
@@ -9,10 +9,13 @@ const TablaReprobacionDocente =()=>{
     const [infoTeacher, setInfoTeacher] = React.useState<any>([]);
     const [listaPeriodo,setListaPeriodo] = React.useState('');
     const [dataAlumnos,setDataAlumnos]=React.useState([]);
+    const [loading,setLoading]=useState(false);
+
 
 
     useMemo(()=>{
         if (listaPeriodo && idPersonal?.value){
+            setLoading(true)
             axios.get('/api/reporte/consultar/list-reprobacion-docente',{
                 params:{
                     idpersonal:idPersonal?.value,
@@ -21,8 +24,12 @@ const TablaReprobacionDocente =()=>{
             })
                 .then((res=>{
                     setDataAlumnos(res.data)
+                    setLoading(false)
                 }))
-                .catch((error)=>console.log(error))
+                .catch((error)=> {
+                    setLoading(false)
+                    console.log(error)
+                })
         }
 
     },[listaPeriodo,idPersonal])
@@ -41,7 +48,7 @@ const TablaReprobacionDocente =()=>{
             listaPeriodo={listaPeriodo}
         />
 </div>
-<MaterialTablesReprobacionDocente dataAlumnos={dataAlumnos}/>
+<MaterialTablesReprobacionDocente dataAlumnos={dataAlumnos} loading={loading}/>
     </div>)
 }
 

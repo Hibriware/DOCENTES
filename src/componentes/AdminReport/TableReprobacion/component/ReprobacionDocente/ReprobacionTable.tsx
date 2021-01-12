@@ -18,7 +18,7 @@ import React from "react";
     }
 * */
 
-function MaterialTablesReprobacionDocente({dataAlumnos}:any) {
+function MaterialTablesReprobacionDocente({dataAlumnos,loading}:any) {
     return (
         <MaterialTable
             title="ALUMNOS REPROBADOS POR MATERIA"
@@ -137,6 +137,7 @@ function MaterialTablesReprobacionDocente({dataAlumnos}:any) {
                 pagination:{labelRowsSelect:"filas",labelDisplayedRows:"{from}-{to} de {count}"},
                 body:{emptyDataSourceMessage:"Seleccione algún periodo"},
             }}
+            isLoading={loading}
         />
     )
 }

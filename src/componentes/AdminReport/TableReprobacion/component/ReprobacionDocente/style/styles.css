@@ -1,0 +1,21 @@
+.depa-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    margin-top: 8px;
+}
+.btn-depa{
+    display: flex;
+    flex-direction: row;
+}
+
+.btn-depa-item{
+margin-right: 5px;
+}
+
+.btn-depa-descarga{
+    display: flex;
+    justify-content: center;
+    margin-top: 123px;
+}

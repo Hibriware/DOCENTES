@@ -1,34 +1,42 @@
 import React, { useMemo, useState} from "react";
 import axios from'axios';
-import MaterialTable,{ MTableToolbar } from "material-table";
+import MaterialTable from "material-table";
 import Periodos from "./Periodos";
-import {Chip, TableRow,TableCell} from '@material-ui/core';
-import {StyledTableCell} from "../../contenedores/docente_calendario/dialogos";
+import TablaReprobacionDocente from "./component/ReprobacionDocente";
+import {DepartamentoReprobacion } from './component/ReprobacionDocente/ReprobacionDepartamento';
+import './component/ReprobacionDocente/styles/index.css';
+
 
 const ReprobacionTable =()=>{
     const [listaPeriodo,setListaPeriodo]=useState('');
     const [dataAlumnos,setAlumnos]=useState([]);
+    const [loading,setLoading]=useState(false);
     useMemo(()=>{
         if(listaPeriodo){
+            setLoading(true)
             axios.get('/api/reporte/consultar/statistics-approved',{
                 params:{
                     periodo:listaPeriodo
                 }
             }).then((res)=>{
                 setAlumnos(res.data)
-            }).catch((erro)=>console.log(erro))
+                setLoading(false)
+            }).catch((erro)=> {
+                console.log(erro)
+                setLoading(false)
+            })
         }
     },[listaPeriodo])
 
 
     return(<div>
         <Periodos listaPeriodo={listaPeriodo} setListaPeriodo={setListaPeriodo}/>
-        <MaterialTables dataAlumnos={dataAlumnos}/>
+        <MaterialTables dataAlumnos={dataAlumnos} loading={loading}/>
     </div>)
 }
 
 
-function MaterialTables({dataAlumnos}:any) {
+function MaterialTables({dataAlumnos,loading}:any) {
     return (
         <MaterialTable
             title="ALUMNOS REPROBADOS POR CARRERA"
@@ -101,20 +109,54 @@ function MaterialTables({dataAlumnos}:any) {
                     backgroundColor: '#01579b',
                     color: '#FFF'
                 },
-                exportButton:true,
+                exportButton:true
+                ,
                 search:false,
-                sorting:false
+                sorting:false,
+                //exportDelimiter:"; "
             }}
             localization={{
                 pagination:{labelRowsSelect:"filas",labelDisplayedRows:"{from}-{to} de {count}"},
                 body:{emptyDataSourceMessage:"Seleccione algún periodo"},
             }}
+            isLoading={loading}
         />
     )
 }
 
+const viewComponent=(index:number)=>{
+    switch (index) {
+        case 0:
+            return <ReprobacionTable/>
+            break;
+        case 1:
+            return <TablaReprobacionDocente/>
+        break;
+        case 2:
+            return <DepartamentoReprobacion/>
+            break;
+
+    }
+}
+
+const homeReprobacion=()=>{
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [optiones,setOptiones] = React.useState(0);
 
 
-export default ReprobacionTable;
+    return(<div>
+        <section>
+            <button className={"btn-reprobacion"} onClick={()=>setOptiones(0)}>Reprobación carrera</button>
+            <button className={"btn-reprobacion"} onClick={()=>setOptiones(1)}>Reprobación docente</button>
+            <button style={{background:'red'}}  className={"btn-reprobacion"} onClick={()=>setOptiones(2)}>Reprobación departamento</button>
+        </section>
+        <section>
+            {viewComponent(optiones)}
+        </section>
+    </div>)
+}
+
+
+export default homeReprobacion;
 
 

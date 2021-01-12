@@ -1,10 +1,11 @@
-import {getListaCarreras,getCalificaciones,getCatalogoCarrera} from '../servicios/api';
+//import {getListaCarreras,getCalificaciones,getCatalogoCarrera} from '../servicios/api';
 import {boletaAlumno} from './pdfAlumno';
 import swal from 'sweetalert';
+import axios from 'axios';
 
 
 //BUSCAR ASPIRANTE, CAREERA, PERIODO
- export async function main(PERIODO, NUMERO_CONTROL) {
+ /*export async function main2(PERIODO, NUMERO_CONTROL) {
 
     try {
     //variables
@@ -119,18 +120,22 @@ import swal from 'sweetalert';
                        // var OPCION = [];
                             //CALIFICACIONES CALCULO
                      if(DATOS_CALIFICACIONES.length > 0){
+           //modifi
                             var PROMEDIOS_SUMAS = 0;
                             var PROMEDIOFINAL = 0 ;
                             var message="1RA. OPORT."
                           
 
                                 for (let index2 = 0; index2 < DATOS_CALIFICACIONES.length; index2++) {
-                                    let calificaciontotal = (parseFloat(DATOS_CALIFICACIONES[index2].calificaciontotal || 0) < 70 ? -1000:parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal))
+                                    let calificaciontotal = (parseFloat(DATOS_CALIFICACIONES[index2].calificaciontotal || 0) < 70 ? 0:parseInt(DATOS_CALIFICACIONES[index2].calificaciontotal))
                                    // OPCION = parseInt(DATOS_CALIFICACIONES[index2].opcion || 0)
                                     PROMEDIOS_SUMAS = PROMEDIOS_SUMAS+calificaciontotal;
-                                   
+                                    console.log(calificaciontotal,"materia")
+                                    console.log(DATOS_CALIFICACIONES.length,"unidad")
+
                                 }
                                 PROMEDIOFINAL =  Math.round(PROMEDIOS_SUMAS/DATOS_CALIFICACIONES.length)
+                         console.log(PROMEDIOFINAL,"promedio final materia")
 
                                 var OPCION = await DATOS_CALIFICACIONES.filter(function(tem) {
                                     return tem.opcion === 2;
@@ -149,7 +154,7 @@ import swal from 'sweetalert';
                                 // 1opcion = 0 , 2 opcion > 0 , nocursado ===11
                                 //console.log("promedio")
                               //  console.log(PROMEDIOFINAL)
-
+//fin mody
                                 DATOS_BOLETA_FINAL[index]={
                                     clave:CLAVE,
                                     materia:MATERIA,
@@ -220,7 +225,114 @@ boletaAlumno(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIR
 } catch (error) {
     swal('', ` ${error}`, 'warning');
 }
+}*/
+
+
+
+export async function main(PERIODO, NUMERO_CONTROL) {
+     try {
+         let PDF = [
+             {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },  {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },
+             {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },  {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },   {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },  {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },
+             {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             },  {
+                 calificacion: '',
+                 clave: '',
+                 creditos: '',
+                 docente: '',
+                 materia: '',
+                 opcion: ''
+             }
+         ];
+
+         let BOLETA = await axios.get(`/api/reporte/consultar/carrera/calificaciones/boleta/`,{
+             params:{
+                 periodo:PERIODO,
+                 numero_control:NUMERO_CONTROL
+             }
+         })
+             .then((res)=>res.data)
+             .catch(error=>console.log(error))
+//   "unidades": 5,
+//             "unidades_evaluadas": 5
+         if(BOLETA?.MATERIAS_CALIFICACIONES){
+             for (let index=0;index<BOLETA.MATERIAS_CALIFICACIONES.length;index++){
+                 let forpromedio = Math.round(parseFloat(BOLETA.MATERIAS_CALIFICACIONES[index].promedio));
+                 let opciones = BOLETA.MATERIAS_CALIFICACIONES[index].opcion ==='2' ?'2RA. OPORT.':'1RA. OPORT.';
+
+                 PDF[index].calificacion = (forpromedio >= 70) ? forpromedio:"NA"
+                 PDF[index].clave = BOLETA.MATERIAS_CALIFICACIONES[index].clave
+                 PDF[index].creditos = BOLETA.MATERIAS_CALIFICACIONES[index].creditos
+                 PDF[index].docente = BOLETA.MATERIAS_CALIFICACIONES[index].docente
+                 PDF[index].materia = BOLETA.MATERIAS_CALIFICACIONES[index].materia
+                 PDF[index].opcion = forpromedio >= 70 ? opciones:'NO ACREDITADA';
+             }
+
+
+         let PROMEDIO = BOLETA.promedio;
+         let CREDITOS_SUMA = BOLETA.sumaCreditos;
+         let ASPIRANTE_CONTROL=BOLETA.control;
+         let ASPIRANTE_NOMBRE=BOLETA.alumno;
+         let ASPIRANTE_CARRERA=BOLETA.carrera;
+         let ASPIRANTE_NUMERO_PERIODO=BOLETA.nperiodo;
+         let CREDITOS_REPROBADOS=BOLETA.sumaCreditosAprobados;
+         let MATERIAS_REPROBADAS=BOLETA.materiasReprobadas;
+         let ASPIRANTE_RANGO_PERIODO=BOLETA.rango
+
+         boletaAlumno(PDF,PROMEDIO,CREDITOS_SUMA,ASPIRANTE_CONTROL,ASPIRANTE_NOMBRE,ASPIRANTE_CARRERA,ASPIRANTE_RANGO_PERIODO,ASPIRANTE_NUMERO_PERIODO,CREDITOS_REPROBADOS,MATERIAS_REPROBADAS)
+         }else{
+             swal('', `El número de control: ${NUMERO_CONTROL}  , no se encontró;`, 'warning');
+         }
+     }catch(error) {
+         alert("No disponible")
+     }
+
 }
-
-
-

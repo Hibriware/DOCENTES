@@ -36,6 +36,20 @@ export async function getCalificaciones(periodo, folio,idmateria) {
 		console.log(error);
 	}
 }
+//Nuevo acceso
+export async function getCalificacionesnew(periodo, folio,idmateria) {
+	try {
+		const response = await axios
+			.get(`/api/reporte/consultar/carrera/calificaciones/boleta/`, {params: { periodo, folio, idmateria}})
+			.then((res) => res.data)
+			.catch(function(error) {
+				swal('!', `${error}`, 'warning');
+			});
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}
 
 //http://localhost:4001/api/reporte/consultar/carrera/catalogo/carrera/1/137/7/19
 export async function getCatalogoCarrera(semestre, folio,periodo,idcarrera) {

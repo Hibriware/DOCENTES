@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {useStudent} from '../providers/StudentProvider';
 
 
- function BuscarAlumno({periodos,setPeriodos,BuscaNumeroControl,setBuscarNumeroControl, clear}) {
+ function BuscarAlumno({periodos,setPeriodos,BuscaNumeroControl,setBuscarNumeroControl, clear,setAvailableChange,availableChange}) {
 
   const {setNumeroControl} = useStudent();
   const [open, setOpen] = React.useState(false);
@@ -27,7 +27,8 @@ import {useStudent} from '../providers/StudentProvider';
     setOpen(false);
   };
 
-  const BuscarNumeroControl=()=>{
+  const BuscarNumeroControl = async ()=>{
+   await setAvailableChange(!availableChange);
     setOpen(false);
     setNumeroControl({numeroControl:BuscaNumeroControl})
   }

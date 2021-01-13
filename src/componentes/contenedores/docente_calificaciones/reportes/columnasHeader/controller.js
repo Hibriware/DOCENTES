@@ -147,7 +147,7 @@ const lista = async (pamrs) => {
 			return n.n !== 0;
 		});
 
-		let TOTAL = parseInt(
+		let TOTAL = parseFloat(
 			(tema1 + tema2 + tema3 + tema4 + tema5 + tema6 + tema7 + tema8 + tema9 + tema10) /
 				LISTA_DE_TEMAS_POR_MATERIAS.length || 0
 		);
@@ -177,7 +177,7 @@ const lista = async (pamrs) => {
 			opcion8: opcion8,
 			opcion9: opcion9,
 			opcion10: opcion10,
-			Total: TOTAL >= 70 ? TOTAL:'NA',
+			Total: TOTAL >= 70 ? Math.round(TOTAL):'NA',
 			modalidad:dataReporteParciales[index2]?.modalidad
 		};
 		nm++;

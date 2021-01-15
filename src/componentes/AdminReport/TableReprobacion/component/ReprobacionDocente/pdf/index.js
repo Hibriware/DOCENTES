@@ -21,7 +21,7 @@ import Axios from "axios";
 * */
 const columnMateriasCursando = [
     { title: "MATERIA", dataKey: "materia" },
-    { title: "GRUP.", dataKey: "grupo" },
+    { title: "GRUPO", dataKey: "grupo" },
     { title: "REP.HOM.", dataKey: "reprobadosHombres" },
     { title: "REP. MUJ.", dataKey: "reprobadosMujeres" },
     { title: "REP. TOT.", dataKey: "totalReprobadosMH" },
@@ -110,7 +110,7 @@ if (LISTA_ALUMNOS){
                 margin: { bottom: 20,top:3 },
                 styles: { halign:'center',cellPadding: 0.5, fontSize: 7 },
 
-                columnStyles: { 0: { halign: 'left', cellWidth:60 } },
+                columnStyles: { 0: { halign: 'left', cellWidth:50 } },
                 headStyles:{
                     fillColor:null ,
                     textColor:'black',

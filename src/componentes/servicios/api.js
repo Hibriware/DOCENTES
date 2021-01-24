@@ -240,7 +240,6 @@ export async function getCriterios(idMateria, unidad,materiaDocenteId,periodo) {
 
 export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, criterio1,materiaDocenteId,periodo) {
 	try {
-		//let TOKEN_USUARIO = { headers: { token: `${sessionStorage.getItem('token_id')}` } };
 		await axios
 			.put(
 				`/api/aspirante/update/criteriosc1/${periodo}/${materia}/${unidad}/${grupo}/${materiaDocenteId}`,
@@ -248,7 +247,6 @@ export async function putCriteriosc1(materia, unidad, grupo, porcentageC1, crite
 					criterio1: criterio1,
 					porcentageC1: porcentageC1
 				},
-		//		TOKEN_USUARIO
 			)
 			.then(function(response) {
 				console.log("");
@@ -535,7 +533,9 @@ export async function updateRegistrosfechas(datas) {
 export async function getAdmiFechas(periodo) {//administrador
 	try {
 		let respon = await axios
-			.get(`/api/administrador/fechas/${periodo}`)
+			.get(`/api/administrador/fechas`,{
+				params: {periodo: periodo}
+			})
 			.then((res) => {
 				dataFechasCierre = res.data;
 				return true;

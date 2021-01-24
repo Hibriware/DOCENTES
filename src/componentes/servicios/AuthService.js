@@ -23,7 +23,7 @@ export default class AuthService {
 
 	login(usuario, password) {
 		try {
-			return this.requestFetch('/api/login/verificar', {
+			return this.requestFetch('/api/Login/verificar', {
 				method: 'POST',
 				body: JSON.stringify({ usuario, password })
 			}).then((response) => {

@@ -1,11 +1,11 @@
 import React, {Component, Suspense, useContext, useEffect} from 'react';
-import Usuarios from './componentes/menu_usuarios/usuarios';
+import Usuarios from './componentes/MenuUsuarios/usuarios';
 import PageError from './componentes/404';
 import {materiasD} from './componentes/servicios/api';
-import Loader from './login/loading';
+import Loader from './Login/loading';
 import AuthService from './componentes/servicios/AuthService';
-import {PeriodoMateriasContext} from "./componentes/Context/PeriodoMateria/ContextPeriodosMateria";
-import {MateriasContext} from './componentes/Context/ListaMateriaDocente/ContextMaterias';
+import {PeriodoMateriasContext} from "./Context/PeriodoMateria/ContextPeriodosMateria";
+import {MateriasContext} from './Context/ListaMateriaDocente/ContextMaterias';
 import axios from 'axios';
 export var dataMateria = null,
 	ID_USUARIO = 0;

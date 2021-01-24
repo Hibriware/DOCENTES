@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 import Home from './home';
-import Login from './login/login';
+import Login from './Login/login';
 import {BrowserRouter as Router, Route, Switch,Redirect} from 'react-router-dom';
 import AuthService from './componentes/servicios/AuthService';
-import StudentProvider from './componentes/Reinscripciones/providers/StudentProvider';
-import {PeridoMateriasProvider} from "./componentes/Context/PeriodoMateria/ContextPeriodosMateria";
-import {MateriasProvider} from './componentes/Context/ListaMateriaDocente/ContextMaterias';
+import StudentProvider from './componentes/Administradores/Reinscripciones/providers/StudentProvider';
+import {PeridoMateriasProvider} from "./Context/PeriodoMateria/ContextPeriodosMateria";
+import {MateriasProvider} from './Context/ListaMateriaDocente/ContextMaterias';
 import axios from 'axios';
 import {urlApi} from '../src/componentes/servicios/api';
 axios.defaults.baseURL=urlApi;

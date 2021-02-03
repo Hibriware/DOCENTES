@@ -125,6 +125,7 @@ const ReEnrollmentPage: React.FC = () => {
   const [availableChange,setAvailableChange]=useState(true);
   // selected subjects by student
   const [selectedChargeByStudent, setSelectedChargeByStudent] = useState<SelectedCharge[]>([])
+  const [isCambios,setIsCambios]=useState<boolean>(false)
 
 
   const updatedStudent = useMemo<Student | null>(() => {
@@ -405,6 +406,7 @@ const ReEnrollmentPage: React.FC = () => {
     })
     .then((willDelete) => {
       if (willDelete) {
+        setIsCambios(false)
             setLoading(true);
             axios.post(REENROLLMENT_URL, {
               reenrollmentResults,
@@ -457,6 +459,16 @@ const ReEnrollmentPage: React.FC = () => {
     setAvailableSubjects([]);
     setEnrolledSubjectsOnPeriod([]);
   }, [setStudiedSubjects, setAvailableSubjects, setEnrolledSubjectsOnPeriod]);
+
+  const isSelectedSameSubject = (subjects: AvailableSubject[], data: AvailableSubject) => {
+    const {subject, tableData} = data;
+
+    return subjects
+        .filter(value => value.subject.clave === subject.clave)
+        .some(value => value?.tableData?.checked &&
+            value.subject.clave === subject.clave &&
+            value.tableData?.id !== tableData.id);
+  }
 
   const handleSelection = (data: AvailableSubject[]) => {
     setCreditsInfo(() => {
@@ -796,6 +808,7 @@ const ReEnrollmentPage: React.FC = () => {
                 // data={filteredSubjects}
                 data={cargarAcademica}
                 onSelectionChange={(data: AvailableSubject[]) => {
+                  setIsCambios(true)
                   handleSelection(data);
                 }}
 
@@ -804,6 +817,15 @@ const ReEnrollmentPage: React.FC = () => {
                   search: false,
                   showSelectAllCheckbox: false,
                   showTextRowsSelected: false,
+                  selectionProps: (rowData: AvailableSubject) => {
+                    return {
+                      disabled:
+                          (isSelectedSameSubject(cargarAcademica, rowData) ||
+                              isTimeCrossings(cargarAcademica, rowData) || (isTwoEspecialSubjects
+                                  && rowData.subject.tipo_curso !== CourseType.Especial)) ||
+                          !!enrolledSubjectsOnPeriod.length,
+                    }
+                  },
                 }}
 
                 localization={{
@@ -813,13 +835,14 @@ const ReEnrollmentPage: React.FC = () => {
                     labelRowsSelect: 'Filas',
                   },
                 }}
+                isLoading={isLoaders}
               />
             </Grid>
             <Hidden only={'xs'}>
               <Grid item sm={9} md={9} lg={10}/>
             </Hidden>
             <Grid item xs={12} sm={3} md={3} lg={2}>
-            {isButton ? (<Button
+            {isButton && isCambios ? (<Button
                 disabled={disableFinishButton}
                 onClick={handleFinish}
                 fullWidth color="primary"

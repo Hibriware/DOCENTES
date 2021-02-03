@@ -327,6 +327,7 @@ const ListaMaterias = ({periodos, cargarAcademica, setMateriasSeleccionada, stud
                     },
 
                 }}
+                isLoading={active}
             />
             <Backdrop className={classes.backdrop} open={active}>
                 <CircularProgress color="inherit"/>

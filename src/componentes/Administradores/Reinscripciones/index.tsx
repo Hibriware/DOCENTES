@@ -134,11 +134,12 @@ const ReEnrollmentPage: React.FC = () => {
 
   useEffect(() => {
     if (student?.folio) {
+      setLoaders(true)
       axios.get(`${COURSED_SUBJECTS_URL}/${student?.folio}`).then(res => {
         setStudiedSubjects(res.data?.subjectsStudied || []);
       }).catch(() => {
         // TODO: Handle error messsage
-      });
+      }).finally(()=>setLoaders(false));
     }
   }, [student?.folio,availableChange]);
 
@@ -694,14 +695,14 @@ const ReEnrollmentPage: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <ButtonGroup size="small" variant="contained" color="primary" aria-label="contained primary button group">
-                <DialogoListaMaterias
-                  periodos={periodos}
-                  cargarAcademica={cargarAcademica}
-                  setCargaAcademica={setCargaAcademica}
-                  materiasSeleccionada={materiasSeleccionada}
-                  setMateriasSeleccionada={setMateriasSeleccionada}
-                  studiedSubjects={studiedSubjects}
-                />
+                {/*<DialogoListaMaterias
+                    periodos={periodos}
+                    cargarAcademica={cargarAcademica}
+                    setCargaAcademica={setCargaAcademica}
+                    materiasSeleccionada={materiasSeleccionada}
+                    setMateriasSeleccionada={setMateriasSeleccionada}
+                    studiedSubjects={studiedSubjects}
+                />*/}
                 {/*<BajaTemporal
                   periodos={periodos}
                 />

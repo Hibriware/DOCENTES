@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo} from 'react';
 import MaterialTable from 'material-table';
 import MenuCreterios from './establecerCriterios';
 import {useStyles} from './dialogos_calificacion';
@@ -12,15 +12,18 @@ import {PeriodoMateriasContext} from "../../../../Context/PeriodoMateria/Context
 export const TablaCapturaCalificaciones = (datas) => {
     const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
     const [open, setOpen] = React.useState(false);
+    const [isLoader,setLoader] = React.useState(false);
     const {alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4, MateriaDocente, group} = datas;
+
 
     const guardarPromedio = async (datos) => {
         //inicio  enviar el promedio asignado en la tabla captura_calificacion
         try {
             let bandera = datos.materiaDocente_id;
             let idcalificacion = datos.idcalificaciones;
+            let idFolioAlumno = datos.FolioAcade;
 
-            if (bandera) {
+            if (Boolean(bandera)) {
                 if (datos.calR1 === null && datos.calR2 === null && datos.calR3 === null && datos.calR4 === null) {
                     datos.calR1 = 0;
                     datos.calR2 = 0;
@@ -37,11 +40,17 @@ export const TablaCapturaCalificaciones = (datas) => {
                     datos.calR4 = 0;
                 }
                 await updateCalificaion(idcalificacion, datos);
-            } else {
+            } else if (Boolean(bandera) === false) {
                 //crear registro para el alumno en registro calificacion
                 await crearCalificacion(datos, unidadCalificacion, id_criterios);
                 await getAlumnos(datos.idMateria, unidadCalificacion, group, MateriaDocente, statePeriodoMateria?.data[0].periodo); //LISTA DE ALUMNOS
-                await setcalificaciones({datalistaAlumnos: datalistaAlumnos});
+                await setcalificaciones((calificaciones)=>{
+                 return {datalistaAlumnos:calificaciones.datalistaAlumnos = datalistaAlumnos}
+                });
+                let searchId = await datalistaAlumnos.filter(item => item.FolioAcade === idFolioAlumno)
+                if (searchId.length){
+                   return searchId[0].materiaDocente_id
+                }
             }
         } catch (e) {
             alert("El proceso no pudo ser completado.")
@@ -75,7 +84,7 @@ export const TablaCapturaCalificaciones = (datas) => {
                 editable={{
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve) => {
-                        console.log("Promise")
+                            setLoader(true)
                             async function updatePromedios() {
                                 if (oldData) {
                                     const updataCalificacion = [...calificaciones.datalistaAlumnos];
@@ -91,15 +100,18 @@ export const TablaCapturaCalificaciones = (datas) => {
                                         parseFloat(newData.calCriterio4))
                                     //console.log(newData,"ver el estado de la inf")
                                     // estado fila modificado
-                                    await guardarPromedio(newData);
+                                   let idMaterias = await guardarPromedio(newData);
                                     //numero.toFixed();
+                                    if (Boolean(idMaterias)){
+                                        newData.materiaDocente_id = idMaterias;
+                                    }
                                     newData.calCriterio1 = newData.calCriterio1.toFixed();
                                     newData.calCriterio2 = newData.calCriterio2.toFixed();
                                     newData.calCriterio3 = newData.calCriterio3.toFixed();
                                     newData.calCriterio4 = newData.calCriterio4.toFixed();
 
                                     updataCalificacion[index] = newData;
-                                    setcalificaciones({
+                                    await setcalificaciones({
                                         ...calificaciones.datalistaAlumnos,
                                         datalistaAlumnos: updataCalificacion
                                     });
@@ -112,9 +124,11 @@ export const TablaCapturaCalificaciones = (datas) => {
                                 .catch((e) => console.log(e))
                                 .finally(() => {
                                     resolve()
+                                    setLoader(false)
                                 })
                         })
                 }}
+                isLoading={isLoader}
                 options={{
                     headerStyle: {
                         backgroundColor: '#01579b',

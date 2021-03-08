@@ -44,12 +44,13 @@ export const TablaCapturaCalificaciones = (datas) => {
                 //crear registro para el alumno en registro calificacion
                 await crearCalificacion(datos, unidadCalificacion, id_criterios);
                 await getAlumnos(datos.idMateria, unidadCalificacion, group, MateriaDocente, statePeriodoMateria?.data[0].periodo); //LISTA DE ALUMNOS
-                await setcalificaciones((calificaciones)=>{
-                 return {datalistaAlumnos:calificaciones.datalistaAlumnos = datalistaAlumnos}
-                });
+                await setcalificaciones({datalistaAlumnos: datalistaAlumnos});
                 let searchId = await datalistaAlumnos.filter(item => item.FolioAcade === idFolioAlumno)
                 if (searchId.length){
-                   return searchId[0].materiaDocente_id
+                   return {
+                      idMateriaDocenteId:searchId[0].materiaDocente_id,
+                       idCalificacionRegistro:searchId[0].idcalificaciones,
+                    }
                 }
             }
         } catch (e) {
@@ -103,7 +104,8 @@ export const TablaCapturaCalificaciones = (datas) => {
                                    let idMaterias = await guardarPromedio(newData);
                                     //numero.toFixed();
                                     if (Boolean(idMaterias)){
-                                        newData.materiaDocente_id = idMaterias;
+                                        newData.materiaDocente_id = idMaterias.idMateriaDocenteId;
+                                        newData.idcalificaciones = idMaterias.idCalificacionRegistro;
                                     }
                                     newData.calCriterio1 = newData.calCriterio1.toFixed();
                                     newData.calCriterio2 = newData.calCriterio2.toFixed();

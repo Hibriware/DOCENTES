@@ -145,7 +145,7 @@ export const TablaCapturaCalificaciones = (datas) => {
                         icon: 'library_books',
                         tooltip: 'Editar criterios',
                         isFreeAction: true,
-                        onClick: () => handleClickOpen()
+                        onClick: (event) => handleClickOpen()
                     }
                 ]}
                 localization={{

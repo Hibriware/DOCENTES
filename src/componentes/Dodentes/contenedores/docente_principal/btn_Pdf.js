@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import moment from 'moment';
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
 //import { dataMateria } from '../../../home';
 import { getReporteHorarios, getReporteLista, dataReportHorario, dataReportLista} from '../../../servicios/api';
 import Itsr from '../../../img/Logo-Tec.png';
@@ -14,7 +14,7 @@ export const ButtonPdf =  (data) =>{
   const {stateMateria,setStateMateria} = useContext(MateriasContext);
   const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
   const [activo, setActio] = React.useState(false)
-    
+
   const informacionPdf = async () => {
     try {
       setActio(true)
@@ -48,7 +48,7 @@ export const ButtonPdf =  (data) =>{
     img.src = Itsr;
     const pdf = new jsPDF('p', 'pt', 'letter')
 
-    
+
     var columns = [
       { title: "Nº", dataKey: "nm" },
       { title: "Control", dataKey: "numeroControl" },
@@ -86,7 +86,7 @@ export const ButtonPdf =  (data) =>{
         styles: { halign:'center',cellPadding: 0.5, fontSize: 7 },
         theme: 'grid',
         columnStyles: { 2: { halign: 'left' } },
-       
+
       }
     );
 
@@ -127,9 +127,9 @@ export const ButtonPdf =  (data) =>{
     }
     pdf.save(`${Semestre} ${Grupo}) ${nomMateria}.pdf`);
   }
-  
 
-    
+
+
     return(
         <div>
         <Button

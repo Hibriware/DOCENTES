@@ -10,7 +10,7 @@ import {PeriodoMateriasContext} from "../../../../Context/PeriodoMateria/Context
 export const TablaCapturaCalificaciones = (datas) => {
     const [statePeriodoMateria] = useContext(PeriodoMateriasContext);
     const [open, setOpen] = React.useState(false);
-    const [isLoader,setLoader] = React.useState(false);
+    const [isLoader, setLoader] = React.useState(false);
     const {alumnos, setcalificaciones, calificaciones, ccx1, ccx2, ccx3, ccx4, MateriaDocente, group} = datas;
 
 
@@ -44,10 +44,10 @@ export const TablaCapturaCalificaciones = (datas) => {
                 await getAlumnos(datos.idMateria, unidadCalificacion, group, MateriaDocente, statePeriodoMateria?.data[0].periodo); //LISTA DE ALUMNOS
                 await setcalificaciones({datalistaAlumnos: datalistaAlumnos});
                 let searchId = await datalistaAlumnos.filter(item => item.FolioAcade === idFolioAlumno)
-                if (searchId.length){
-                   return {
-                      idMateriaDocenteId:searchId[0].materiaDocente_id,
-                       idCalificacionRegistro:searchId[0].idcalificaciones,
+                if (searchId.length) {
+                    return {
+                        idMateriaDocenteId: searchId[0].materiaDocente_id,
+                        idCalificacionRegistro: searchId[0].idcalificaciones,
                     }
                 }
             }
@@ -84,6 +84,7 @@ export const TablaCapturaCalificaciones = (datas) => {
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve) => {
                             setLoader(true)
+
                             async function updatePromedios() {
                                 if (oldData) {
                                     const updataCalificacion = [...calificaciones.datalistaAlumnos];
@@ -99,9 +100,9 @@ export const TablaCapturaCalificaciones = (datas) => {
                                         parseFloat(newData.calCriterio4))
                                     //console.log(newData,"ver el estado de la inf")
                                     // estado fila modificado
-                                   let idMaterias = await guardarPromedio(newData);
+                                    let idMaterias = await guardarPromedio(newData);
                                     //numero.toFixed();
-                                    if (Boolean(idMaterias)){
+                                    if (Boolean(idMaterias)) {
                                         newData.materiaDocente_id = idMaterias.idMateriaDocenteId;
                                         newData.idcalificaciones = idMaterias.idCalificacionRegistro;
                                     }

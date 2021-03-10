@@ -325,9 +325,6 @@ export async function putCriteriosc4(materia, unidad, grupo, porcentageC4, crite
 
 export async function updateCalificaion(idCalificacion, data) {
 	// actalizar calificacion
-	console.log("api service",data)
-	console.log("api idCalificacion",idCalificacion)
-
 	await axios
 		.put(
 			`/api/aspirante/update/calificaciones/${idCalificacion}`,

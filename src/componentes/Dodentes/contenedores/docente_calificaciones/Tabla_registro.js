@@ -1,7 +1,6 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useContext} from 'react';
 import MaterialTable from 'material-table';
 import MenuCreterios from './establecerCriterios';
-
 import * as toastr from 'toastr';
 import {crearCalificacion, updateCalificaion, getAlumnos, datalistaAlumnos} from '../../../servicios/api';
 import './calificaciones.css';

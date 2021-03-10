@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
+import * as toastr from 'toastr';
+import './calificaciones.css';
 import MaterialTable from 'material-table';
 import MenuCreterios from './establecerCriterios';
-import * as toastr from 'toastr';
 import {crearCalificacion, updateCalificaion, getAlumnos, datalistaAlumnos} from '../../../servicios/api';
-import './calificaciones.css';
 import {id_criterios, unidadCalificacion} from './select_temas';
 import {PeriodoMateriasContext} from "../../../../Context/PeriodoMateria/ContextPeriodosMateria";
 
@@ -144,7 +144,7 @@ export const TablaCapturaCalificaciones = (datas) => {
                         icon: 'library_books',
                         tooltip: 'Editar criterios',
                         isFreeAction: true,
-                        onClick: (event) => handleClickOpen()
+                        onClick: () => handleClickOpen()
                     }
                 ]}
                 localization={{

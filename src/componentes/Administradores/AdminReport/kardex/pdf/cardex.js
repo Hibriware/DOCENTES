@@ -151,7 +151,7 @@ export async function descargarCardex(periodo, numeroControls) {
                     doc.setFontSize(5)
                     doc.text(180, 25, 'KARDEX DEL ALUMNO')
                     doc.setFontSize(5)
-                    doc.text(10, 20, `NOMBRE: ${numeroControls} ${nombreAlumno}`)
+                    doc.text(10, 20, `NOMBRE: ${numeroControls.toUpperCase()} ${nombreAlumno}`)
                     doc.setFontSize(5)
                     doc.text(10, 22, `CARRERA: ${nombreCarrera.toUpperCase()}`)
                     doc.setFontSize(5)

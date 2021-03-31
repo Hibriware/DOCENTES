@@ -8,7 +8,9 @@ const KardexInput = ({onChange}: any) => {
         size={"small"}
         id="outlined-basic"
         label="Numero de control"
-        variant="outlined"/>
+        variant="outlined"
+
+    />
 }
 
 

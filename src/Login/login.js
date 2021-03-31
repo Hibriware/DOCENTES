@@ -26,6 +26,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import NoDisponible from "../componentes/404/NoDisponible";
 
 
 class Login extends React.Component {
@@ -36,7 +37,7 @@ class Login extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.authService = new AuthService();
   }
-  
+
 	handleChange(e) {
 		this.setState({
 			[e.target.name]: e.target.value
@@ -50,7 +51,7 @@ class Login extends React.Component {
    handleMouseDownPassword(event) {
     event.preventDefault();
   }
-  
+
 	handleSubmit() {
    	this.setState({loading: true})
    if(this.state.usuario.length && this.state.password.length){
@@ -73,7 +74,7 @@ class Login extends React.Component {
 		return (
 			<div>
 				<header className="stilos">
-					
+
 
 					<div className="container">
 						<div className="textos">
@@ -93,7 +94,8 @@ class Login extends React.Component {
 											BIENVENIDO
 										</Typography>
 										<form style={{marginTop:'2rem'}} className={classes.form}   >
-											<TextField
+											<NoDisponible/>
+											{/*<TextField
 												variant="outlined"
 												margin="normal"
 												required
@@ -102,12 +104,12 @@ class Login extends React.Component {
 												label="Ingrese su usuario"
 												name="usuario"
 												autoComplete="email"
-											//	autoFocus
+												//	autoFocus
 												onChange={this.handleChange}
 											/>
-											<FormControl variant="outlined" fullWidth>
-											<InputLabel htmlFor="outlined-adornment-password">Ingrese su contraseña</InputLabel>
-											<OutlinedInput
+												<FormControl variant="outlined" fullWidth>
+												<InputLabel htmlFor="outlined-adornment-password">Ingrese su contraseña</InputLabel>
+												<OutlinedInput
 												id="outlined-adornment-password"
 												name="password"
 												label="Ingrese su contraseña"
@@ -118,30 +120,30 @@ class Login extends React.Component {
 												endAdornment={
 												<InputAdornment position="end">
 													<IconButton
-													aria-label="toggle password visibility"
-													onClick={this.handleClickShowPassword}
-													onMouseDown={this.handleMouseDownPassword}
-													edge="end"
+														aria-label="toggle password visibility"
+														onClick={this.handleClickShowPassword}
+														onMouseDown={this.handleMouseDownPassword}
+														edge="end"
 													>
-													{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+														{this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
 													</IconButton>
 												</InputAdornment>
-												}
+											}
 												labelWidth={70}
-											/>
-											</FormControl>
+												/>
+												</FormControl>
 
-											<Button style={{marginTop:'3rem'}}
+												<Button style={{marginTop: '3rem'}}
 												disabled={this.state.loading}
 												fullWidth
 												variant="contained"
 												color="primary"
 												className={classes.submit}
 												onClick={this.handleSubmit}
-												endIcon={this.state.loading?<MoreHorizIcon/>:<ArrowRightAltIcon />}
-											>
+												endIcon={this.state.loading ? <MoreHorizIcon/> : <ArrowRightAltIcon/>}
+												>
 												Iniciar
-											</Button>
+												</Button>*/}
 											<Grid container>
 												<Grid item xs>
 													<br></br>
